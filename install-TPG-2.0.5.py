@@ -16,7 +16,7 @@ def _chmod(mod,dst):
 		os.chmod(dst,mod)
 	except (OSError,IOError),e:
 		print e
-print '''Installation of TPG version 2.0.4
+print '''Installation of TPG version 2.0.5
 Author: Christophe Delord
 Email : christophe.delord@free.fr
 Web   : http://christophe.delord.free.fr/en/tpg/

@@ -54,6 +54,8 @@ set magic = "/usr/bin/env python"
 # History                                                 #
 # #######                                                 #
 #                                                         #
+# v 2.0.5 - 10/07/2002                                    #
+#         - Bug fix in command line parser                #
 # v 2.0.4 - 05/07/2002                                    #
 #         - Bug fix in NB rule                            #
 #         - Bug fix in object and arg list code generation#
@@ -80,8 +82,8 @@ import re
 
 import tpg
 
-__date__ = "05 july 2002"
-__version__ = "2.0.4"
+__date__ = "10 july 2002"
+__version__ = "2.0.5"
 __author__ = "Christophe Delord <christophe.delord@free.fr>"
 
 def compile(grammar):
@@ -1082,7 +1084,7 @@ if __name__ == "__main__":
 			arg = args.pop(0)
 			if arg == '-o':
 				check(o is None and args)
-				o = args.pop()
+				o = args.pop(0)
 				check(o.endswith('.py'))
 			elif re.match('-v+$', arg):
 				v += len(arg)-1
