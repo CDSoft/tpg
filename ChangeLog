@@ -1,3 +1,10 @@
+2005-03-01  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 3.0.5:
+        Fixed some typos in comments (thanks to Mike O'Connor).
+        Documentation updated (Debian packets by Mike O'Connor
+        and Logilab).
+
 2004-11-20  Christophe Delord <christophe.delord@free.fr>
 
     * Version 3.0.4:

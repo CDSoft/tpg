@@ -3,22 +3,22 @@
 <html > 
 <head><title>4 Usage</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
-<meta name="originator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2004-06-16 22:22:00"> 
+<meta name="date" content="2005-03-01 21:58:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 99--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch5.html" >next</a>] [<a 
 href="#tailtpgch4.html">tail</a>] [<a 
 href="tpgpa2.html#tpgch4.html" >up</a>] </p></div>
-   <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;4</span><br><a 
-  id="x16-210004"></a>Usage</h2>
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;4</span><br><a 
+ id="x16-230004"></a>Usage</h2>
    <h3 class="sectionHead"><span class="titlemark">4.1   </span> <a 
-  id="x16-220004.1"></a>Package content</h3>
+ id="x16-240004.1"></a>Package content</h3>
 <!--l. 3--><p class="noindent">TPG is a package which main function is to define a class which particular metaclass converts a doc
 string into a parser. You only need to import TPG and use these five objects:
      <dl class="description"><dt class="description">
@@ -45,8 +45,8 @@ class="description">This exception is raised when the parser fails.
 class="cmbx-10">tpg.SemanticError:</span> </dt><dd 
 class="description">This  exception  is  raised  by  the  grammar  itself  when  some  semantic
      properties fail.</dd></dl>
-<!--l. 20--><p class="indent">   The grammar must be in the doc string of the class (see figure&nbsp; <a 
-href="#x16-220011">4.1<!--tex4ht:ref: usage:embed --></a>).
+<!--l. 20--><p class="indent">   The grammar must be in the doc string of the class (see figure&#x00A0;<a 
+href="#x16-240011">4.1<!--tex4ht:ref: usage:embed --></a>).
 <!--l. 22--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -54,46 +54,45 @@ href="#x16-220011">4.1<!--tex4ht:ref: usage:embed --></a>).
 
                                                                                  
 <a 
-  id="x16-220011"></a>
+ id="x16-240011"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-11-" ><colgroup id="TBL-11-1g"><col 
 id="TBL-11-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-11-1-"><td  align="left" id="TBL-11-1-1"  
+ valign="baseline" id="TBL-11-1-"><td  style="text-align:left;" id="TBL-11-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;4.1: </td><td  
-class="content">Grammar embeding example</td></tr></table><!--tex4ht:label?: x16-220011 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;4.1: </td><td  
+class="content">Grammar embeding example</td></tr></table><!--tex4ht:label?: x16-240011 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;class&nbsp;Foo(tpg.Parser):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;START/x&nbsp;-&gt;&nbsp;Bar/x&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bar/x&nbsp;-&gt;&nbsp;'bar'/x&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
+&#x00A0;&#x00A0;&#x00A0;&#x00A0;class&#x00A0;Foo(tpg.Parser):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;r"""
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;START/x&#x00A0;-&gt;&#x00A0;Bar/x&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Bar/x&#x00A0;-&gt;&#x00A0;'bar'/x&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"""
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 33--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-11-2-"><td  align="left" id="TBL-11-2-1"  
+ valign="baseline" id="TBL-11-2-"><td  style="text-align:left;" id="TBL-11-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 34--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 34--><p class="nopar">
-<!--l. 36--><p class="indent">   Then you can use the new generated parser. The parser is simply a Python class (see figure&nbsp;
-<a 
-href="#x16-220022">4.2<!--tex4ht:ref: usage:inst --></a>).
+<!--l. 34--><p class="indent">   </td></tr></table></div><hr class="endfigure">
+<!--l. 36--><p class="indent">   Then you can use the new generated parser. The parser is simply a Python class (see
+figure&#x00A0;<a 
+href="#x16-240022">4.2<!--tex4ht:ref: usage:inst --></a>).
 <!--l. 38--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -101,43 +100,42 @@ href="#x16-220022">4.2<!--tex4ht:ref: usage:inst --></a>).
 
                                                                                  
 <a 
-  id="x16-220022"></a>
+ id="x16-240022"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-12-" ><colgroup id="TBL-12-1g"><col 
 id="TBL-12-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-12-1-"><td  align="left" id="TBL-12-1-1"  
+ valign="baseline" id="TBL-12-1-"><td  style="text-align:left;" id="TBL-12-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;4.2: </td><td  
-class="content">Parser usage example</td></tr></table><!--tex4ht:label?: x16-220022 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;4.2: </td><td  
+class="content">Parser usage example</td></tr></table><!--tex4ht:label?: x16-240022 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;test&nbsp;=&nbsp;&#34;bar&#34;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_parser&nbsp;=&nbsp;Foo()
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;my_parser(test)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;Uses&nbsp;the&nbsp;START&nbsp;symbol
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;x
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;my_parser.parse('Bar',&nbsp;test)&nbsp;&nbsp;#&nbsp;Uses&nbsp;the&nbsp;Bar&nbsp;symbol
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;x
+&#x00A0;&#x00A0;&#x00A0;&#x00A0;test&#x00A0;=&#x00A0;"bar"
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;my_parser&#x00A0;=&#x00A0;Foo()
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;x&#x00A0;=&#x00A0;my_parser(test)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Uses&#x00A0;the&#x00A0;START&#x00A0;symbol
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print&#x00A0;x
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;x&#x00A0;=&#x00A0;my_parser.parse('Bar',&#x00A0;test)&#x00A0;&#x00A0;#&#x00A0;Uses&#x00A0;the&#x00A0;Bar&#x00A0;symbol
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print&#x00A0;x
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 47--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-12-2-"><td  align="left" id="TBL-12-2-1"  
+ valign="baseline" id="TBL-12-2-"><td  style="text-align:left;" id="TBL-12-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 48--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 48--><p class="nopar">
+<!--l. 48--><p class="indent">   </td></tr></table></div><hr class="endfigure">
    <h3 class="sectionHead"><span class="titlemark">4.2   </span> <a 
-  id="x16-230004.2"></a>Command line usage</h3>
+ id="x16-250004.2"></a>Command line usage</h3>
 <!--l. 52--><p class="noindent">The <span 
 class="cmti-10">tpg </span>script reads a Python script and replaces TPG grammars (in doc string) by Python code. To
 produce a Python script (*.py) from a script containing grammars (*.pyg) you can use <span 
@@ -149,9 +147,10 @@ follow:
    <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;tpg&nbsp;[-v|-vv]&nbsp;grammar.pyg&nbsp;[-o&nbsp;parser.py]
+&#x00A0;&#x00A0;&#x00A0;&#x00A0;tpg&#x00A0;[-v|-vv]&#x00A0;grammar.pyg&#x00A0;[-o&#x00A0;parser.py]
 </div>
    </td></tr></table>
+<!--l. 57--><p class="nopar">
 <!--l. 59--><p class="indent">   <span 
 class="cmti-10">tpg </span>accepts some options on the command line:
      <dl class="description"><dt class="description">
@@ -186,10 +185,10 @@ directly write grammars in Python scripts.
                                                                                  
 
                                                                                  
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 101--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch5.html" >next</a>] [<a 
 href="tpgch4.html" >front</a>] [<a 
 href="tpgpa2.html#tpgch4.html" >up</a>] </p></div>
 <!--l. 101--><p class="indent">   <a 
-  id="tailtpgch4.html"></a>   
+ id="tailtpgch4.html"></a>   
 </body></html> 

@@ -3,33 +3,33 @@
 <html > 
 <head><title>3 Tutorial</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
-<meta name="originator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2004-06-16 22:22:00"> 
+<meta name="date" content="2005-03-01 21:58:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 94--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch2.html" >prev</a>] [<a 
 href="tpgch2.html#tailtpgch2.html" >prev-tail</a>] [<a 
 href="#tailtpgch3.html">tail</a>] [<a 
 href="tpgpa1.html#tpgch3.html" >up</a>] </p></div>
-   <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;3</span><br><a 
-  id="x12-140003"></a>Tutorial</h2>
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;3</span><br><a 
+ id="x12-160003"></a>Tutorial</h2>
    <h3 class="sectionHead"><span class="titlemark">3.1   </span> <a 
-  id="x12-150003.1"></a>Introduction</h3>
+ id="x12-170003.1"></a>Introduction</h3>
 <!--l. 3--><p class="noindent">This short tutorial presents how to make a simple calculator. The calculator will compute basic
 mathematical expressions (<span class="obeylines-h"><span class="verb"><span 
 class="cmtt-10">+,</span><span 
-class="cmtt-10">&nbsp;-,</span><span 
-class="cmtt-10">&nbsp;*,</span><span 
-class="cmtt-10">&nbsp;/</span></span></span>) possibly nested in parenthesis. We assume the reader is familiar
+class="cmtt-10">&#x00A0;-,</span><span 
+class="cmtt-10">&#x00A0;*,</span><span 
+class="cmtt-10">&#x00A0;/</span></span></span>) possibly nested in parenthesis. We assume the reader is familiar
 with regular expressions.
 <!--l. 7--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">3.2   </span> <a 
-  id="x12-160003.2"></a>Defining the grammar</h3>
+ id="x12-180003.2"></a>Defining the grammar</h3>
 <!--l. 9--><p class="noindent">Expressions are defined with a grammar. For example an expression is a sum of terms and a term is a
 product of factors. A factor is either a number or a complete expression in parenthesis.
 <!--l. 12--><p class="indent">   We describe such grammars with rules. A rule describe the composition of an item of the language. In
@@ -37,8 +37,8 @@ our grammar we have 3 items (Expr, Term, Factor). We will call these items &#821
 symbols&#8217;. The decomposition of a symbol is symbolized with <span 
 class="cmsy-10"><img 
 src="cmsy10-21.png" alt="--&gt;" class="10x-x-21" /></span>. The grammar of this tutorial is given in
-figure&nbsp; <a 
-href="#x12-160011">3.1<!--tex4ht:ref: tut:gramsymb_calc --></a>.
+figure&#x00A0;<a 
+href="#x12-180011">3.1<!--tex4ht:ref: tut:gramsymb_calc --></a>.
 <!--l. 15--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -46,39 +46,40 @@ href="#x12-160011">3.1<!--tex4ht:ref: tut:gramsymb_calc --></a>.
 
                                                                                  
 <a 
-  id="x12-160011"></a>
+ id="x12-180011"></a>
                                                                                  
 
                                                                                  
 <div class="center" 
 >
+<!--l. 15--><p class="noindent">
 <br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.1: </td><td  
-class="content">Grammar for expressions</td></tr></table><!--tex4ht:label?: x12-160011 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.1: </td><td  
+class="content">Grammar for expressions</td></tr></table><!--tex4ht:label?: x12-180011 -->
 <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-2-" ><colgroup id="TBL-2-1g"><col 
 id="TBL-2-1"></colgroup><colgroup id="TBL-2-2g"><col 
 id="TBL-2-2"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-2-1-"><td  align="left" style="white-space:nowrap;" id="TBL-2-1-1"  
-class="td11">Grammar rule                                 </td><td  align="left" id="TBL-2-1-2"  
+ valign="baseline" id="TBL-2-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-1-1"  
+class="td11">Grammar rule                                 </td><td  style="text-align:left;" id="TBL-2-1-2"  
 class="td11"><!--l. 19--><p class="noindent">Description                                             </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-2-2-"><td  align="left" style="white-space:nowrap;" id="TBL-2-2-1"  
+ valign="baseline" id="TBL-2-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-2-1"  
 class="td11"><span 
 class="cmmi-10">Expr</span><span 
-class="cmmi-10">&nbsp; </span><span 
+class="cmmi-10">&#x00A0; </span><span 
 class="cmsy-10"><img 
 src="cmsy10-21.png" alt="--&gt;" class="10x-x-21" /></span> <span 
-class="cmmi-10">&nbsp;Term</span><span 
-class="cmmi-10">&nbsp;</span>((<span 
+class="cmmi-10">&#x00A0;Term</span><span 
+class="cmmi-10">&#x00A0;</span>((<span 
 class="cmsy-10">' </span>+ <span 
 class="cmsy-10">'|'-'</span>)<span 
-class="cmmi-10">&nbsp;Term</span>)<span 
-class="cmsy-10">*</span></td><td  align="left" id="TBL-2-2-2"  
+class="cmmi-10">&#x00A0;Term</span>)<span 
+class="cmsy-10">*</span></td><td  style="text-align:left;" id="TBL-2-2-2"  
 class="td11"><!--l. 23--><p class="noindent">An expression is a term eventually followed
 with a plus (<span 
 class="cmsy-10">' </span>+ <span 
@@ -89,19 +90,19 @@ class="cmsy-10">* </span>is a
 repetition of an expression 0 or more times). </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-2-3-"><td  align="left" style="white-space:nowrap;" id="TBL-2-3-1"  
+ valign="baseline" id="TBL-2-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-3-1"  
 class="td11"><span 
 class="cmmi-10">Term</span><span 
-class="cmmi-10">&nbsp; </span><span 
+class="cmmi-10">&#x00A0; </span><span 
 class="cmsy-10"><img 
 src="cmsy10-21.png" alt="--&gt;" class="10x-x-21" /></span> <span 
-class="cmmi-10">&nbsp;Fact</span><span 
-class="cmmi-10">&nbsp;</span>((<span 
+class="cmmi-10">&#x00A0;Fact</span><span 
+class="cmmi-10">&#x00A0;</span>((<span 
 class="cmsy-10">'*'|'</span><span 
 class="cmmi-10">/</span><span 
 class="cmsy-10">'</span>)<span 
-class="cmmi-10">&nbsp;Fact</span>)<span 
-class="cmsy-10">*  </span></td><td  align="left" id="TBL-2-3-2"  
+class="cmmi-10">&#x00A0;Fact</span>)<span 
+class="cmsy-10">*  </span></td><td  style="text-align:left;" id="TBL-2-3-2"  
 class="td11"><!--l. 26--><p class="noindent">A term is a factor eventually followed with a
 <span 
 class="cmsy-10">'*' </span>or <span 
@@ -111,36 +112,33 @@ class="cmsy-10">' </span>sign and an other factor any number
 of times.                                                </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-2-4-"><td  align="left" style="white-space:nowrap;" id="TBL-2-4-1"  
+ valign="baseline" id="TBL-2-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-4-1"  
 class="td11"><span 
 class="cmmi-10">Fact</span><span 
-class="cmmi-10">&nbsp; </span><span 
+class="cmmi-10">&#x00A0; </span><span 
 class="cmsy-10"><img 
 src="cmsy10-21.png" alt="--&gt;" class="10x-x-21" /></span> <span 
-class="cmmi-10">&nbsp;number</span><span 
-class="cmmi-10">&nbsp;</span><span 
+class="cmmi-10">&#x00A0;number</span><span 
+class="cmmi-10">&#x00A0;</span><span 
 class="cmsy-10">|</span><span 
-class="cmmi-10">&nbsp;</span><span 
+class="cmmi-10">&#x00A0;</span><span 
 class="cmsy-10">'</span>(<span 
 class="cmsy-10">'</span><span 
-class="cmmi-10">&nbsp;Expr</span><span 
-class="cmmi-10">&nbsp;</span><span 
+class="cmmi-10">&#x00A0;Expr</span><span 
+class="cmmi-10">&#x00A0;</span><span 
 class="cmsy-10">'</span>)<span 
-class="cmsy-10">'   </span></td><td  align="left" id="TBL-2-4-2"  
+class="cmsy-10">'   </span></td><td  style="text-align:left;" id="TBL-2-4-2"  
 class="td11"><!--l. 29--><p class="noindent">A factor is either a number or an expression
 in parenthesis.                                         </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-2-5-"><td  align="left" style="white-space:nowrap;" id="TBL-2-5-1"  
+ valign="baseline" id="TBL-2-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-5-1"  
 class="td11">                                                   </td>
-</tr></table></div>
-<!--l. 31--><p class="nopar"> </div>
-<!--l. 32--><p class="nopar">
+</tr></table></div> </div>
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 32--><p class="nopar">
+<!--l. 32--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 34--><p class="indent">   We have defined here the grammar rules (i.e. the sentences of the language). We now need to describe
 the lexical items (i.e. the words of the language). These words - also called <span 
 class="cmti-10">terminal symbols </span>- are
@@ -156,10 +154,10 @@ class="cmti-10">number</span>. For sake of simplicity numbers are integers compo
 (the corresponding regular expression can be [0 <span 
 class="cmsy-10">- </span>9]+). To simplify the grammar and then the Python
 script we define two terminal symbols to group the operators (additive and multiplicative operators). We
-can also define a special symbol that is ignored by TPG. This symbol is used as a separator. This is
-generaly usefull for white spaces and comments. The terminal symbols are given in figure&nbsp;
-<a 
-href="#x12-160022">3.2<!--tex4ht:ref: tut:token_calc --></a>
+can also define a special symbol that is ignored by TPG. This symbol is used as a separator.
+This is generaly usefull for white spaces and comments. The terminal symbols are given in
+figure&#x00A0;<a 
+href="#x12-180022">3.2<!--tex4ht:ref: tut:token_calc --></a>
 <!--l. 37--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -167,77 +165,75 @@ href="#x12-160022">3.2<!--tex4ht:ref: tut:token_calc --></a>
 
                                                                                  
 <a 
-  id="x12-160022"></a>
+ id="x12-180022"></a>
                                                                                  
 
                                                                                  
 <div class="center" 
 >
+<!--l. 37--><p class="noindent">
 <br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.2: </td><td  
-class="content">Terminal symbol definition for expressions</td></tr></table><!--tex4ht:label?: x12-160022 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.2: </td><td  
+class="content">Terminal symbol definition for expressions</td></tr></table><!--tex4ht:label?: x12-180022 -->
 <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-3-" ><colgroup id="TBL-3-1g"><col 
 id="TBL-3-1"></colgroup><colgroup id="TBL-3-2g"><col 
 id="TBL-3-2"></colgroup><colgroup id="TBL-3-3g"><col 
 id="TBL-3-3"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-3-1-"><td  align="left" style="white-space:nowrap;" id="TBL-3-1-1"  
-class="td11">Terminal symbol</td><td  align="left" style="white-space:nowrap;" id="TBL-3-1-2"  
-class="td11">Regular expression</td><td  align="left" style="white-space:nowrap;" id="TBL-3-1-3"  
+ valign="baseline" id="TBL-3-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-1-1"  
+class="td11">Terminal symbol</td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-1-2"  
+class="td11">Regular expression</td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-1-3"  
 class="td11">Comment             </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-3-2-"><td  align="left" style="white-space:nowrap;" id="TBL-3-2-1"  
-class="td11">number            </td><td  align="left" style="white-space:nowrap;" id="TBL-3-2-2"  
+ valign="baseline" id="TBL-3-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-2-1"  
+class="td11">number            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-2-2"  
 class="td11">[0 <span 
 class="cmsy-10">- </span>9]+ or <span 
 class="cmsy-10">\</span><span 
-class="cmmi-10">d</span>+    </td><td  align="left" style="white-space:nowrap;" id="TBL-3-2-3"  
+class="cmmi-10">d</span>+    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-2-3"  
 class="td11">One or more digits </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-3-3-"><td  align="left" style="white-space:nowrap;" id="TBL-3-3-1"  
-class="td11">add                 </td><td  align="left" style="white-space:nowrap;" id="TBL-3-3-2"  
+ valign="baseline" id="TBL-3-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-3-1"  
+class="td11">add                 </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-3-2"  
 class="td11">[+<span 
-class="cmsy-10">-</span>]                  </td><td  align="left" style="white-space:nowrap;" id="TBL-3-3-3"  
+class="cmsy-10">-</span>]                  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-3-3"  
 class="td11">a + or a <span 
 class="cmsy-10">-     </span></td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-3-4-"><td  align="left" style="white-space:nowrap;" id="TBL-3-4-1"  
-class="td11">mul                 </td><td  align="left" style="white-space:nowrap;" id="TBL-3-4-2"  
+ valign="baseline" id="TBL-3-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-4-1"  
+class="td11">mul                 </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-4-2"  
 class="td11">[<span 
 class="cmsy-10">*</span><span 
-class="cmmi-10">/</span>]                    </td><td  align="left" style="white-space:nowrap;" id="TBL-3-4-3"  
+class="cmmi-10">/</span>]                    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-4-3"  
 class="td11">a <span 
 class="cmsy-10">* </span>or a <span 
 class="cmmi-10">/           </span></td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-3-5-"><td  align="left" style="white-space:nowrap;" id="TBL-3-5-1"  
-class="td11">spaces              </td><td  align="left" style="white-space:nowrap;" id="TBL-3-5-2"  
+ valign="baseline" id="TBL-3-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-5-1"  
+class="td11">spaces              </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-5-2"  
 class="td11"><span 
 class="cmsy-10">\</span><span 
-class="cmmi-10">s</span>+                   </td><td  align="left" style="white-space:nowrap;" id="TBL-3-5-3"  
+class="cmmi-10">s</span>+                   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-3-5-3"  
 class="td11">One or more spaces</td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-3-6-"><td  align="left" style="white-space:nowrap;" id="TBL-3-6-1"  
+ valign="baseline" id="TBL-3-6-"><td  style="white-space:nowrap; text-align:left;" id="TBL-3-6-1"  
 class="td11">                      </td>
-</tr></table></div>
-<!--l. 52--><p class="nopar"> </div>
-<!--l. 53--><p class="nopar">
+</tr></table></div> </div>
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 53--><p class="nopar">
+<!--l. 53--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 55--><p class="indent">   This is sufficient to define our parser with TPG. The grammar of the expressions in TPG can be
-found in figure&nbsp; <a 
-href="#x12-160033">3.3<!--tex4ht:ref: tut:recognizer --></a>.
+found in figure&#x00A0;<a 
+href="#x12-180033">3.3<!--tex4ht:ref: tut:recognizer --></a>.
 <!--l. 57--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -245,63 +241,63 @@ href="#x12-160033">3.3<!--tex4ht:ref: tut:recognizer --></a>.
 
                                                                                  
 <a 
-  id="x12-160033"></a>
+ id="x12-180033"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-4-" ><colgroup id="TBL-4-1g"><col 
 id="TBL-4-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-4-1-"><td  align="left" id="TBL-4-1-1"  
+ valign="baseline" id="TBL-4-1-"><td  style="text-align:left;" id="TBL-4-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.3: </td><td  
-class="content">Grammar of the expression recognizer</td></tr></table><!--tex4ht:label?: x12-160033 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.3: </td><td  
+class="content">Grammar of the expression recognizer</td></tr></table><!--tex4ht:label?: x12-180033 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-class&nbsp;Calc(tpg.Parser):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;separator&nbsp;spaces:&nbsp;'\s+'&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;number:&nbsp;'\d+'&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;add:&nbsp;'[+-]'&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;mul:&nbsp;'[*/]'&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;START&nbsp;-&gt;&nbsp;Expr&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Expr&nbsp;-&gt;&nbsp;Term&nbsp;(&nbsp;add&nbsp;Term&nbsp;)*&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Term&nbsp;-&gt;&nbsp;Fact&nbsp;(&nbsp;mul&nbsp;Fact&nbsp;)*&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Fact&nbsp;-&gt;&nbsp;number&nbsp;|&nbsp;'\('&nbsp;Expr&nbsp;'\)'&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
+class&#x00A0;Calc(tpg.Parser):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;r"""
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;separator&#x00A0;spaces:&#x00A0;'\s+'&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;number:&#x00A0;'\d+'&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;add:&#x00A0;'[+-]'&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;mul:&#x00A0;'[*/]'&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;START&#x00A0;-&gt;&#x00A0;Expr&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Expr&#x00A0;-&gt;&#x00A0;Term&#x00A0;(&#x00A0;add&#x00A0;Term&#x00A0;)*&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Term&#x00A0;-&gt;&#x00A0;Fact&#x00A0;(&#x00A0;mul&#x00A0;Fact&#x00A0;)*&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Fact&#x00A0;-&gt;&#x00A0;number&#x00A0;|&#x00A0;'\('&#x00A0;Expr&#x00A0;'\)'&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;"""
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 77--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-4-2-"><td  align="left" id="TBL-4-2-1"  
+ valign="baseline" id="TBL-4-2-"><td  style="text-align:left;" id="TBL-4-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 78--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 78--><p class="nopar">
+<!--l. 78--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 80--><p class="indent">   <span 
 class="cmti-10">Calc </span>is the name of the Python class generated by TPG. <span 
 class="cmti-10">START </span>is a special non terminal symbol treated
 as the <span 
-class="cmti-10">axiom</span><a 
-href="tpg13.html" id="tpg13.html" ><sup>1</sup></a>
+class="cmti-10">axiom</span><span class="footnote-mark"><a 
+href="tpg13.html#fn1x7"><sup >1</sup></a></span><a 
+ id="x12-18004f1"></a> 
 of the grammar.
 <!--l. 82--><p class="indent">   With this small grammar we can only recognize a correct expression. We will see in the next sections
 how to read the actual expression and to compute its value.
    <h3 class="sectionHead"><span class="titlemark">3.3   </span> <a 
-  id="x12-170003.3"></a>Reading the input and returning values</h3>
+ id="x12-190003.3"></a>Reading the input and returning values</h3>
 <!--l. 86--><p class="noindent">The input of the grammar is a string. To do something useful we need to read this string in order to
 transform it into an expected result.
 <!--l. 88--><p class="indent">   This string can be read by catching the return value of terminal symbols. By default any terminal
@@ -326,9 +322,9 @@ class="cmti-10">mul</span>.
 <!--l. 90--><p class="indent">   <span 
 class="cmti-10">int </span>is a Python function converting objects to integers and <span 
 class="cmti-10">make</span><span 
-class="cmti-10">_op </span>is a user defined function (figure&nbsp;
-<a 
-href="#x12-170014">3.4<!--tex4ht:ref: tut:make_op --></a>).
+class="cmti-10">_op </span>is a user defined function
+(figure&#x00A0;<a 
+href="#x12-190014">3.4<!--tex4ht:ref: tut:make_op --></a>).
 <!--l. 92--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -336,47 +332,45 @@ href="#x12-170014">3.4<!--tex4ht:ref: tut:make_op --></a>).
 
                                                                                  
 <a 
-  id="x12-170014"></a>
+ id="x12-190014"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-5-" ><colgroup id="TBL-5-1g"><col 
 id="TBL-5-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-5-1-"><td  align="left" id="TBL-5-1-1"  
+ valign="baseline" id="TBL-5-1-"><td  style="text-align:left;" id="TBL-5-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.4: </td><td  
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.4: </td><td  
 class="content"><span 
 class="cmti-10">make</span><span 
-class="cmti-10">_op </span>function</td></tr></table><!--tex4ht:label?: x12-170014 -->
+class="cmti-10">_op </span>function</td></tr></table><!--tex4ht:label?: x12-190014 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-def&nbsp;make_op(s):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;{
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+':&nbsp;lambda&nbsp;x,y:&nbsp;x+y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'-':&nbsp;lambda&nbsp;x,y:&nbsp;x-y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'*':&nbsp;lambda&nbsp;x,y:&nbsp;x*y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'/':&nbsp;lambda&nbsp;x,y:&nbsp;x/y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;}[s]
+def&#x00A0;make_op(s):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;{
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'+':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x+y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'-':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x-y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'*':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x*y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'/':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x/y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;}[s]
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 102--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-5-2-"><td  align="left" id="TBL-5-2-1"  
+ valign="baseline" id="TBL-5-2-"><td  style="text-align:left;" id="TBL-5-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 103--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 103--><p class="nopar">
-<!--l. 105--><p class="indent">   To associate a function to a token it must be added after the token definition as in figure&nbsp;
-<a 
-href="#x12-170025">3.5<!--tex4ht:ref: tut:tokens --></a>
+<!--l. 103--><p class="indent">   </td></tr></table></div><hr class="endfigure">
+<!--l. 105--><p class="indent">   To associate a function to a token it must be added after the token definition as in figure&#x00A0;<a 
+href="#x12-190025">3.5<!--tex4ht:ref: tut:tokens --></a>
 <!--l. 107--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -384,50 +378,49 @@ href="#x12-170025">3.5<!--tex4ht:ref: tut:tokens --></a>
 
                                                                                  
 <a 
-  id="x12-170025"></a>
+ id="x12-190025"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-6-" ><colgroup id="TBL-6-1g"><col 
 id="TBL-6-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-6-1-"><td  align="left" id="TBL-6-1-1"  
+ valign="baseline" id="TBL-6-1-"><td  style="text-align:left;" id="TBL-6-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.5: </td><td  
-class="content">Token definitions with functions</td></tr></table><!--tex4ht:label?: x12-170025 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.5: </td><td  
+class="content">Token definitions with functions</td></tr></table><!--tex4ht:label?: x12-190025 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;separator&nbsp;spaces:&nbsp;'\s+'&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;number:&nbsp;'\d+'&nbsp;int&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;add:&nbsp;'[+-]'&nbsp;make_op;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;mul:&nbsp;'[*/]'&nbsp;make_op;
+&#x00A0;&#x00A0;&#x00A0;&#x00A0;separator&#x00A0;spaces:&#x00A0;'\s+'&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;number:&#x00A0;'\d+'&#x00A0;int&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;add:&#x00A0;'[+-]'&#x00A0;make_op;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;mul:&#x00A0;'[*/]'&#x00A0;make_op;
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 114--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-6-2-"><td  align="left" id="TBL-6-2-1"  
+ valign="baseline" id="TBL-6-2-"><td  style="text-align:left;" id="TBL-6-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 115--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 115--><p class="nopar">
+<!--l. 115--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 117--><p class="indent">   We have specified the value returned by the token. To read this value after a terminal symbol is
 recognized we will store it in a Python variable. For example to save a <span 
 class="cmti-10">number </span>in a variable <span 
 class="cmti-10">n </span>we write
 <span 
 class="cmti-10">number/n</span>. In fact terminal and non terminal symbols can return a value. The syntax is the same for
-both sort of symbols. In non terminal symbol definitions the return value defined at the left hand side is
-the expression return by the symbol. The return values defined in the right hand side are just
-variables to which values are saved. A small example may be easier to understand (figure&nbsp;
-<a 
-href="#x12-170036">3.6<!--tex4ht:ref: tut:ret_val --></a>).
+both sort of symbols. In non terminal symbol definitions the return value defined at the left hand side
+is the expression return by the symbol. The return values defined in the right hand side
+are just variables to which values are saved. A small example may be easier to understand
+(figure&#x00A0;<a 
+href="#x12-190036">3.6<!--tex4ht:ref: tut:ret_val --></a>).
 <!--l. 120--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -435,78 +428,76 @@ href="#x12-170036">3.6<!--tex4ht:ref: tut:ret_val --></a>).
 
                                                                                  
 <a 
-  id="x12-170036"></a>
+ id="x12-190036"></a>
                                                                                  
 
                                                                                  
 <div class="center" 
 >
+<!--l. 120--><p class="noindent">
 <br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.6: </td><td  
-class="content">Return values for (non) terminal symbols</td></tr></table><!--tex4ht:label?: x12-170036 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.6: </td><td  
+class="content">Return values for (non) terminal symbols</td></tr></table><!--tex4ht:label?: x12-190036 -->
 <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-7-" ><colgroup id="TBL-7-1g"><col 
 id="TBL-7-1"></colgroup><colgroup id="TBL-7-2g"><col 
 id="TBL-7-2"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-7-1-"><td  align="left" style="white-space:nowrap;" id="TBL-7-1-1"  
-class="td11">Rule           </td><td  align="left" id="TBL-7-1-2"  
+ valign="baseline" id="TBL-7-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-7-1-1"  
+class="td11">Rule           </td><td  style="text-align:left;" id="TBL-7-1-2"  
 class="td11"><!--l. 124--><p class="noindent">Comment                                                                </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-7-2-"><td  align="left" style="white-space:nowrap;" id="TBL-7-2-1"  
+ valign="baseline" id="TBL-7-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-7-2-1"  
 class="td11"><span class="obeylines-h"><span class="verb"><span 
 class="cmtt-10">X/x</span><span 
-class="cmtt-10">&nbsp;-&gt;</span></span></span>     </td><td  align="left" id="TBL-7-2-2"  
+class="cmtt-10">&#x00A0;-&gt;</span></span></span>     </td><td  style="text-align:left;" id="TBL-7-2-2"  
 class="td11"><!--l. 126--><p class="noindent">Defines a symbol <span 
 class="cmti-10">X</span>. When <span 
 class="cmti-10">X </span>is called, <span 
 class="cmti-10">x </span>is returned.       </td>
 </tr><tr  
- valign="baseline" id="TBL-7-3-"><td  align="left" style="white-space:nowrap;" id="TBL-7-3-1"  
+ valign="baseline" id="TBL-7-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-7-3-1"  
 class="td11"><span class="obeylines-h"><span class="verb"><span 
-class="cmtt-10">Y/y</span></span></span>        </td><td  align="left" id="TBL-7-3-2"  
+class="cmtt-10">Y/y</span></span></span>        </td><td  style="text-align:left;" id="TBL-7-3-2"  
 class="td11"><!--l. 127--><p class="noindent"><span 
 class="cmti-10">X </span>starts with a <span 
 class="cmti-10">Y</span>. The return value of <span 
 class="cmti-10">Y </span>is saved in <span 
 class="cmti-10">y</span>.    </td>
 </tr><tr  
- valign="baseline" id="TBL-7-4-"><td  align="left" style="white-space:nowrap;" id="TBL-7-4-1"  
+ valign="baseline" id="TBL-7-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-7-4-1"  
 class="td11"><span class="obeylines-h"><span class="verb"><span 
-class="cmtt-10">Z/z</span></span></span>        </td><td  align="left" id="TBL-7-4-2"  
+class="cmtt-10">Z/z</span></span></span>        </td><td  style="text-align:left;" id="TBL-7-4-2"  
 class="td11"><!--l. 128--><p class="noindent">The return value of <span 
 class="cmti-10">Z </span>is saved in <span 
 class="cmti-10">z</span>.                              </td>
 </tr><tr  
- valign="baseline" id="TBL-7-5-"><td  align="left" style="white-space:nowrap;" id="TBL-7-5-1"  
+ valign="baseline" id="TBL-7-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-7-5-1"  
 class="td11"><span class="obeylines-h"><span class="verb"><span 
 class="cmtt-10">$</span><span 
-class="cmtt-10">&nbsp;x</span><span 
-class="cmtt-10">&nbsp;=</span><span 
-class="cmtt-10">&nbsp;y+z</span><span 
-class="cmtt-10">&nbsp;$</span></span></span></td><td  align="left" id="TBL-7-5-2"  
+class="cmtt-10">&#x00A0;x</span><span 
+class="cmtt-10">&#x00A0;=</span><span 
+class="cmtt-10">&#x00A0;y+z</span><span 
+class="cmtt-10">&#x00A0;$</span></span></span></td><td  style="text-align:left;" id="TBL-7-5-2"  
 class="td11"><!--l. 129--><p class="noindent">Computes <span 
 class="cmti-10">x</span>.                                                            </td>
 </tr><tr  
- valign="baseline" id="TBL-7-6-"><td  align="left" style="white-space:nowrap;" id="TBL-7-6-1"  
+ valign="baseline" id="TBL-7-6-"><td  style="white-space:nowrap; text-align:left;" id="TBL-7-6-1"  
 class="td11"><span class="obeylines-h"><span class="verb"><span 
-class="cmtt-10">;</span></span></span>          </td><td  align="left" id="TBL-7-6-2"  
+class="cmtt-10">;</span></span></span>          </td><td  style="text-align:left;" id="TBL-7-6-2"  
 class="td11"><!--l. 130--><p class="noindent">Returns <span 
 class="cmti-10">x</span>.                                                               </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-7-7-"><td  align="left" style="white-space:nowrap;" id="TBL-7-7-1"  
+ valign="baseline" id="TBL-7-7-"><td  style="white-space:nowrap; text-align:left;" id="TBL-7-7-1"  
 class="td11">                 </td>
-</tr></table></div>
-<!--l. 132--><p class="nopar"> </div>
-<!--l. 133--><p class="nopar">
+</tr></table></div> </div>
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 133--><p class="nopar">
+<!--l. 133--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 135--><p class="indent">   In the example described in this tutorial the computation of a <span 
 class="cmti-10">Term </span>is made by applying the operator
 to the factors, this value is then returned :
@@ -516,14 +507,15 @@ to the factors, this value is then returned :
    <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;Expr/t&nbsp;-&gt;&nbsp;Term/t&nbsp;(&nbsp;add/op&nbsp;Term/f&nbsp;$t=op(t,f)$&nbsp;)*&nbsp;;
+&#x00A0;&#x00A0;&#x00A0;&#x00A0;Expr/t&#x00A0;-&gt;&#x00A0;Term/t&#x00A0;(&#x00A0;add/op&#x00A0;Term/f&#x00A0;$t=op(t,f)$&#x00A0;)*&#x00A0;;
 </div>
    </td></tr></table>
+<!--l. 139--><p class="nopar">
 <!--l. 141--><p class="indent">   This example shows how to include Python code in a rule. Here <span class="obeylines-h"><span class="verb"><span 
 class="cmtt-10">$...$</span></span></span> is copied verbatim in the
 generated parser.
-<!--l. 143--><p class="indent">   Finally the complete parser is given in figure&nbsp; <a 
-href="#x12-170047">3.7<!--tex4ht:ref: tut:parser --></a>.
+<!--l. 143--><p class="indent">   Finally the complete parser is given in figure&#x00A0;<a 
+href="#x12-190047">3.7<!--tex4ht:ref: tut:parser --></a>.
 <!--l. 145--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -531,60 +523,60 @@ href="#x12-170047">3.7<!--tex4ht:ref: tut:parser --></a>.
 
                                                                                  
 <a 
-  id="x12-170047"></a>
+ id="x12-190047"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-8-" ><colgroup id="TBL-8-1g"><col 
 id="TBL-8-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-8-1-"><td  align="left" id="TBL-8-1-1"  
+ valign="baseline" id="TBL-8-1-"><td  style="text-align:left;" id="TBL-8-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.7: </td><td  
-class="content">Expression recognizer and evaluator</td></tr></table><!--tex4ht:label?: x12-170047 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.7: </td><td  
+class="content">Expression recognizer and evaluator</td></tr></table><!--tex4ht:label?: x12-190047 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-class&nbsp;Calc(tpg.Parser):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;separator&nbsp;spaces:&nbsp;'\s+'&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;number:&nbsp;'\d+'&nbsp;int&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;add:&nbsp;'[+-]'&nbsp;make_op&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;mul:&nbsp;'[*/]'&nbsp;make_op&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;START&nbsp;-&gt;&nbsp;Expr&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Expr/t&nbsp;-&gt;&nbsp;Term/t&nbsp;(&nbsp;add/op&nbsp;Term/f&nbsp;$t=op(t,f)$&nbsp;)*&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Term/f&nbsp;-&gt;&nbsp;Fact/f&nbsp;(&nbsp;mul&nbsp;Fact/a&nbsp;$f=op(f,a)$&nbsp;)*&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Fact/a&nbsp;-&gt;&nbsp;number/a&nbsp;|&nbsp;'\('&nbsp;Expr/a&nbsp;'\)'&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
+class&#x00A0;Calc(tpg.Parser):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;r"""
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;separator&#x00A0;spaces:&#x00A0;'\s+'&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;number:&#x00A0;'\d+'&#x00A0;int&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;add:&#x00A0;'[+-]'&#x00A0;make_op&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;mul:&#x00A0;'[*/]'&#x00A0;make_op&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;START&#x00A0;-&gt;&#x00A0;Expr&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Expr/t&#x00A0;-&gt;&#x00A0;Term/t&#x00A0;(&#x00A0;add/op&#x00A0;Term/f&#x00A0;$t=op(t,f)$&#x00A0;)*&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Term/f&#x00A0;-&gt;&#x00A0;Fact/f&#x00A0;(&#x00A0;mul&#x00A0;Fact/a&#x00A0;$f=op(f,a)$&#x00A0;)*&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Fact/a&#x00A0;-&gt;&#x00A0;number/a&#x00A0;|&#x00A0;'\('&#x00A0;Expr/a&#x00A0;'\)'&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;"""
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 166--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-8-2-"><td  align="left" id="TBL-8-2-1"  
+ valign="baseline" id="TBL-8-2-"><td  style="text-align:left;" id="TBL-8-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 167--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 167--><p class="nopar">
+<!--l. 167--><p class="indent">   </td></tr></table></div><hr class="endfigure">
    <h3 class="sectionHead"><span class="titlemark">3.4   </span> <a 
-  id="x12-180003.4"></a>Embeding the parser in a script</h3>
+ id="x12-200003.4"></a>Embeding the parser in a script</h3>
 <!--l. 171--><p class="noindent">Since TPG 3 embeding parsers in a script is very easy since the grammar is the doc
-string<a 
-href="tpg14.html" id="tpg14.html" ><sup>2</sup></a>
-of a class (see figure&nbsp; <a 
-href="#x12-180028">3.8<!--tex4ht:ref: tut:build_scheme --></a>).
+string<span class="footnote-mark"><a 
+href="tpg14.html#fn2x7"><sup >2</sup></a></span><a 
+ id="x12-20001f2"></a> 
+of a class (see figure&#x00A0;<a 
+href="#x12-200028">3.8<!--tex4ht:ref: tut:build_scheme --></a>).
 <!--l. 173--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -592,46 +584,44 @@ href="#x12-180028">3.8<!--tex4ht:ref: tut:build_scheme --></a>).
 
                                                                                  
 <a 
-  id="x12-180028"></a>
+ id="x12-200028"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-9-" ><colgroup id="TBL-9-1g"><col 
 id="TBL-9-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-9-1-"><td  align="left" id="TBL-9-1-1"  
+ valign="baseline" id="TBL-9-1-"><td  style="text-align:left;" id="TBL-9-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.8: </td><td  
-class="content">Writting TPG grammars in Python</td></tr></table><!--tex4ht:label?: x12-180028 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.8: </td><td  
+class="content">Writting TPG grammars in Python</td></tr></table><!--tex4ht:label?: x12-200028 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-import&nbsp;tpg
-&nbsp;<br />
-&nbsp;<br />class&nbsp;MyParser(tpg.Parser):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;&nbsp;#&nbsp;Your&nbsp;grammar&nbsp;here&nbsp;&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />#&nbsp;You&nbsp;can&nbsp;instanciate&nbsp;your&nbsp;parser&nbsp;here
-&nbsp;<br />my_parser&nbsp;=&nbsp;MyParser()
+import&#x00A0;tpg
+&#x00A0;<br />
+&#x00A0;<br />class&#x00A0;MyParser(tpg.Parser):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;r"""&#x00A0;#&#x00A0;Your&#x00A0;grammar&#x00A0;here&#x00A0;"""
+&#x00A0;<br />
+&#x00A0;<br />#&#x00A0;You&#x00A0;can&#x00A0;instanciate&#x00A0;your&#x00A0;parser&#x00A0;here
+&#x00A0;<br />my_parser&#x00A0;=&#x00A0;MyParser()
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 183--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-9-2-"><td  align="left" id="TBL-9-2-1"  
+ valign="baseline" id="TBL-9-2-"><td  style="text-align:left;" id="TBL-9-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 184--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 184--><p class="nopar">
+<!--l. 184--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 186--><p class="indent">   To use this parser you now just need to instanciate an object of the class <span 
-class="cmti-10">Calc </span>as in figure&nbsp;
-<a 
-href="#x12-180039">3.9<!--tex4ht:ref: tut:calc --></a>.
+class="cmti-10">Calc </span>as in figure&#x00A0;<a 
+href="#x12-200039">3.9<!--tex4ht:ref: tut:calc --></a>.
 <!--l. 188--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -639,69 +629,68 @@ href="#x12-180039">3.9<!--tex4ht:ref: tut:calc --></a>.
 
                                                                                  
 <a 
-  id="x12-180039"></a>
+ id="x12-200039"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-10-" ><colgroup id="TBL-10-1g"><col 
 id="TBL-10-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-10-1-"><td  align="left" id="TBL-10-1-1"  
+ valign="baseline" id="TBL-10-1-"><td  style="text-align:left;" id="TBL-10-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;3.9: </td><td  
-class="content">Complete Python script with expression parser</td></tr></table><!--tex4ht:label?: x12-180039 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;3.9: </td><td  
+class="content">Complete Python script with expression parser</td></tr></table><!--tex4ht:label?: x12-200039 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-import&nbsp;tpg
-&nbsp;<br />
-&nbsp;<br />def&nbsp;make_op(s):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;{
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+':&nbsp;lambda&nbsp;x,y:&nbsp;x+y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'-':&nbsp;lambda&nbsp;x,y:&nbsp;x-y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'*':&nbsp;lambda&nbsp;x,y:&nbsp;x*y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'/':&nbsp;lambda&nbsp;x,y:&nbsp;x/y,
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;}[s]
-&nbsp;<br />
-&nbsp;<br />class&nbsp;Calc(tpg.Parser):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;separator&nbsp;spaces:&nbsp;'\s+'&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;number:&nbsp;'\d+'&nbsp;int&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;add:&nbsp;'[+-]'&nbsp;make_op&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;token&nbsp;mul:&nbsp;'[*/]'&nbsp;make_op&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;START/e&nbsp;-&gt;&nbsp;Term/e&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Term/t&nbsp;-&gt;&nbsp;Fact/t&nbsp;(&nbsp;add/op&nbsp;Fact/f&nbsp;$t=op(t,f)$&nbsp;)*&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Fact/f&nbsp;-&gt;&nbsp;Atom/f&nbsp;(&nbsp;mul/op&nbsp;Atom/a&nbsp;$f=op(f,a)$&nbsp;)*&nbsp;;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;Atom/a&nbsp;-&gt;&nbsp;number/a&nbsp;|&nbsp;'\('&nbsp;Term/a&nbsp;'\)'&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />calc&nbsp;=&nbsp;Calc()
-&nbsp;<br />expr&nbsp;=&nbsp;raw_input('Enter&nbsp;an&nbsp;expression:&nbsp;')
-&nbsp;<br />print&nbsp;expr,&nbsp;'=',&nbsp;calc(expr)
+import&#x00A0;tpg
+&#x00A0;<br />
+&#x00A0;<br />def&#x00A0;make_op(s):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;return&#x00A0;{
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'+':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x+y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'-':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x-y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'*':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x*y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'/':&#x00A0;lambda&#x00A0;x,y:&#x00A0;x/y,
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;}[s]
+&#x00A0;<br />
+&#x00A0;<br />class&#x00A0;Calc(tpg.Parser):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;r"""
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;separator&#x00A0;spaces:&#x00A0;'\s+'&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;number:&#x00A0;'\d+'&#x00A0;int&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;add:&#x00A0;'[+-]'&#x00A0;make_op&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;mul:&#x00A0;'[*/]'&#x00A0;make_op&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;START/e&#x00A0;-&gt;&#x00A0;Term/e&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Term/t&#x00A0;-&gt;&#x00A0;Fact/t&#x00A0;(&#x00A0;add/op&#x00A0;Fact/f&#x00A0;$t=op(t,f)$&#x00A0;)*&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Fact/f&#x00A0;-&gt;&#x00A0;Atom/f&#x00A0;(&#x00A0;mul/op&#x00A0;Atom/a&#x00A0;$f=op(f,a)$&#x00A0;)*&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;Atom/a&#x00A0;-&gt;&#x00A0;number/a&#x00A0;|&#x00A0;'\('&#x00A0;Term/a&#x00A0;'\)'&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;"""
+&#x00A0;<br />
+&#x00A0;<br />calc&#x00A0;=&#x00A0;Calc()
+&#x00A0;<br />expr&#x00A0;=&#x00A0;raw_input('Enter&#x00A0;an&#x00A0;expression:&#x00A0;')
+&#x00A0;<br />print&#x00A0;expr,&#x00A0;'=',&#x00A0;calc(expr)
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 220--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-10-2-"><td  align="left" id="TBL-10-2-1"  
+ valign="baseline" id="TBL-10-2-"><td  style="text-align:left;" id="TBL-10-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 221--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 221--><p class="nopar">
+<!--l. 221--><p class="indent">   </td></tr></table></div><hr class="endfigure">
                                                                                  
 
                                                                                  
    <h3 class="sectionHead"><span class="titlemark">3.5   </span> <a 
-  id="x12-190003.5"></a>Conclusion</h3>
+ id="x12-210003.5"></a>Conclusion</h3>
 <!--l. 227--><p class="noindent">This tutorial shows some of the possibilities of TPG. If you have read it carefully you may be able to
 start with TPG. The next chapters present TPG more precisely. They contain more examples to
 illustrate all the features of TPG.
@@ -716,11 +705,11 @@ illustrate all the features of TPG.
                                                                                  
 
                                                                                  
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 98--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch2.html" >prev</a>] [<a 
 href="tpgch2.html#tailtpgch2.html" >prev-tail</a>] [<a 
 href="tpgch3.html" >front</a>] [<a 
 href="tpgpa1.html#tpgch3.html" >up</a>] </p></div>
 <!--l. 98--><p class="indent">   <a 
-  id="tailtpgch3.html"></a>   
+ id="tailtpgch3.html"></a>   
 </body></html> 

@@ -3,28 +3,28 @@
 <html > 
 <head><title>9 Debugging</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
-<meta name="originator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2004-06-16 22:22:00"> 
+<meta name="date" content="2005-03-01 21:58:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 109--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch8.html" >prev</a>] [<a 
 href="tpgch8.html#tailtpgch8.html" >prev-tail</a>] [<a 
 href="#tailtpgch9.html">tail</a>] [<a 
 href="tpgpa2.html#tpgch9.html" >up</a>] </p></div>
-   <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;9</span><br><a 
-  id="x22-770009"></a>Debugging</h2>
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;9</span><br><a 
+ id="x22-790009"></a>Debugging</h2>
    <h3 class="sectionHead"><span class="titlemark">9.1   </span> <a 
-  id="x22-780009.1"></a>Introduction</h3>
+ id="x22-800009.1"></a>Introduction</h3>
 <!--l. 3--><p class="noindent">When I need to debug a grammar I often add print statments to visualize the parser activity. Now with
 TPG 3 it is possible to print such information automatically.
 <!--l. 6--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">9.2   </span> <a 
-  id="x22-790009.2"></a>Verbose parsers</h3>
+ id="x22-810009.2"></a>Verbose parsers</h3>
 <!--l. 8--><p class="noindent">Normal parsers inherit from <span 
 class="cmti-10">tpg.Parser</span>. If you need a more verbose parser you can use <span 
 class="cmti-10">tpg.VerboseParser</span>
@@ -51,43 +51,42 @@ class="cmti-10">verbose</span>. Its default value is 1.
 
                                                                                  
 <a 
-  id="x22-790011"></a>
+ id="x22-810011"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
+cellspacing="0" cellpadding="0" rules="groups" 
 frame="border" id="TBL-28-" ><colgroup id="TBL-28-1g"><col 
 id="TBL-28-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-28-1-"><td  align="left" id="TBL-28-1-1"  
+ valign="baseline" id="TBL-28-1-"><td  style="text-align:left;" id="TBL-28-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;9.1: </td><td  
-class="content">Verbose parser example</td></tr></table><!--tex4ht:label?: x22-790011 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&#x00A0;9.1: </td><td  
+class="content">Verbose parser example</td></tr></table><!--tex4ht:label?: x22-810011 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-class&nbsp;Test(tpg.VerboseParser):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;START&nbsp;-&gt;&nbsp;'x'&nbsp;'y'&nbsp;'z'&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;verbose&nbsp;=&nbsp;2
+class&#x00A0;Test(tpg.VerboseParser):
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;r"""
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;START&#x00A0;-&gt;&#x00A0;'x'&#x00A0;'y'&#x00A0;'z'&#x00A0;;
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;"""
+&#x00A0;<br />
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;verbose&#x00A0;=&#x00A0;2
 </div>
-</td></tr></table>                                                                                 </td>
+</td></tr></table>
+<!--l. 32--><p class="nopar">                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-28-2-"><td  align="left" id="TBL-28-2-1"  
+ valign="baseline" id="TBL-28-2-"><td  style="text-align:left;" id="TBL-28-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 33--><p class="nopar">
                                                                                  
 
                                                                                  
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 33--><p class="nopar">
+<!--l. 33--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 35--><p class="indent">   The information displayed by verbose parsers has the following format:
                                                                                  
 
@@ -95,9 +94,10 @@ class="td11">                                                                   
    <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-[eat&nbsp;counter][stack&nbsp;depth]callers:&nbsp;(line,row)&nbsp;&lt;current&nbsp;token&gt;&nbsp;==&nbsp;&lt;expected&nbsp;token&gt;
+[eat&#x00A0;counter][stack&#x00A0;depth]callers:&#x00A0;(line,row)&#x00A0;&lt;current&#x00A0;token&gt;&#x00A0;==&#x00A0;&lt;expected&#x00A0;token&gt;
 </div>
 </td></tr></table>
+<!--l. 38--><p class="nopar">
      <dl class="description"><dt class="description">
 <span 
 class="cmmi-10">eatcounter</span> </dt><dd 
@@ -126,11 +126,11 @@ class="description">means the current token doesn&#8217;t match the expected tok
                                                                                  
 
                                                                                  
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 113--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch8.html" >prev</a>] [<a 
 href="tpgch8.html#tailtpgch8.html" >prev-tail</a>] [<a 
 href="tpgch9.html" >front</a>] [<a 
 href="tpgpa2.html#tpgch9.html" >up</a>] </p></div>
 <!--l. 113--><p class="indent">   <a 
-  id="tailtpgch9.html"></a>   
+ id="tailtpgch9.html"></a>   
 </body></html> 

@@ -3,24 +3,24 @@
 <html > 
 <head><title>8 Context sensitive lexer</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
-<meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
-<meta name="originator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2004-06-16 22:22:00"> 
+<meta name="date" content="2005-03-01 21:58:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 107--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch9.html" >next</a>] [<a 
 href="tpgch7.html" >prev</a>] [<a 
 href="tpgch7.html#tailtpgch7.html" >prev-tail</a>] [<a 
 href="#tailtpgch8.html">tail</a>] [<a 
 href="tpgpa2.html#tpgch8.html" >up</a>] </p></div>
-   <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;8</span><br><a 
-  id="x21-700008"></a>Context sensitive lexer</h2>
+   <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;8</span><br><a 
+ id="x21-720008"></a>Context sensitive lexer</h2>
    <h3 class="sectionHead"><span class="titlemark">8.1   </span> <a 
-  id="x21-710008.1"></a>Introduction</h3>
+ id="x21-730008.1"></a>Introduction</h3>
 <!--l. 3--><p class="noindent">Before the version 2 of TPG, lexers were context sensitive. That means that the parser commands the
 lexer to match some tokens, i.e. different tokens can be matched in a same input string according to the
 grammar rules being used. These lexers were very flexible but slower than context free lexers because
@@ -30,46 +30,46 @@ This list is then given to the parser. In this case when TPG backtracks the toke
 unchanged.
 <!--l. 11--><p class="indent">   Since TPG 2.1.2, context sensitive lexers have been reintroduced in TPG. By default
 lexers are context free but the <span 
-class="cmti-10">CSL </span>option (see&nbsp; <a 
-href="tpgch5.html#x17-280005.3.1">5.3.1<!--tex4ht:ref: grammar:lexer_option --></a>) turns TPG into a context sensitive
+class="cmti-10">CSL </span>option (see&#x00A0;<a 
+href="tpgch5.html#x17-300005.3.1">5.3.1<!--tex4ht:ref: grammar:lexer_option --></a>) turns TPG into a context sensitive
 lexer.
 <!--l. 14--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">8.2   </span> <a 
-  id="x21-720008.2"></a>Grammar structure</h3>
-<!--l. 16--><p class="noindent">CSL grammar have the same structure than non CSL grammars (see&nbsp; <a 
-href="tpgch5.html#x17-250011">5.1<!--tex4ht:ref: grammar:struct --></a>) except from the <span 
+ id="x21-740008.2"></a>Grammar structure</h3>
+<!--l. 16--><p class="noindent">CSL grammar have the same structure than non CSL grammars (see&#x00A0;<a 
+href="tpgch5.html#x17-270011">5.1<!--tex4ht:ref: grammar:struct --></a>) except from the <span 
 class="cmti-10">lexer</span><span 
-class="cmti-10">&nbsp;=</span><span 
-class="cmti-10">&nbsp;CSL</span>
-option (see&nbsp; <a 
-href="tpgch5.html#x17-280005.3.1">5.3.1<!--tex4ht:ref: grammar:lexer_option --></a>).
+class="cmti-10">&#x00A0;=</span><span 
+class="cmti-10">&#x00A0;CSL</span>
+option (see&#x00A0;<a 
+href="tpgch5.html#x17-300005.3.1">5.3.1<!--tex4ht:ref: grammar:lexer_option --></a>).
 <!--l. 18--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">8.3   </span> <a 
-  id="x21-730008.3"></a>CSL lexers</h3>
+ id="x21-750008.3"></a>CSL lexers</h3>
 <!--l. 20--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">8.3.1   </span> <a 
-  id="x21-740008.3.1"></a>Regular expression syntax</h4>
+ id="x21-760008.3.1"></a>Regular expression syntax</h4>
 <!--l. 22--><p class="noindent">The CSL lexer is based on the <span 
 class="cmti-10">re </span>module. The difference with non CSL lexers is that the given regular
 expression is compiled as this, without any encapsulation.
 <!--l. 25--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">8.3.2   </span> <a 
-  id="x21-750008.3.2"></a>Token matching</h4>
-<!--l. 27--><p class="noindent">In CSL parsers, tokens are matched as in non CSL parsers (see&nbsp; <a 
-href="tpgch6.html#x18-420006.3">6.3<!--tex4ht:ref: lexer:token_matching --></a>).
+ id="x21-770008.3.2"></a>Token matching</h4>
+<!--l. 27--><p class="noindent">In CSL parsers, tokens are matched as in non CSL parsers (see&#x00A0;<a 
+href="tpgch6.html#x18-440006.3">6.3<!--tex4ht:ref: lexer:token_matching --></a>).
 <!--l. 29--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">8.4   </span> <a 
-  id="x21-760008.4"></a>CSL parsers</h3>
+ id="x21-780008.4"></a>CSL parsers</h3>
 <!--l. 31--><p class="noindent">There is no difference between CSL and non CSL parsers.
                                                                                  
 
                                                                                  
-   <div class="crosslinks"><p class="noindent">[<a 
+   <!--l. 109--><div class="crosslinks"><p class="noindent">[<a 
 href="tpgch9.html" >next</a>] [<a 
 href="tpgch7.html" >prev</a>] [<a 
 href="tpgch7.html#tailtpgch7.html" >prev-tail</a>] [<a 
 href="tpgch8.html" >front</a>] [<a 
 href="tpgpa2.html#tpgch8.html" >up</a>] </p></div>
 <!--l. 109--><p class="indent">   <a 
-  id="tailtpgch8.html"></a>   
+ id="tailtpgch8.html"></a>   
 </body></html> 

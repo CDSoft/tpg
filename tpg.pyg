@@ -2,7 +2,7 @@
 
 """Toy Parser Generator is a lexical and syntactic parser generator
 for Python. This generator was born from a simple statement: YACC
-is to complex to use in simple cases (calculators, configuration
+is too complex to use in simple cases (calculators, configuration
 files, small programming languages, ...).
 
 TPG can very simply write parsers that are usefull for most every
@@ -44,8 +44,8 @@ trees while parsing.
 from __future__ import generators
 
 __tpgname__ = 'TPG'
-__version__ = '3.0.4'
-__date__ = '2004-11-20'
+__version__ = '3.0.5'
+__date__ = '2005-03-01'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
