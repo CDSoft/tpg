@@ -1,0 +1,36 @@
+
+repere:
+	(-10,10,1)
+	(-10,10,1)
+	(-10,10,1)
+
+norm(a,b) = sqrt(a*a+b*b)
+pi = 4*atan(1)
+
+for x,y in (-5,5,.1),(-5,5,.1):
+	z = cos(norm(x,y))
+	color 0:255 0:255 0:255
+	color = abs(z)
+
+# sphère
+
+for theta, phi in (0,pi),(0,2*pi):
+	r = 3
+	color 0 0:255 0
+	color = 1-theta/pi
+
+# cyclindre
+
+for phi, z in (0,2*pi),(-6,6):
+	rho = 1
+	color 0 0 0:255
+	color = abs(z/6)
+
+# tore
+
+for u,v in (0,2*pi,.1),(0,2*pi,.1):
+	x = 7*cos(u)+cos(u)*cos(v)
+	y = 7*sin(u)+sin(u)*cos(v)
+	z =                 sin(v)
+	color 0 0:255 255:0
+	color = abs(z)

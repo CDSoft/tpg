@@ -1,0 +1,20 @@
+
+repere:
+	(-10,10,1)
+	(-10,10,1)
+	(-10,10,1)
+
+norm(a,b) = sqrt(a*a+b*b)
+pi = 4*atan(1)
+
+# tore
+
+A = 0
+B = 2*pi
+
+for u,v in (A,B,(B-A)/32/4),(A,B,(B-A)/16/4):
+	x = 7*cos(u)+2*cos(u)*cos(v)
+	y = 7*sin(u)+2*sin(u)*cos(v)
+	z =                 2*sin(v)
+	color 0 0:255 255:0
+	color = (1+cos(u+v))/2
