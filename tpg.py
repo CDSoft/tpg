@@ -43,9 +43,9 @@ trees while parsing.
 
 from __future__ import generators
 
-__name__ = 'TPG'
-__version__ = '3.0.0'
-__date__ = '2003-11-11'
+__tpgname__ = 'TPG'
+__version__ = '3.0.1'
+__date__ = '2004-01-18'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -834,6 +834,15 @@ class SOFToken(Token):
     def __init__(self):
         Token.__init__(self, "SOF", "SOF", None, 1, 1, 1, 1, 0, 0, 0)
 
+class Py:
+    def __init__(self, level=0):
+        frame = sys._getframe(1+level)
+        self.globals = frame.f_globals
+        self.locals = frame.f_locals
+    def __getitem__(self, item):
+        return eval(item%self, self.globals, self.locals)
+
+
 class ParserMetaClass(type):
     """ ParserMetaClass is the metaclass of Parser objects.
 
@@ -857,7 +866,7 @@ class ParserMetaClass(type):
 class Parser:
     # Parser is the base class for parsers.
     #
-    # This class can not have a doc string since it would be considered as a grammar.
+    # This class can not have a doc string otherwise it would be considered as a grammar.
     # The metaclass of this class is ParserMetaClass.
     #
     # Attributes:
@@ -872,7 +881,7 @@ class Parser:
     def __init__(self):
         """ Parser is the base class for parsers.
        
-        This class can not have a doc string since it would be considered as a grammar.
+        This class can not have a doc string otherwise it would be considered as a grammar.
         The metaclass of this class is ParserMetaClass.
         
         Attributes:
@@ -1004,14 +1013,52 @@ class Parser:
         raise SemanticError(msg)
 
 class VerboseParser(Parser):
+    # VerboseParser is the base class for debugging parsers.
+    #
+    # This class can not have a doc string otherwise it would be considered as a grammar.
+    # The metaclass of this class is ParserMetaClass.
+    # It extends the Parser class to log the activity of the lexer.
+    #
+    # Attributes:
+    #   lexer   : lexer build from the grammar
+    #   verbose : level of information
+    #               0 : no information
+    #               1 : print tokens successfully matched
+    #               2 : print tokens matched and not matched
+    #
+    # Methods added to the generated parsers:
+    #   init_lexer(self) : return a lexer object to scan the tokens defined by the grammar
+    #   <rule>           : each rule is translated into a method with the same name
 
     verbose = 1
 
     def __init__(self):
+        """ VerboseParser is the base class for debugging parsers.
+       
+        This class can not have a doc string otherwise it would be considered as a grammar.
+        The metaclass of this class is ParserMetaClass.
+        It extends the Parser class to log the activity of the lexer.
+       
+        Attributes:
+          lexer   : lexer build from the grammar
+          verbose : level of information
+                      0 : no information
+                      1 : print tokens successfully matched
+                      2 : print tokens matched and not matched
+       
+        Methods added to the generated parsers:
+          init_lexer(self) : return a lexer object to scan the tokens defined by the grammar
+          <rule>           : each rule is translated into a method with the same name
+        """
         Parser.__init__(self)
         self.eatcnt = 0
 
     def eat(self, name):
+        """ eat the current token if it matches the expected token
+
+        Parameters:
+            name : name of the expected token
+        """
         self.eatcnt += 1
         token = self.lexer.token()
         try:
@@ -1025,6 +1072,13 @@ class VerboseParser(Parser):
             raise
 
     def eatCSL(self, name):
+        """ eat the current token if it matches the expected token
+
+        This method replaces eat for context sensitive lexers.
+
+        Parameters:
+            name : name of the expected token
+        """
         self.eatcnt += 1
         try:
             value = Parser.eatCSL(self, name)
@@ -1039,10 +1093,25 @@ class VerboseParser(Parser):
             raise
 
     def parse(self, axiom, input, *args, **kws):
+        """ parse a string starting from a given axiom
+
+        Parameters:
+            axiom : rule name where the parser starts
+            input : input string to parse
+            *args : argument list to pass to START
+            **kws : argument dictionnary to pass to START
+        """
         self.axiom = axiom
         return Parser.parse(self, axiom, input, *args, **kws)
 
     def token_info(self, token, op, expected):
+        """ return information about a token
+
+        Parameters:
+            token    : token read by the lexer
+            op       : result of the comparison made by the lexer (== or !=)
+            expected : name of the expected token
+        """
         eatcnt = self.eatcnt
         callernames = []
         stackdepth = 0
@@ -1052,14 +1121,16 @@ class VerboseParser(Parser):
             name = sys._getframe(stackdepth+1).f_code.co_name
             if len(callernames) < 10:
                 callernames.insert(0, name)
+        callernames = '.'.join(callernames)
         found = "(%d,%d) %s %s"%(token.line, token.row, token.name, token.text)
-        return "[%3d][%2d]%s: %s %s %s"%(eatcnt, stackdepth, '.'.join(callernames), found, op, expected)
+        return "[%3d][%2d]%s: %s %s %s"%(eatcnt, stackdepth, callernames, found, op, expected)
 
 blank_line_re = re.compile("^\s*$")
 indent_re = re.compile("^\s*")
 
-# This class contains some TPG classes to make the parsers usable inside and outside the tpg module
 class tpg:
+    """ This class contains some TPG classes to make the parsers usable inside and outside the tpg module
+    """
     NamedGroupLexer = NamedGroupLexer
     Lexer = Lexer
     CacheNamedGroupLexer = CacheNamedGroupLexer
@@ -1071,6 +1142,9 @@ class tpg:
 
 class TPGParser(tpg.Parser):
     __grammar__ = r"""
+
+    # This class parses TPG grammar
+    # and generate the Python source and compiled code for the parser
 
     set lexer = NamedGroupLexer
 
@@ -1136,7 +1210,7 @@ class TPGParser(tpg.Parser):
     AND_EXPR/$and_expr$ ->
                                     $ and_expr = self.And()
         (   ATOM_EXPR/a REP<a>/a    $ and_expr.append(a)
-        )*                          $ if len(and_expr) == 1: and_expr = and_expr[0]
+        )*
         ;
 
     ATOM_EXPR/a ->
@@ -1354,7 +1428,6 @@ class TPGParser(tpg.Parser):
             except tpg.WrongToken:
                 self.lexer.back(_p1)
                 break
-        if len(and_expr) == 1: and_expr = and_expr[0]
         return and_expr
 
     def ATOM_EXPR(self, ):
@@ -1967,17 +2040,9 @@ class TPGParser(tpg.Parser):
 
     def make_code(self, attribute, *source):
         source = "".join(self.flatten_nl(*source))
-        try:
-            old_code = self.env[attribute]
-        except KeyError:
-            old_code_exists = False
-        else:
-            old_code_exists = True
-        exec source in self.env
-        code = self.env[attribute]
-        del self.env[attribute]
-        if old_code_exists:
-            self.env[attribute] = old_code
+        local_namespace = {}
+        exec source in self.env, local_namespace
+        code = local_namespace[attribute]
         return attribute, source, code
 
     def gen(self, options, tokens, rules):

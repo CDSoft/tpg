@@ -1,3 +1,9 @@
+2004-01-18  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 3.0.1:
+        Minor bug fixes
+        More unit tests
+
 2003-11-11  Christophe Delord <christophe.delord@free.fr>
 
     * Version 3.0.0:

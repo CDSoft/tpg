@@ -81,7 +81,7 @@ if 'sdist' in sys.argv[1:]:
 import tpg
 
 # Call the setup() routine which does most of the work
-setup(name             = tpg.__name__,
+setup(name             = tpg.__tpgname__,
       version          = tpg.__version__,
       description      = tpg.__description__,
       long_description = tpg.__long_description__,
@@ -91,7 +91,6 @@ setup(name             = tpg.__name__,
       maintainer       = tpg.__author__,
       maintainer_email = tpg.__email__,
       license          = tpg.__license__,
-      licence          = tpg.__license__, # Spelling error in distutils
       platforms        = ['Linux', 'Unix', 'Mac OSX', 'Windows XP/2000/NT', 'Windows 95/98/ME'],
       keywords         = ['Parsing', 'Parser', 'Generator', 'Python'],
       py_modules       = ['tpg'],

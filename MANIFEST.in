@@ -10,11 +10,11 @@ include doc/*.png
 
 include tpg
 include tpg.pyg
+include tpg_tests.py
 
 include MANIFEST.in
 include THANKS
 include ChangeLog
 include License.txt
-include mk
 
 global-exclude *~
