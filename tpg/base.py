@@ -92,16 +92,13 @@ class _Scanner:
 		toks = []			# token list
 		while i<l:												# while not EOF
 			token = self.regex.match(input,i)					# get next token
-			if not token:										# if none raise LexicalError
+			if not token:										# if none raise LexerError
 				last = toks and toks[-1] or _Eof(lineno)
-				raise LexicalError(last)
+				raise LexerError(last)
 			j = token.end()										# end of the current token
-			for (t,v) in token.groupdict().items():				# search the matched token
-				if v is not None and t in self.actions:
-					tok = t										# get its type
-					text = token.group()						# get matched text
-					val = self.actions[tok](text)				# compute its value
-					break
+			tok = token.lastgroup								# get the type of the last token
+			text = token.group()								# get the matched text
+			val = self.actions[tok](text)						# and compute its value
 			if not self.separator[tok]:								# if the matched token is a real token
 				toks.append(_Token(tok, text, val, lineno, i, j))	# store it
 			lineno += input.count('\n', i, j)					# update lineno
@@ -115,7 +112,7 @@ class ToyParser:
 		def __init__(self, last):
 			self.last = last
 
-	def __init__(self):
+	def __init__(self, *args):
 		self._init_scanner()
 		try:
 			self.init(*args)
@@ -140,6 +137,10 @@ class ToyParser:
 			raise self.TPGWrongMatch(self._tokens[self._cur_token])
 		except IndexError:
 			raise self.TPGWrongMatch(_Eof())
+
+	def LexerError(self, last): raise LexerError(last)
+	def ParserError(self, last): raise ParserError(last)
+	def SemanticError(self, last, error=""): raise SemanticError(last, error)
 
 	def check(self, cond):
 		""" Check a condition while parsing """
@@ -167,7 +168,7 @@ class ToyParser:
 				self.WrongMatch()						# raise an error
 			return ret									# otherwise return the result
 		except self.TPGWrongMatch, e:					# convert an internal TPG error
-			raise SyntaxError(e.last)					# into a SyntaxError
+			raise ParserError(e.last)					# into a ParserError
 
 	def _mark(self):
 		""" Get a mark for the current token """
@@ -269,7 +270,7 @@ class ToyParserCSL(ToyParser):
 			self.setInput(input)
 			return getattr(self, symbol)(*args)
 		except self.TPGWrongMatch, e:
-			raise SyntaxError(e.last)
+			raise ParserError(e.last)
 
 	def _mark(self):
 		""" Get a mark for the current token """
@@ -284,30 +285,25 @@ class ToyParserCSL(ToyParser):
 		if mark is None: mark = self._cur_token
 		return mark.line
 
-class LexicalError(Exception):
+class Error(Exception):
 	def __init__(self, last):
 		self.last = last
 	def __str__(self):
 		if self.last:
-			return "%s: Lexical error near %s"%(self.last.lineno, self.last.text)
+			return "%s: %s error near %s"%(self.last.lineno, self.type, self.last.text)
 		else:
-			return "1: Lexical error"
+			return "1: %s error"%self.type
 
-class SyntaxError(Exception):
-	def __init__(self, last):
-		self.last = last
-	def __str__(self):
-		if self.last:
-			return "%s: Syntax error near %s"%(self.last.lineno, self.last.text)
-		else:
-			return "1: Syntax error"
+class LexerError(Error):
+	type = "Lexical"
 
-class SemanticError(Exception):
+class ParserError(Error):
+	type = "Syntax"
+
+class SemanticError(Error):
+	type = "Semantic"
 	def __init__(self, last, error):
-		self.last = last
+		Error.__init__(self, last)
 		self.error = error
 	def __str__(self):
-		if self.last:
-			return "%s: Semantic error near %s (%s)"%(self.last.lineno, self.last.text, self.error)
-		else:
-			return "1: Semantic error (%s)"(self.error)
+		return "%s (%s)"%(Error.__str__(self), self.error)

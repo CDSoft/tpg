@@ -59,7 +59,7 @@ Each time a terminal symbol is encountered in a rule, the parser compares it to 
 \subsection{Starting the parser}
 
 You can start the parser from the axiom or from any other non terminal symbol.
-When the parser can not parse the whole token list a \emph{tpg.SyntaxError} is raised.
+When the parser can not parse the whole token list a \emph{tpg.ParserError} is raised.
 The value returned by the parser is the return value of the parsed symbol.
 
 \subsubsection{From the axiom}
@@ -100,6 +100,21 @@ For example to say that a \emph{sum} is a \emph{term} \emph{plus} another \emph{
 \begin{verbatimtab}[4]
 	Sum -> Term '+' Term ;
 \end{verbatimtab}
+
+\section{Cut}													\label{parser:cut}
+
+The cut idiom is drawn from the Prolog cut (\emph{!}).
+When the \emph{!} operator is encountered it is ignored.
+When TPG backtracks on a cut, a syntax error is raised so as to \emph{cut}
+other possible alternatives.
+
+For example, the rule \verb$R -> a ! b c | d ;$ will raise a \emph{ParserError} exception
+if it recognizes an \emph{a} not followed by a \emph{b} and a \emph{c}, without trying to
+parse a \emph{d}.
+
+The cut also helps TPG to report errors.
+In the previous example, TPG will report an error after \emph{a} instead of backtracking
+to the topmost rule.
 
 \section{Alternatives}											\label{parser:alternatives}
 
@@ -144,6 +159,8 @@ To override the default precedence you can group expressions with parenthesis.
 \hline
 \hline
 	Alternative			& $A~\mid~B$ \\
+\hline
+	Cut					& $A~!~B$ \\
 \hline
 	Sequence			& $A~B$ \\
 \hline
@@ -262,13 +279,20 @@ If you absolutely need triple quoted strings you can encapsulate them in Python 
 	'I\'m a string too"
 \end{verbatimtab}
 
-\subsubsection{Argument list and tuples}
+\subsubsection{Argument lists and tuples}
 
 Argument list is a comma separated list of objects.
 \emph{Remember that arguments are enclosed in left and right angles.}
 
 \begin{verbatimtab}[4]
 	<object1, object2, object3>
+\end{verbatimtab}
+
+Argument lists and tuples have the same syntax except from the possibility to have
+default arguments, argument lists and argument dictionnaries as arguments as in Python.
+
+\begin{verbatimtab}[4]
+	RULE<arg1, arg2=18, arg3=None, *other_args, **keywords> -> ;
 \end{verbatimtab}
 
 \subsubsection{Python code object}
@@ -283,12 +307,12 @@ Python code used in an object expression must have only one line.
 \subsubsection{Text extraction}
 
 Text extraction is done by the infix \emph{..} operator.
-Marks can be put in the input string by the prefix \emph{!} operator.
+Marks can be put in the input string by the prefix \emph{@} operator.
 
 \begin{verbatimtab}[4]
-	!beginning
+	@beginning
 	...
-	!end
+	@end
 	...
 	my_string = beginning .. end
 \end{verbatimtab}
@@ -330,7 +354,7 @@ TPG parsers also have some interesting methods that can be used in Python code.
 \subsubsection{Getting the line number of a token}
 
 The \emph{lineno} method returns the line number of the current token.
-If the first parameter is a mark (see \ref{parser:mark}) the method returns the line number of the token following the mark.
+If the first parameter is a mark (see~\ref{parser:mark}) the method returns the line number of the token following the mark.
 
 \subsubsection{Backtracking}
 

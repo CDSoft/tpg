@@ -23,7 +23,7 @@ This chapter has been written mostly the curious readers.
 
 \section{Inheritance}
 
-TPG parsers can inherit from other Python classes (see \ref{parser:inheritance}).
+TPG parsers can inherit from other Python classes (see~\ref{parser:inheritance}).
 See figure~\ref{hack:inheritance} for the generated code.
 
 \hack{baseclasses}{Inheritance example}{hack:inheritance}
@@ -31,7 +31,7 @@ See figure~\ref{hack:inheritance} for the generated code.
 \clearpage
 \section{Lexer}
 
-The figure~\ref{hack:lexer} shows token precedence (see \ref{lexer:token_def}).
+The figure~\ref{hack:lexer} shows token precedence (see~\ref{lexer:token_def}).
 Tokens are declared in the order of appearance except from inline tokens that are declared before predefined tokens.
 
 \hack{lexer}{Lexer example}{hack:lexer}
@@ -41,7 +41,7 @@ Tokens are declared in the order of appearance except from inline tokens that ar
 
 \subsection{Grammar rules}
 
-Grammar rules (see \ref{parser:grammar_rules}) are used to define what a symbol is composed of.
+Grammar rules (see~\ref{parser:grammar_rules}) are used to define what a symbol is composed of.
 A rule is translated into a method of the parser class (see figure~\ref{hack:rule}).
 The attributes of the symbol are the parameters of the methods.
 The docstring of the method is the grammar rule.
@@ -53,16 +53,16 @@ The docstring of the method is the grammar rule.
 
 \subsubsection{Terminal symbols}
 
-Terminal symbols (see \ref{lexer:token_def}) are recognized by calling the \emph{\_eat} method with the name of the token to match (see figure~\ref{hack:term}).
+Terminal symbols (see~\ref{lexer:token_def}) are recognized by calling the \emph{\_eat} method with the name of the token to match (see figure~\ref{hack:term}).
 Terminal symbols can return the token text in a string.
 If the current token is not the expected token, \emph{\_eat} raises a \emph{TPGWrongMatch} exception.
-This exception will be catched either by an outer choice point to try another choice or by TPG to turn this exception into a \emph{SyntaxError} exception.
+This exception will be catched either by an outer choice point to try another choice or by TPG to turn this exception into a \emph{ParserError} exception.
 
 \hack{term}{Terminal symbol matching example}{hack:term}
 
 \subsubsection{Non terminal symbols}
 
-Non terminal symbols (see \ref{parser:nterm}) are recognized by calling their rules (see figure~\ref{hack:nterm}).
+Non terminal symbols (see~\ref{parser:nterm}) are recognized by calling their rules (see figure~\ref{hack:nterm}).
 Non terminal symbols can have attributes, a return value or both.
 
 \hack{nterm}{Non terminal symbol matching example}{hack:nterm}
@@ -70,14 +70,23 @@ Non terminal symbols can have attributes, a return value or both.
 \clearpage
 \subsection{Sequences}										\label{hack:sequences}
 
-The token number is updated by the \emph{\_eat} method when called so a sequence (see \ref{parser:sequences}) in a rule is translated into a sequence of statements in Python (see figure~\ref{hack:seq}).
+The token number is updated by the \emph{\_eat} method when called so a sequence (see~\ref{parser:sequences}) in a rule is translated into a sequence of statements in Python (see figure~\ref{hack:seq}).
 
 \hack{seq}{Sequence of expressions example}{hack:seq}
 
 \clearpage
+\subsection{Cut}											\label{hack:cut}
+
+The cut mechanism (see~\ref{parser:cut}) is implemented as a shortcut to the \emph{TPGWrongMatch} exception.
+When the sequence following a cut fails, i.e. when it raises a \emph{TPGWrongMatch} exception,
+TPG turns this exception into a \emph{ParserError} exception to immediately abort parsing (see figure~\ref{hack:cutex}).
+
+\hack{cut}{Cut example}{hack:cutex}
+
+\clearpage
 \subsection{Alternatives}									\label{hack:alternatives}
 
-Alternatives (see \ref{parser:alternatives}) are tried in the order they are declared.
+Alternatives (see~\ref{parser:alternatives}) are tried in the order they are declared.
 Before trying the first branch, TPG saves the current token number.
 If the first choice fails, the token number is restored before trying the second branch.
 When a branch fails, the \emph{\_eat} method raises a \emph{TPGWrongMatch} exception which is catched by the alternative structure.
@@ -89,9 +98,9 @@ This is how the computation of any prediction table is avoided.
 \clearpage
 \subsection{Repetitions}									\label{hack:repetitions}
 
-Repetitions (see \ref{parser:repetitions}) are implemented in a similar way to alternatives.
+Repetitions (see~\ref{parser:repetitions}) are implemented in a similar way to alternatives.
 The \emph{TPGWrongMatch} tells TPG when to go out of the loop.
-See figures \ref{hack:rep} and \ref{hack:repu} for repetition examples.
+See figures~\ref{hack:rep} and~\ref{hack:repu} for repetition examples.
 
 \hack{rep}{Repetition examples: builtin ?, * and +}{hack:rep}
 \hack{repu}{Repetition examples: user defined \{m,n\}}{hack:repu}
@@ -99,7 +108,7 @@ See figures \ref{hack:rep} and \ref{hack:repu} for repetition examples.
 \clearpage
 \subsection{Abstract syntax trees}
 
-Abstract syntax trees (see \ref{parser:AST}) are simply Python objects.
+Abstract syntax trees (see~\ref{parser:AST}) are simply Python objects.
 The figure~\ref{hack:ast} shows the instanciation of a node.
 The figure~\ref{hack:astadd} shows the update with the \emph{add} method.
 
@@ -109,8 +118,8 @@ The figure~\ref{hack:astadd} shows the update with the \emph{add} method.
 \clearpage
 \subsection{Text extraction}
 
-Text can be extracted (see \ref{parser:mark}) from the input string (including separators).
-The prefix \emph{!} operator puts a mark on the current token.
+Text can be extracted (see~\ref{parser:mark}) from the input string (including separators).
+The prefix \emph{@} operator puts a mark on the current token.
 The infix \emph{..} operator extracts the text between two marks.
 
 The figure~\ref{hack:mark} shows how this extraction works.
@@ -119,7 +128,7 @@ The figure~\ref{hack:mark} shows how this extraction works.
 
 \subsection{Python objects}
 
-TPG has an adapted syntax for some Python expressions (see \ref{parser:object}).
+TPG has an adapted syntax for some Python expressions (see~\ref{parser:object}).
 
 The figure~\ref{hack:object} shows this implementation.
 

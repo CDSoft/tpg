@@ -26,18 +26,24 @@ from codegen import *
 
 cut = lambda n: lambda s,n=n:s[n:-n]
 
+def cutstr(st):
+	if st[0]=="'": st = st.replace('"', r'\"')
+	return st[1:-1]
+
 }}
 
 parser TPGParser:
 
 	separator space: "\s+|#.*";
 
-	token string: "\"(\\.|[^\"\\]+)*\"|'(\\.|[^'\\]+)*'" cut<1>;
+	token string: "\"(\\.|[^\"\\]+)*\"|'(\\.|[^'\\]+)*'" cutstr;
 	token code: "\{\{(\}?[^\}]+)*\}\}" cut<2>;
 	token obra: "\{";
 	token cbra: "\}";
 	token retsplit: "//";
 	token ret: "/";
+	token star2: "\*\*";
+	token star: "\*";
 	token ident: "\w+";
 
 	START/parsers.genCode<> -> PARSERS/parsers ;
@@ -46,7 +52,7 @@ parser TPGParser:
 		OPTIONS/opts
 		parsers = Parsers<opts>
 		( code/c parsers-Code<c> )*
-		(	'parser' ident/id ( '\(' ARGS/ids '\)' | ids = Args<> ) ':'
+		(	'parser' ! ident/id ! ( '\(' ! ARGS/ids '\)' | ids = Args<> ) ':' !
 			p = Parser<id, ids>
 			(	code/c p-Code<c>
 			|	TOKEN/t p-t
@@ -54,39 +60,48 @@ parser TPGParser:
 			|	LEX_RULE/r p-r
 			)*
 			parsers-p
-		|	'main' ':' ( code/c parsers-Code<c> )*
+		|	'main' ':' ! ( code/c parsers-Code<c> )*
 		)*
 		;
 
 	OPTIONS/opts ->
 		opts = Options<>
 		self.CSL = 0
-		(	'set' ident/opt ( '=' string/val | val = 1 )
+		(	'set' ! ident/opt ( '=' ! string/val | val = 1 )
 			{{ if opt.startswith('no'): opt, val = opt[2:], None }}
-			check {{opt in [ 'magic', 'CSL' ]}}
+			(	check {{opt in [ 'magic', 'CSL' ]}}
+			|	error {{ "Unknown option: %s"%opt }}
+			)
 			{{ opts.set(opt,val) }}
 			{{ if opt == 'CSL': self.CSL = val }}
 		)*
 		;
 
-	CHECK_CSL -> check {{ self.CSL }} | error "Only for CSL lexers" ;
+	CHECK_CSL<obj> -> check {{ self.CSL }} | error {{ "%s: Only for CSL lexers"%obj }} ;
 
-	CHECK_NOT_CSL -> check {{ not self.CSL }} | error "Only for non CSL lexers" ;
+	CHECK_NOT_CSL<obj> -> check {{ not self.CSL }} | error {{ "%s: Only for non CSL lexers"%obj }} ;
 
 	TOKEN/Token<t,e,f,s> ->
 		(	'token' s = 0
 		|	'separator' s = 1
-		)
-		CHECK_NOT_CSL
-		ident/t ':' string/e ( OBJECT/f | f = None )
+		) !
+		CHECK_NOT_CSL<'Predefined token'>
+		ident/t ':' ! string/e ( OBJECT/f | f = None )
 		';'
 		;
 
-	ARGS/objs ->
-		objs = Args<>
-		(	OBJECT/obj objs-obj
-			( ',' OBJECT/obj objs-obj )*
+	ARGS/args ->
+		args = Args<>
+		(	ARG/arg args-arg
+			( ',' ARG/arg args-arg )*
 		)?
+		;
+
+	ARG/arg ->
+			"\*\*" ! OBJECT/kw arg = ArgDict<kw>
+		|	"\*" ! OBJECT/args arg = ArgList<args>
+		|	ident/name "=" ! OBJECT/value arg = KeyWordArg<name,value>
+		|	OBJECT/arg
 		;
 
 	OBJECT/o ->
@@ -115,18 +130,20 @@ parser TPGParser:
 	INDICE/i ->
 		( OBJECT/i | i=None )
 		( ':' ( OBJECT/i2 | i2=None) i=Slice<i,i2> )?
-		check {{i is not None}}
+		(	check {{i is not None}}
+		|	error "Empty index or slice"
+		)
 		;
 
-	RULE/Rule<s,e> -> SYMBOL/s '->' EXPR/e ';' ;
+	RULE/Rule<s,e> -> SYMBOL/s '->' ! EXPR/e ';' ;
 
 	LEX_RULE/LexRule<s,e> ->
-		'lex'
-		CHECK_CSL
+		'lex' !
+		CHECK_CSL<'Lexical rule'>
 		(	'separator'/name s=Symbol<name, Args<>, None>
 		|	SYMBOL/s
 		)
-		'->' EXPR/e ';'
+		'->' ! EXPR/e ';'
 		;
 
 	SYMBOL/Symbol<id,as,ret> ->
@@ -137,7 +154,16 @@ parser TPGParser:
 		)
 		;
 
-	EXPR/e -> TERM/e ( '\|' TERM/t e = Alternative<e,t> )* ;
+	EXPR/balance<e> -> CUT_TERM/e ( '\|' ! CUT_TERM/t e = Alternative<e,t> )* ;
+
+	CUT_TERM/e ->
+		TERM/e
+		(	'!' ! TERM/ce c=Cut<> c-ce
+			(	'!' ! TERM/ce c-ce
+			)*
+			e = Sequence<e,c>
+		)?
+		;
 
 	TERM/t -> t = Sequence<> ( FACT/f t-f )* ;
 
@@ -145,33 +171,41 @@ parser TPGParser:
 			AST_OP/f
 		|	MARK_OP/f
 		|	code/c f=Code<c>
-		|	ATOM/f REP<f>/f
-		|	'check' OBJECT/cond f=Check<cond>
-		|	'error' OBJECT/err f=Error<err>
+		|	ATOM/f ! REP<f>/f
+		|	'check' ! OBJECT/cond f=Check<cond>
+		|	'error' ! OBJECT/err f=Error<err>
 		;
 
 	AST_OP/op<o1,o2> ->
 		OBJECT/o1
 		(	'=' op=MakeAST
 		|	'-' op=AddAST
-		)
+		) !
 		OBJECT/o2
 		;
 
-	MARK_OP/Mark<o> -> '!' OBJECT/o ;
+	MARK_OP/Mark<o> -> '@' ! OBJECT/o ;
 
 	ATOM/a ->
 		(	SYMBOL/a
 		|	INLINE_TOKEN/a
-		|	'\(' EXPR/a '\)'
+		|	'\(' ! EXPR/a '\)'
 		)
 		;
 
 	REP<a>/a ->
-		(	'\?'										a = Rep<self,0,1,a>
-		|	'\*'										a = Rep<self,0,None,a>
-		|	'\+'										a = Rep<self,1,None,a>
-		|	'\{' NB<0>/m ( ',' NB<None>/M | M=m ) '\}'	a = Rep<self,m,M,a>
+		(	(	'\?' !										{{ m, M = 0, 1 }}
+			|	'\*' !										{{ m, M = 0, None }}
+			|	'\+' !										{{ m, M = 1, None }}
+			|	'\{' ! NB<0>/m ( ',' ! NB<None>/M | M=m ) '\}'
+			)
+			{{
+				if M is not None:
+					if m>M: self.error("Invalid repetition")
+				elif a.empty():
+					self.error("Infinite repetition of an empty expression")
+			}}
+			a = Rep<m,M,a>
 		)?
 		;
 
@@ -179,9 +213,9 @@ parser TPGParser:
 
 	INLINE_TOKEN/InlineToken<expr, ret, split> ->
 		string/expr
-		(	'/' OBJECT/ret				split = None
-		|	'//' CHECK_CSL OBJECT/ret	split = 1
-		| 	ret = None					split = None
+		(	'/' ! OBJECT/ret								split = None
+		|	'//' ! CHECK_CSL<'Split return'>	OBJECT/ret	split = 1
+		| 	ret = None										split = None
 		)
 		;
 

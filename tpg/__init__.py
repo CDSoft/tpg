@@ -31,10 +31,10 @@ tpg.compile(grammar):
 	a parser in Python (also in a string).
 	You can use exec to actually build it.
 
-tpg.LexicalError:
+tpg.LexerError:
 	This exception is raised when the lexer fails
 
-tpg.SyntaxError:
+tpg.ParserError:
 	This exception is raised when the parser fails
 
 tpg.SemanticError:
@@ -61,7 +61,7 @@ __version__ = Release.version
 __date__    = Release.date
 __author__  = "%s <%s>"%(Release.author, Release.email)
 __url__     = Release.url
-__licence__ = Release.license
+__license__ = Release.license
 
 # Modules
 #
@@ -71,4 +71,4 @@ __licence__ = Release.license
 #	Release.py: release data
 
 from parser import compile
-from base import LexicalError, SyntaxError, SemanticError
+from base import Error, LexerError, ParserError, SemanticError

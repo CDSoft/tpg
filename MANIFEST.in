@@ -3,8 +3,12 @@ include examples/calc/calc.py
 include examples/calc/calc2.py
 include examples/calc/notation.py
 
-include doc/*.pdf
 include doc/*.tex
+include doc/*.dvi
+include doc/*.pdf
+include doc/*.html
+include doc/*.css
+include doc/*.gif
 include doc/hack/*.g
 include doc/hack/*.py
 

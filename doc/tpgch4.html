@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>4 Usage</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<!-- html,2 --> 
+<meta name="src" content="tpg.tex"> 
+<meta name="date" content="2002-08-22 23:00:00"> 
+<link rel="stylesheet" type="text/css" href="tpg.css"> 
+</head><body 
+>
+   <div class="crosslinks"><p class="noindent">[<a 
+href="tpgch5.html" >next</a>] [<a 
+href="#tailtpgch4.html">tail</a>] [<a 
+href="tpgpa2.html#tpgch4.html" >up</a>] </p></div>
+   <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;4</span><br><a 
+  name="x16-210004"></a>Usage</h2>
+   <h3 class="sectionHead"><span class="titlemark">4.1</span> <a 
+  name="x16-220004.1"></a>Package content</h3>
+<!--l. 3--><p class="noindent">TPG is a package which main function is to take a grammar and return a
+parser<a 
+href="tpg17.html" name="tpg17.html" ><sup>1</sup></a>.
+You only need to import TPG and use these four objects:
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">tpg.compile(grammar):</span> </dt><dd 
+class="description">This function takes a grammar in a string and produces a parser in
+     Python (also in a string). You can call exec to actually build it.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">tpg.LexerError:</span> </dt><dd 
+class="description">This exception is raised when the lexer fails.
+                                                                                 
+
+                                                                                 
+     </dd><dt class="description">
+<span 
+class="cmbx-10">tpg.ParserError:</span> </dt><dd 
+class="description">This exception is raised when the parser fails.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">tpg.SemanticError:</span> </dt><dd 
+class="description">This  exception  is  raised  by  the  grammar  itself  when  some  semantic
+     properties fail.</dd></dl>
+<!--l. 20--><p class="noindent">The grammar must be in a string (see figure&nbsp;<a 
+href="#x16-220021">4.1<!--tex4ht:ref: usage:embed--></a>).
+<!--l. 22--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x16-220021"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-11-" ><colgroup id="TBL-11-1g"><col 
+id="TBL-11-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-11-1-"><td  align="left" id="TBL-11-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;4.1: </td><td  
+class="content">Grammar embeding example</td></tr></table></div><!--tex4ht:label?: x16-220021-->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;my_grammar&nbsp;=&nbsp;r&#34;&#34;&#34;
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;parser&nbsp;Foo:
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;START/x&nbsp;-&gt;&nbsp;Bar/x&nbsp;.
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bar/x&nbsp;-&gt;&nbsp;'bar'/x&nbsp;.
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-11-2-"><td  align="left" id="TBL-11-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 37--><p class="indent">   The <span 
+class="cmti-10">tpg.compile </span>function produces Python code from the grammar (see figure&nbsp;<a 
+href="#x16-220032">4.2<!--tex4ht:ref: usage:comp--></a>).
+<!--l. 39--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x16-220032"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-12-" ><colgroup id="TBL-12-1g"><col 
+id="TBL-12-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-12-1-"><td  align="left" id="TBL-12-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;4.2: </td><td  
+class="content">Parser compilation example</td></tr></table></div><!--tex4ht:label?: x16-220032-->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;exec(tpg.compile(my_grammar))&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;Compiles&nbsp;my_grammar
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-12-2-"><td  align="left" id="TBL-12-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 46--><p class="indent">   Then you can use the new generated parser. The parser is now simply a Python class (see
+figure&nbsp;<a 
+href="#x16-220043">4.3<!--tex4ht:ref: usage:inst--></a>).
+<!--l. 48--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x16-220043"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-13-" ><colgroup id="TBL-13-1g"><col 
+id="TBL-13-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-13-1-"><td  align="left" id="TBL-13-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;4.3: </td><td  
+class="content">Parser usage example</td></tr></table></div><!--tex4ht:label?: x16-220043-->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;test&nbsp;=&nbsp;&#34;bar&#34;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_parser&nbsp;=&nbsp;Foo()
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;my_parser(test)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;Uses&nbsp;the&nbsp;START&nbsp;symbol
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;x
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;my_parser.parse('Bar',&nbsp;test)&nbsp;&nbsp;#&nbsp;Uses&nbsp;the&nbsp;Bar&nbsp;symbol
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;x
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-13-2-"><td  align="left" id="TBL-13-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+   <h3 class="sectionHead"><span class="titlemark">4.2</span> <a 
+  name="x16-230004.2"></a>Command line usage</h3>
+<!--l. 62--><p class="noindent">The <span 
+class="cmti-10">tpg </span>script is just a wrapper for the package. It reads a grammar in a file and write the generated
+code in a Python script. To produce a Python script from a grammar you can use <span 
+class="cmti-10">tpg </span>as
+follow:
+                                                                                 
+
+                                                                                 
+   <table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;tpg&nbsp;[-v|-vv]&nbsp;grammar.g&nbsp;[-o&nbsp;parser.py]
+</div>
+   </td></tr></table>
+<!--l. 70--><p class="indent">   <span 
+class="cmti-10">tpg </span>accepts some options on the command line:
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">-v</span> </dt><dd 
+class="description">turns <span 
+class="cmti-10">tpg </span>into a verbose mode (it displays parser names).
+     </dd><dt class="description">
+<span 
+class="cmbx-10">-vv</span> </dt><dd 
+class="description">turns <span 
+class="cmti-10">tpg </span>into a more verbose mode (it displays parser names and simplified rules).
+     </dd><dt class="description">
+<span 
+class="cmbx-10">-o file.py</span> </dt><dd 
+class="description">tells <span 
+class="cmti-10">tpg </span>to generate the parser in <span 
+class="cmti-10">file.py</span>. The default output file is <span 
+class="cmti-10">grammar.py </span>if -o
+     option is not provided and <span 
+class="cmti-10">grammar.g </span>is the name of the grammar.</dd></dl>
+<div class="crosslinks"><p class="noindent">[<a 
+href="tpgch5.html" >next</a>] [<a 
+href="tpgch4.html" >front</a>] [<a 
+href="tpgpa2.html#tpgch4.html" >up</a>] </p></div><a 
+  name="tailtpgch4.html"></a>   
+</body></html> 

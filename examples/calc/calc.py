@@ -19,7 +19,7 @@ class Calc(tpg.base.ToyParser,dict):
 
 	def _init_scanner(self):
 		self._lexer = tpg.base._Scanner(
-			tpg.base._TokenDef(r"vars", r"vars"),
+			tpg.base._TokenDef(r"_kw_vars", r"vars"),
 			tpg.base._TokenDef(r"_tok_1", r"="),
 			tpg.base._TokenDef(r"_tok_2", r"\("),
 			tpg.base._TokenDef(r"_tok_3", r"\)"),
@@ -66,18 +66,18 @@ class Calc(tpg.base.ToyParser,dict):
 		""" START -> 'vars' | VarId '=' Expr | Expr """
 		__p1 = self._cur_token
 		try:
+			self._eat('_kw_vars') # vars
+			e = self.mem()
+		except self.TPGWrongMatch:
+			self._cur_token = __p1
 			try:
-				self._eat('vars')
-				e = self.mem()
-			except self.TPGWrongMatch:
-				self._cur_token = __p1
 				v = self._eat('VarId')
 				self._eat('_tok_1') # =
 				e = self.Expr()
 				self[v] = e
-		except self.TPGWrongMatch:
-			self._cur_token = __p1
-			e = self.Expr()
+			except self.TPGWrongMatch:
+				self._cur_token = __p1
+				e = self.Expr()
 		return e
 
 	def Var(self,):
@@ -144,23 +144,23 @@ class Calc(tpg.base.ToyParser,dict):
 		__p1 = self._cur_token
 		try:
 			try:
-				try:
-					try:
-						a = self._eat('real')
-					except self.TPGWrongMatch:
-						self._cur_token = __p1
-						a = self._eat('integer')
-				except self.TPGWrongMatch:
-					self._cur_token = __p1
-					a = self.Function()
+				a = self._eat('real')
 			except self.TPGWrongMatch:
 				self._cur_token = __p1
-				a = self.Var()
+				a = self._eat('integer')
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
-			self._eat('_tok_2') # \(
-			a = self.Expr()
-			self._eat('_tok_3') # \)
+			try:
+				a = self.Function()
+			except self.TPGWrongMatch:
+				self._cur_token = __p1
+				try:
+					a = self.Var()
+				except self.TPGWrongMatch:
+					self._cur_token = __p1
+					self._eat('_tok_2') # \(
+					a = self.Expr()
+					self._eat('_tok_3') # \)
 		return a
 
 	def Function(self,):

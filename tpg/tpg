@@ -51,7 +51,7 @@ def getargs(args):
 
 sys.stdout.write("TPG v%s (c) %s\n"%(tpg.__version__, tpg.__author__))
 try: (grammar_file, output_file, v) = getargs(sys.argv[1:])
-except ArgError: sys.stderr.write("Syntax: %s [-v|vv] grammar_file.g [-o output_file.py]\n"%sys.argv[0])
+except ArgError: sys.stderr.write("Syntax: %s [-v|-vv] grammar_file.g [-o output_file.py]\n"%sys.argv[0])
 else:
 	try:
 		tpg.codegen.setVerbosity(v)
@@ -66,4 +66,6 @@ else:
 		sys.exit(0)
 	except IOError, e:
 		sys.stderr.write("IOError: %s\n"%e)
+	except tpg.Error, e:
+		sys.stderr.write(str(e))
 sys.exit(1)

@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>5 Grammar structure</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<!-- html,2 --> 
+<meta name="src" content="tpg.tex"> 
+<meta name="date" content="2002-08-22 23:00:00"> 
+<link rel="stylesheet" type="text/css" href="tpg.css"> 
+</head><body 
+>
+   <div class="crosslinks"><p class="noindent">[<a 
+href="tpgch6.html" >next</a>] [<a 
+href="tpgch4.html" >prev</a>] [<a 
+href="tpgch4.html#tailtpgch4.html" >prev-tail</a>] [<a 
+href="#tailtpgch5.html">tail</a>] [<a 
+href="tpgpa2.html#tpgch5.html" >up</a>] </p></div>
+   <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;5</span><br><a 
+  name="x18-240005"></a>Grammar structure</h2>
+   <h3 class="sectionHead"><span class="titlemark">5.1</span> <a 
+  name="x18-250005.1"></a>TPG grammar structure</h3>
+<!--l. 3--><p class="noindent">TPG grammars may contain three parts:
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">Options</span> </dt><dd 
+class="description">are defined at the beginning of the grammar (see&nbsp;<a 
+href="#x18-270005.3">5.3<!--tex4ht:ref: grammar:options--></a>).
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Parsers</span> </dt><dd 
+class="description">are described in sections starting with the <span 
+class="cmti-10">parser </span>keyword (see&nbsp;<a 
+href="#x18-330005.5">5.5<!--tex4ht:ref: grammar:parser--></a>).
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Python codes</span> </dt><dd 
+class="description">can appear in sections starting with the <span 
+class="cmti-10">main </span>keyword or before the first parser
+     (see&nbsp;<a 
+href="#x18-300005.4">5.4<!--tex4ht:ref: grammar:code--></a>).</dd></dl>
+<!--l. 14--><p class="noindent">See figure&nbsp;<a 
+href="#x18-250011">5.1<!--tex4ht:ref: grammar:struct--></a> for a generic TPG grammar.
+<!--l. 16--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x18-250011"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-14-" ><colgroup id="TBL-14-1g"><col 
+id="TBL-14-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-14-1-"><td  align="left" id="TBL-14-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;5.1: </td><td  
+class="content">TPG grammar structure</td></tr></table></div><!--tex4ht:label?: x18-250011-->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+#&nbsp;Options
+&nbsp;<br />set&nbsp;magic&nbsp;=&nbsp;&#34;/usr/bin/env&nbsp;python&#34;
+&nbsp;<br />
+&nbsp;<br />#&nbsp;Python&nbsp;code
+&nbsp;<br />{{
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;class&nbsp;MyClass:
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pass
+&nbsp;<br />}}
+&nbsp;<br />
+&nbsp;<br />#&nbsp;Parser&nbsp;Foo
+&nbsp;<br />parser&nbsp;Foo:
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;START&nbsp;-&gt;&nbsp;X&nbsp;Y&nbsp;Z&nbsp;;
+&nbsp;<br />
+&nbsp;<br />#&nbsp;More&nbsp;Python&nbsp;code
+&nbsp;<br />main:
+&nbsp;<br />{{
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;myfunction:
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pass
+&nbsp;<br />}}
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-14-2-"><td  align="left" id="TBL-14-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+   <h3 class="sectionHead"><span class="titlemark">5.2</span> <a 
+  name="x18-260005.2"></a>Comments</h3>
+<!--l. 44--><p class="noindent">Comments in TPG start with <span 
+class="cmti-10"># </span>and run until the end of the line.
+                                                                                 
+
+                                                                                 
+   <table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;This&nbsp;is&nbsp;a&nbsp;comment
+</div>
+   </td></tr></table>
+   <h3 class="sectionHead"><span class="titlemark">5.3</span> <a 
+  name="x18-270005.3"></a>Options</h3>
+<!--l. 52--><p class="noindent">Some options can be set at the beginning of TPG grammars. The syntax for options is:
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">set </span><span 
+class="cmbxti-10">name</span> </dt><dd 
+class="description">sets the boolean <span 
+class="cmti-10">name </span>option to <span 
+class="cmti-10">true</span>.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">set </span><span 
+class="cmbxti-10">name </span><span 
+class="cmbx-10">= &#8221;</span><span 
+class="cmbxti-10">value</span><span 
+class="cmbx-10">&#8221;</span> </dt><dd 
+class="description">sets the <span 
+class="cmti-10">name </span>option to <span 
+class="cmti-10">value</span>.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">set no</span><span 
+class="cmbxti-10">name</span> </dt><dd 
+class="description">disables the <span 
+class="cmti-10">name </span>option.</dd></dl>
+   <h4 class="subsectionHead"><span class="titlemark">5.3.1</span> <a 
+  name="x18-280005.3.1"></a>Magic option</h4>
+<!--l. 63--><p class="noindent">The magic option tells TPG which interpreter is called when the script is run. The first line of the
+generated code will start with <span class="obeylines-h"><span 
+class="cmtt-10">#!</span></span> and contains the command line to execute the appropriate interpreter
+(<span class="obeylines-h"><span 
+class="cmtt-10">/usr/bin/env</span><span 
+class="cmtt-10">&nbsp;python</span></span> for example). This has no effect on M$ Windows.
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">set magic = &#8221;/usr/bin/env python&#8221;</span> </dt><dd 
+class="description">adds <span class="obeylines-h"><span 
+class="cmtt-10">#!/usr/bin/env</span><span 
+class="cmtt-10">&nbsp;python</span></span> to the first line.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">set nomagic</span> </dt><dd 
+class="description">generates no magic line. This is the default behaviour.</dd></dl>
+   <h4 class="subsectionHead"><span class="titlemark">5.3.2</span> <a 
+  name="x18-290005.3.2"></a>CSL options</h4>
+<!--l. 74--><p class="noindent">By default TPG lexers are context free. The <span 
+class="cmti-10">CSL </span>option tells TPG to generate a context sensitive lexer
+(see&nbsp;<a 
+href="tpgch8.html#x22-800008">8<!--tex4ht:ref: tpg:CSL--></a>).
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">set CSL</span> </dt><dd 
+class="description">generates context sensitive lexers.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">set noCSL</span> </dt><dd 
+class="description">generates context free lexers. This is the default behaviour.</dd></dl>
+   <h3 class="sectionHead"><span class="titlemark">5.4</span> <a 
+  name="x18-300005.4"></a>Python code</h3>
+<!--l. 84--><p class="noindent">Python code section are not handled by TPG. TPG won&#8217;t complain about syntax errors in
+Python code sections, it is Python&#8217;s job. They are copied verbatim to the generated Python
+parser.
+   <h4 class="subsectionHead"><span class="titlemark">5.4.1</span> <a 
+  name="x18-310005.4.1"></a>Syntax</h4>
+<!--l. 90--><p class="noindent">Python code is enclosed in double curly brackets. That means that Python code must not contain to
+consecutive close brackets. You can avoid this by writting <span 
+class="cmsy-10">}</span><span 
+class="cmti-10">&nbsp;</span><span 
+class="cmsy-10">} </span>(with a space) instead of <span 
+class="cmsy-10">}} </span>(without
+space).
+   <h4 class="subsectionHead"><span class="titlemark">5.4.2</span> <a 
+  name="x18-320005.4.2"></a>Indentation</h4>
+                                                                                 
+
+                                                                                 
+<!--l. 96--><p class="noindent">Python code can appear in several parts of a grammar. Since indentation has a special meaning in
+Python it is important to know how TPG handles spaces and tabulations at the beginning of the lines. In
+TPG indentation is important only in Python code sections (in <span 
+class="cmti-10">main </span>parts, in <span 
+class="cmti-10">parser </span>parts and in
+<span 
+class="cmti-10">rules</span>).
+<!--l. 100--><p class="indent">   When TPG encounters some Python code it removes in all non blank lines the spaces and tabulations
+that are common to every lines. TPG considers spaces and tabulations as the same character so it is
+important to always use the same indentation style. Thus it is advised not to mix spaces and tabulations
+in indentation. Then this code will be reindented when generated according to its location (in a class, in
+a method or in global space).
+<!--l. 105--><p class="indent">   The figure&nbsp;<a 
+href="#x18-320012">5.2<!--tex4ht:ref: grammar:indent--></a> shows how TPG handles indentation.
+<!--l. 107--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x18-320012"></a>
+                                                                                 
+
+                                                                                 
+<div class="center" 
+>
+<br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;5.2: </td><td  
+class="content">Code indentation examples</td></tr></table></div><!--tex4ht:label?: x18-320012-->
+<div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-15-" ><colgroup id="TBL-15-1g"><col 
+id="TBL-15-1"></colgroup><colgroup id="TBL-15-2g"><col 
+id="TBL-15-2"></colgroup><colgroup id="TBL-15-3g"><col 
+id="TBL-15-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+valign="baseline" id="TBL-15-1-"><td  align="left" id="TBL-15-1-1"  
+class="td11"><!--l. 111--><p class="noindent">Code in grammars                  </td><td  align="left" id="TBL-15-1-2"  
+class="td11"><!--l. 111--><p class="noindent">Generated code              </td><td  align="left" id="TBL-15-1-3"  
+class="td11"><!--l. 111--><p class="noindent">Comment                     </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+valign="baseline" id="TBL-15-2-"><td  align="left" id="TBL-15-2-1"  
+class="td11"><table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+{{
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">if<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">1==2:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;???&#34;
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">else:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;OK&#34;
+&nbsp;<br />}}
+</div>
+</td></tr></table>                           </td><td  align="left" id="TBL-15-2-2"  
+class="td11"><table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;<br />if<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">1==2:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;???&#34;
+&nbsp;<br />else:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;OK&#34;
+</div>
+</td></tr></table>                      </td><td  align="left" id="TBL-15-2-3"  
+class="td11"><!--l. 132--><p class="noindent"><span 
+class="cmti-10">Correct</span>:  these  lines  have
+four  spaces  in  common.
+These spaces are removed.</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+valign="baseline" id="TBL-15-3-"><td  align="left" id="TBL-15-3-1"  
+class="td11"><table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+{{<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">if<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">1==2:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;???&#34;
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">else:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;OK&#34;
+&nbsp;<br />}}
+</div>
+</td></tr></table>                           </td><td  align="left" id="TBL-15-3-2"  
+class="td11"><table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+if<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">1==2:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;???&#34;
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">else:
+&nbsp;<br /><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;OK&#34;
+</div>
+</td></tr></table>                      </td><td  align="left" id="TBL-15-3-3"  
+class="td11"><!--l. 152--><p class="noindent"><span 
+class="cmti-10">WRONG</span>: it&#8217;s a bad idea
+to  start  a  multiline  code
+section
+on the first line since the
+common indentation may
+be   different   from   what
+you expect. No error will
+be  raised  by  TPG  but
+Python won&#8217;t compile this
+code.                           </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+valign="baseline" id="TBL-15-4-"><td  align="left" id="TBL-15-4-1"  
+class="td11"><table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+{{<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20"><img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;OK&#34;<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">}}
+</div>
+</td></tr></table>                           </td><td  align="left" id="TBL-15-4-2"  
+class="td11"><table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+print<img 
+src="cmtt10-20.gif" alt="_" class="10x-x-20">&#34;OK&#34;
+</div>
+</td></tr></table>                      </td><td  align="left" id="TBL-15-4-3"  
+class="td11"><!--l. 165--><p class="noindent"><span 
+class="cmti-10">Correct</span>: indentation does
+not  matter  in  a  one  line
+Python code.                 </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+valign="baseline" id="TBL-15-5-"><td  align="left" id="TBL-15-5-1"  
+class="td11">                                           </td>
+</tr><!--"| p{5cm} | p{4cm} | p{4cm} |"--></table></div> </div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+   <h3 class="sectionHead"><span class="titlemark">5.5</span> <a 
+  name="x18-330005.5"></a>TPG parsers</h3>
+<!--l. 175--><p class="noindent">A grammar can contain as many parsers as needed. A parser declaration starts with the <span 
+class="cmti-10">parser </span>keyword
+and contains rules and Python code sections (local to the parser).
+   <h4 class="subsectionHead"><span class="titlemark">5.5.1</span> <a 
+  name="x18-340005.5.1"></a>Initialisation</h4>
+<!--l. 180--><p class="noindent">The initialisation of Python objects is made by the <span 
+class="cmti-10">_</span><span 
+class="cmti-10">_init</span><span 
+class="cmti-10">_</span><span 
+class="cmti-10">_ </span>method. This method is generated by TPG
+and cannot be overriden. To resolve this problem an <span 
+class="cmti-10">init </span>method (i.e. without the double underscores) is
+called at initialization time with the arguments given to <span 
+class="cmti-10">_</span><span 
+class="cmti-10">_init</span><span 
+class="cmti-10">_</span><span 
+class="cmti-10">_</span>. See&nbsp;<a 
+href="#x18-360005.5.3">5.5.3<!--tex4ht:ref: grammar:python_code--></a> to add methods to a
+parser.
+   <h4 class="subsectionHead"><span class="titlemark">5.5.2</span> <a 
+  name="x18-350005.5.2"></a>Rules</h4>
+<!--l. 187--><p class="noindent">Each rule will be translated into a method of the parser.
+   <h4 class="subsectionHead"><span class="titlemark">5.5.3</span> <a 
+  name="x18-360005.5.3"></a>Python code</h4>
+<!--l. 191--><p class="noindent">Python code that is local to a parser will be copied in the generated class. This is usually used to add
+methods or attributes to the parser.
+                                                                                 
+
+                                                                                 
+   <div class="crosslinks"><p class="noindent">[<a 
+href="tpgch6.html" >next</a>] [<a 
+href="tpgch4.html" >prev</a>] [<a 
+href="tpgch4.html#tailtpgch4.html" >prev-tail</a>] [<a 
+href="tpgch5.html" >front</a>] [<a 
+href="tpgpa2.html#tpgch5.html" >up</a>] </p></div><a 
+  name="tailtpgch5.html"></a>    
+</body></html> 

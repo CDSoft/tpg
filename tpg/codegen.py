@@ -172,7 +172,7 @@ class Collector:
 			name = self.token_name[regexp]			# this token has already been stored
 		except KeyError:							# if not
 			if self.ident_pat.match(regexp):		#	if it is a keyword
-				name = regexp						#		the name is the regexp
+				name = "_kw_%s"%regexp				#		the name is the regexp
 			else:									#	otherwise
 				self.inline_number += 1				#		make a new token name
 				name = "_tok_%s"%self.inline_number	#
@@ -270,6 +270,42 @@ class String:
 	def genCode(self): return self.name
 
 	def doc(self, prec): return self.name
+
+class ArgList:
+	""" *arg parameter """
+
+	def __init__(self, obj):
+		self.obj = obj
+
+	def __str__(self): return "*%s"%self.obj
+
+	def genCode(self): return "*%s"%self.obj.genCode()
+
+	def doc(self, prec): return "*%s"%self.obj.doc()
+
+class ArgDict:
+	""" **kw parameter """
+
+	def __init__(self, obj):
+		self.obj = obj
+
+	def __str__(self): return "**%s"%self.obj
+
+	def genCode(self): return "**%s"%self.obj.genCode()
+
+	def doc(self, prec): return "**%s"%self.obj.doc()
+
+class KeyWordArg:
+	""" kw=val parameter """
+
+	def __init__(self, name, value):
+		self.name, self.value = name, value
+
+	def __str__(self): return "%s=%s"%(self.name, self.value)
+
+	def genCode(self): return "%s=%s"%(self.name, self.value.genCode())
+
+	def doc(self, prec): return "%s=%s"%(self.name, self.value.genCode())
 
 class Objects(list):
 	""" Object list container (tuples, arguments, ...) """
@@ -482,6 +518,10 @@ class Symbol:
 class Sequence(list):
 	""" Container for a sequence in a rule """
 
+	def __init__(self, *args):
+		list.__init__(self)
+		self.extend(args)
+
 	def add(self, e):
 		self.append(e)
 
@@ -500,6 +540,21 @@ class Sequence(list):
 		for e in self:
 			if not e.empty(): return 0
 		return 1
+
+class Cut(Sequence):
+	""" Container for a cut term """
+
+	def __str__(self): return "! " + Sequence.__str__(self)
+
+	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+		tab = "\t" * indent
+		return	[	[
+						tab + "try:",
+							e.genCode(indent+1, vargen=vargen, p=p, CSL=CSL, lex=lex),
+						tab + "except self.TPGWrongMatch, e:",
+						tab + "\tself.ParserError(e.last)",
+					] for e in self
+				]
 
 class Alternative:
 	""" Container for a choice in a rule """
@@ -536,6 +591,20 @@ class Alternative:
 
 	def empty(self):
 		return self.a.empty() and self.b.empty()
+
+def balance(alt):
+	""" Balances an alternative tree """
+	if not isinstance(alt, Alternative): return alt
+	def collect(alt):
+		if isinstance(alt, Alternative): return collect(alt.a)+collect(alt.b)
+		else: return [alt]
+	def tree(alts):
+		if len(alts) >= 2:
+			m = len(alts)/2
+			return Alternative(tree(alts[0:m]),tree(alts[m:]))
+		else:
+			return alts[0]
+	return tree(collect(alt))
 
 class MakeAST:
 	""" Container for an AST affectation (LHS=RHS) """
@@ -610,9 +679,7 @@ class Error:
 class Rep:
 	""" Container for a repeated expression (*, +, ?, {m,n}) """
 
-	def __init__(self, parser, m, M, e):
-		if None not in (m, M) and m>M: parser.WrongMatch()
-		if e.empty(): parser.WrongMatch()
+	def __init__(self, m, M, e):
 		self.e = e	# expression
 		self.m = m	# min loops
 		self.M = M	# max loops
@@ -725,9 +792,9 @@ class InlineToken:
 			return "\t"*indent + ret + "self._eat('%s')%s"%(name, comment)
 		else:
 			if self.split:
-				return "\t"*indent + ret + "self._%seat(r'%s', split=%s)"%(lex, self.expr, self.split)
+				return "\t"*indent + ret + "self._%seat(%s, split=%s)"%(lex, _2str(self.expr), self.split)
 			else:
-				return "\t"*indent + ret + "self._%seat(r'%s')"%(lex, self.expr)
+				return "\t"*indent + ret + "self._%seat(%s)"%(lex, _2str(self.expr))
 
 	def doc(self, prec): return "'%s'"%self.expr
 

@@ -1,2 +1,2 @@
-python setup.py sdist
-python setup.py bdist_wininst
+setup.py sdist
+setup.py bdist_wininst

@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>8 Context sensitive lexer</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
+<!-- html,2 --> 
+<meta name="src" content="tpg.tex"> 
+<meta name="date" content="2002-08-22 23:00:00"> 
+<link rel="stylesheet" type="text/css" href="tpg.css"> 
+</head><body 
+>
+   <div class="crosslinks"><p class="noindent">[<a 
+href="tpgch7.html" >prev</a>] [<a 
+href="tpgch7.html#tailtpgch7.html" >prev-tail</a>] [<a 
+href="#tailtpgch8.html">tail</a>] [<a 
+href="tpgpa2.html#tpgch8.html" >up</a>] </p></div>
+   <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;8</span><br><a 
+  name="x22-800008"></a>Context sensitive lexer</h2>
+   <h3 class="sectionHead"><span class="titlemark">8.1</span> <a 
+  name="x22-810008.1"></a>Introduction</h3>
+<!--l. 3--><p class="noindent">Before the version 2 of TPG, lexers were context sensitive. That means that the parser commands the
+lexer to match some tokens, i.e. different tokens can be matched in a same input string according to the
+grammar rules being used. These lexers were very flexible but slower than context free lexers because
+TPG backtracking caused tokens to be matched several times.
+<!--l. 7--><p class="indent">   In TPG 2, the lexer is called before the parser and produces a list of tokens from the input string.
+This list is then given to the parser. In this case when TPG backtracks the token list remains
+unchanged.
+<!--l. 11--><p class="indent">   Since TPG 2.1.2, context sensitive lexers have been reintroduced in TPG. By default
+lexers are context free but the <span 
+class="cmti-10">CSL </span>option (see&nbsp;<a 
+href="tpgch5.html#x18-290005.3.2">5.3.2<!--tex4ht:ref: grammar:CSL--></a>) turns TPG into a context sensitive
+lexer.
+   <h3 class="sectionHead"><span class="titlemark">8.2</span> <a 
+  name="x22-820008.2"></a>Grammar structure</h3>
+<!--l. 16--><p class="noindent">CSL grammar have the same structure than non CSL grammars (see&nbsp;<a 
+href="tpgch5.html#x18-250011">5.1<!--tex4ht:ref: grammar:struct--></a>) except from the <span 
+class="cmti-10">CSL </span>option
+(see&nbsp;<a 
+href="tpgch5.html#x18-290005.3.2">5.3.2<!--tex4ht:ref: grammar:CSL--></a>).
+   <h3 class="sectionHead"><span class="titlemark">8.3</span> <a 
+  name="x22-830008.3"></a>CSL lexers</h3>
+   <h4 class="subsectionHead"><span class="titlemark">8.3.1</span> <a 
+  name="x22-840008.3.1"></a>Regular expression syntax</h4>
+<!--l. 22--><p class="noindent">The CSL lexer is based on the <span 
+class="cmti-10">re </span>module. The difference with non CSL lexers is that the given regular
+expression is compiled as this, without any encapsulation. Grouping is then possible and
+usable.
+   <h4 class="subsectionHead"><span class="titlemark">8.3.2</span> <a 
+  name="x22-850008.3.2"></a>Token definition</h4>
+<!--l. 28--><p class="noindent">In CSL lexers there is no predefined tokens. Tokens are always inlined and there is no precedance issue
+since tokens are matched while parsing, when encountered in a grammar rule.
+<!--l. 31--><p class="indent">   A token definition can be simulated by defining a rule to match a particular token (see
+figure&nbsp;<a 
+href="#x22-850011">8.1<!--tex4ht:ref: CSL:token_def--></a>).
+<!--l. 33--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x22-850011"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-30-" ><colgroup id="TBL-30-1g"><col 
+id="TBL-30-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-30-1-"><td  align="left" id="TBL-30-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;8.1: </td><td  
+class="content">Token definition in CSL parsers example</td></tr></table></div><!--tex4ht:label?: x22-850011-->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;number/int&lt;n&gt;&nbsp;-&gt;&nbsp;'\d+'/n&nbsp;;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-30-2-"><td  align="left" id="TBL-30-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 40--><p class="indent">   In non CSL parsers there are two kinds of tokens: true tokens and token separators. To declare
+separators in CSL parsers you must use the special <span 
+class="cmti-10">separator </span>rule. This rule is implicitly used before
+matching a token. It is thus necessary to distinguish lexical rules from grammar rules. Lexical rule
+declarations start with the <span 
+class="cmti-10">lex </span>keyword. In such rules, the <span 
+class="cmti-10">separator </span>rule is not called to avoid infinite
+recursion (<span 
+class="cmti-10">separator </span>calling <span 
+class="cmti-10">separator </span>calling <span 
+class="cmti-10">separator </span>...). The figure&nbsp;<a 
+href="#x22-850022">8.2<!--tex4ht:ref: CSL:separator--></a> shows a separator declaration
+with nested C++ like comments.
+<!--l. 48--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x22-850022"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-31-" ><colgroup id="TBL-31-1g"><col 
+id="TBL-31-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-31-1-"><td  align="left" id="TBL-31-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;8.2: </td><td  
+class="content">Separator definition in CSL parsers examples</td></tr></table></div><!--tex4ht:label?: x22-850022-->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;lex&nbsp;separator&nbsp;-&gt;&nbsp;spaces&nbsp;|&nbsp;comment&nbsp;;
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;lex&nbsp;spaces&nbsp;-&gt;&nbsp;'\s+'&nbsp;;
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;lex&nbsp;comment&nbsp;-&gt;&nbsp;'/\*'&nbsp;in_comment*&nbsp;'\*/'&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;C++&nbsp;nested&nbsp;comments
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;lex&nbsp;in_comment&nbsp;-&gt;&nbsp;comment&nbsp;|&nbsp;'\*[^/]|[^\*]'&nbsp;;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-31-2-"><td  align="left" id="TBL-31-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+   <h4 class="subsectionHead"><span class="titlemark">8.3.3</span> <a 
+  name="x22-860008.3.3"></a>Token matching</h4>
+<!--l. 62--><p class="noindent">In CSL parsers, tokens are matched as in non CSL parsers (see&nbsp;<a 
+href="tpgch6.html#x19-420006.3">6.3<!--tex4ht:ref: lexer:token_matching--></a>). There is a special feature in CSL
+parsers. The user can benefit from the grouping possibilities of CSL parsers. The text of the
+token can be saved with the infix <span 
+class="cmti-10">/ </span>operator. The groups of the token can also be saved
+with the infix <span 
+class="cmti-10">// </span>operator. This operator (available only in CSL parsers) returns all the
+groups in a tuple. For example, the figure&nbsp;<a 
+href="#x22-860013">8.3<!--tex4ht:ref: CSL:token_usage--></a> shows how to read entire tokens and to split
+tokens.
+<!--l. 70--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x22-860013"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-32-" ><colgroup id="TBL-32-1g"><col 
+id="TBL-32-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-32-1-"><td  align="left" id="TBL-32-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;8.3: </td><td  
+class="content">Token usage in CSL parsers examples</td></tr></table></div><!--tex4ht:label?: x22-860013-->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;lex&nbsp;identifier/i&nbsp;-&gt;&nbsp;'\w+'/s&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;a&nbsp;single&nbsp;identifier
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;lex&nbsp;string/s&nbsp;-&gt;&nbsp;&#34;'([^\']*)'&#34;//&lt;s&gt;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;a&nbsp;string&nbsp;without&nbsp;the&nbsp;quotes
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;lex&nbsp;item/&lt;key,val&gt;&nbsp;-&gt;&nbsp;&#34;(\w+)=(.*)&#34;//&lt;key,val&gt;&nbsp;;&nbsp;#&nbsp;a&nbsp;tuple&nbsp;(key,&nbsp;value)
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+valign="baseline" id="TBL-32-2-"><td  align="left" id="TBL-32-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+   <h3 class="sectionHead"><span class="titlemark">8.4</span> <a 
+  name="x22-870008.4"></a>CSL parsers</h3>
+<!--l. 83--><p class="noindent">There is no difference between CSL and non CSL parsers except from lexical rules which look like grammar
+rules<a 
+href="tpg23.html" name="tpg23.html" ><sup>1</sup></a>.
+                                                                                 
+
+                                                                                 
+   <div class="crosslinks"><p class="noindent">[<a 
+href="tpgch7.html" >prev</a>] [<a 
+href="tpgch7.html#tailtpgch7.html" >prev-tail</a>] [<a 
+href="tpgch8.html" >front</a>] [<a 
+href="tpgpa2.html#tpgch8.html" >up</a>] </p></div><a 
+  name="tailtpgch8.html"></a>   
+</body></html> 

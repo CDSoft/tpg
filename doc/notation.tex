@@ -57,7 +57,7 @@ OP/<op,prec> ->
 
 At first sight postfix and infix grammars may be very similar.
 Only the position of the operators changes.
-So a compound postfix expression is an first expression followed by a second and an operator.
+So a compound postfix expression is a first expression followed by a second and an operator.
 This rule is left recursive.
 As TPG is a descendant recursive parser, such rules are forbidden to avoid infinite recursion.
 To remove the left recursion a classical solution is to rewrite the grammar like this:
@@ -75,7 +75,7 @@ SEXPR_POST<e>/e ->
 |	;
 \end{verbatimtab}
 
-The parser first search for an atomic expression and then build the AST by passing partial expressions by the attributes of the \emph{SEXPR\_POST} symbol.
+The parser first searches for an atomic expression and then builds the AST by passing partial expressions by the attributes of the \emph{SEXPR\_POST} symbol.
 
 \section{Source code}
 

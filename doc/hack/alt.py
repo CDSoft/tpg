@@ -2,7 +2,7 @@
 class Foo(tpg.base.ToyParser,):
 
 	def S(self,):
-		""" S -> A | B | C """
+		""" S -> A | B | C | D """
 		__p1 = self._cur_token
 		try:
 			try:
@@ -12,4 +12,8 @@ class Foo(tpg.base.ToyParser,):
 				self.B()
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
-			self.C()
+			try:
+				self.C()
+			except self.TPGWrongMatch:
+				self._cur_token = __p1
+				self.D()

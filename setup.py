@@ -47,8 +47,14 @@ if 'sdist' in sys.argv[1:]:
 			"cd tpg && make"
 		),
 		# Documentation / Tutorial
+		( 'doc/tpg.html', ['doc/*.tex', 'doc/hack/*.g'],
+			"cd doc/hack && hack.py && cd .. && ( export TEXINPUTS=.:~/local/tex4ht.dir//:/usr/share/texmf/tex//; ~/local/tex4ht.dir/htlatex tpg html,2 ) && rm tpg.dvi"
+		),
+		( 'doc/tpg.dvi', ['doc/*.tex', 'doc/hack/*.g'],
+			"cd doc/hack && hack.py && cd .. && latex tpg && latex tpg && latex tpg"
+		),
 		( 'doc/tpg.pdf', ['doc/*.tex', 'doc/hack/*.g'],
-			"cd doc/hack && hack.py && cd .. && pdflatex tpg"
+			"cd doc/hack && hack.py && cd .. && pdflatex tpg && pdflatex tpg && pdflatex tpg"
 		),
 		# Examples
 		( 'examples/calc/calc.py', [ 'examples/calc/calc.g' ],

@@ -70,7 +70,7 @@ The lexer first splits the input string into a list of tokens and then the parse
 
 \subsection{Splitting the input string}
 
-The lexer split the input string according to the token definitions (see \ref{lexer:token_def}). When the input string can not be matched a \emph{tpg.LexicalError} exception is raised.
+The lexer split the input string according to the token definitions (see~\ref{lexer:token_def}). When the input string can not be matched a \emph{tpg.LexerError} exception is raised.
 
 The lexer may loop indefinitely if a token can match an empty string since empty strings are everywhere.
 

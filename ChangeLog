@@ -1,3 +1,37 @@
+2002-08-22  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.1.3:
+		Some bug fixes.
+		Added the cut operator (!). ! acts as in Prolog, i.e. when
+		TPG backtracks on a cut, others alternatives are not tried.
+		The main difference with Prolog is that ! immediatly exits
+		i.e. it cuts all the pending alternatives (not only the
+		innermost). This helps TPG to report errors more precisely.
+		Marks are renamed as '@' (was '!' in previous versions)
+		LexicalError and SyntaxError have been renamed LexerError
+		and ParserError to avoid conflicts.
+
+	* base.py:
+		Bug fix: added the *args parameters in ToyParser.__init__
+		Improvment: _Scanner.tokens uses lastgroup to find to
+		matched token instead of an ugly loop.
+		Added the tpg.Error base class for tpg.LexicalError,
+		tpg.SyntaxError and tpg.SemanticError.
+
+	* parser.g:
+		Better error reporting.
+		Added 'Cut' support.
+		Added support for keyword arguments, *args and **kw.
+
+	* codegen.py:
+		Bug fix: quotes are escaped in strings if necessary
+		Added "Cut" support.
+		Improvment: Alternative is now generated as a balanced
+		tree to allow more alternatives.
+		Bug fix: predefined tokens and inline tokens could have
+		the same internal name (and re couldn't compile the lexer).
+		Added support for keyword arguments, *args and **kw.
+
 2002-08-07  Christophe Delord <christophe.delord@free.fr>
 
 	* Version 2.1.2:
