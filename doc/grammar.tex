@@ -102,6 +102,8 @@ These tokens are similar to INDENT and DEINDENT tokens in Python language.
 Python code section are not handled by TPG.
 TPG won't complain about syntax errors in Python code sections, it is Python's job.
 They are copied verbatim to the generated Python parser.
+The first piece of code written before the first parser is generated at the very beginning of the parser Code.
+This is where you can put \emph{from \_\_future\_\_ import ...} statements for instance.
 
 \subsection{Syntax}
 

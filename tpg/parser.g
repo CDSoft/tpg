@@ -52,7 +52,8 @@ parser TPGParser:
 
     PARSERS/parsers ->
         GLOBAL_OPTIONS/opts
-        parsers = Parsers<opts>
+        ( code/c prologue=Code<c> | prologue=None )
+        parsers = Parsers<opts, prologue>
         ( code/c parsers-Code<c> )*
         (   'parser' ! ident/id ! ( '\(' ! ARGS/ids '\)' | ids = Args<> ) ':' !
             LOCAL_OPTIONS/opts
@@ -79,7 +80,7 @@ parser TPGParser:
     LOCAL_OPTIONS/opts ->
         opts = Options<>
         (   'set' !
-            (   kw<'CSL'> !                         {{ opts.set('CSL', 1) }}
+            (   kw<'CSL'> !                         {{ opts.set('CSL', 'CSL') }}
             |   kw<'indent'> ! '='
                     string/tabs                     {{ opts.set('indent', tabs) }}
                     ( ',' string/regexp             {{ opts.set('noindent', regexp) }}

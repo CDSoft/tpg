@@ -1,3 +1,19 @@
+2003-05-25  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 2.1.6:
+        The first code of the .g file is placed before
+        any other code (for __future__ statements).
+        Thanks to Rodrigo B. de Oliveira for the comment.
+        Some bug fixes.
+
+    * codegen.py:
+        Add code before "import tpg.base".
+
+    * parser.g:
+        Parse the first code appart.
+        Make CSL parser inherits from ToyParserCSL instead
+        of ToyParser1 (thanks to Dominic Hillenbrand).
+
 2003-04-20  Christophe Delord <christophe.delord@free.fr>
 
     * Version 2.1.5:

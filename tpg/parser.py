@@ -9,7 +9,6 @@
 # For further information about TPG you can visit
 # http://christophe.delord.free.fr/en/tpg
 
-import base
 
 
 """
@@ -42,6 +41,7 @@ def cutstr(st):
     if st[0]=="'": st = st.replace('"', r'\"')
     return st[1:-1]
 
+import base
 class TPGParser(base.ToyParser,):
 
     def _init_scanner(self):
@@ -96,19 +96,26 @@ class TPGParser(base.ToyParser,):
         return parsers.genCode()
 
     def PARSERS(self,):
-        """ PARSERS -> GLOBAL_OPTIONS (code)* ('parser' ident ('\(' ARGS '\)' | ) ':' LOCAL_OPTIONS (code | TOKEN | RULE | LEX_RULE)* | 'main' ':' (code)*)* """
+        """ PARSERS -> GLOBAL_OPTIONS (code | ) (code)* ('parser' ident ('\(' ARGS '\)' | ) ':' LOCAL_OPTIONS (code | TOKEN | RULE | LEX_RULE)* | 'main' ':' (code)*)* """
         opts = self.GLOBAL_OPTIONS()
-        parsers = Parsers(opts)
         __p1 = self._cur_token
+        try:
+            c = self._eat('code')
+            prologue = Code(c)
+        except self.TPGWrongMatch:
+            self._cur_token = __p1
+            prologue = None
+        parsers = Parsers(opts,prologue)
+        __p2 = self._cur_token
         while 1:
             try:
                 c = self._eat('code')
                 parsers.add(Code(c))
-                __p1 = self._cur_token
+                __p2 = self._cur_token
             except self.TPGWrongMatch:
-                self._cur_token = __p1
+                self._cur_token = __p2
                 break
-        __p2 = self._cur_token
+        __p3 = self._cur_token
         while 1:
             try:
                 try:
@@ -118,7 +125,7 @@ class TPGParser(base.ToyParser,):
                     except self.TPGWrongMatch, e:
                         self.ParserError(e.last)
                     try:
-                        __p3 = self._cur_token
+                        __p4 = self._cur_token
                         try:
                             self._eat('_tok_1') # \(
                             try:
@@ -127,7 +134,7 @@ class TPGParser(base.ToyParser,):
                             except self.TPGWrongMatch, e:
                                 self.ParserError(e.last)
                         except self.TPGWrongMatch:
-                            self._cur_token = __p3
+                            self._cur_token = __p4
                             ids = Args()
                         self._eat('_tok_3') # :
                     except self.TPGWrongMatch, e:
@@ -136,7 +143,7 @@ class TPGParser(base.ToyParser,):
                         opts = self.LOCAL_OPTIONS()
                         p = Parser(id,ids,opts)
                         self.current_parser = p
-                        __p4 = self._cur_token
+                        __p5 = self._cur_token
                         while 1:
                             try:
                                 try:
@@ -144,44 +151,44 @@ class TPGParser(base.ToyParser,):
                                         c = self._eat('code')
                                         p.add(Code(c))
                                     except self.TPGWrongMatch:
-                                        self._cur_token = __p4
+                                        self._cur_token = __p5
                                         t = self.TOKEN()
                                         p.add(t)
                                 except self.TPGWrongMatch:
-                                    self._cur_token = __p4
+                                    self._cur_token = __p5
                                     try:
                                         r = self.RULE()
                                         p.add(r)
                                     except self.TPGWrongMatch:
-                                        self._cur_token = __p4
+                                        self._cur_token = __p5
                                         r = self.LEX_RULE()
                                         p.add(r)
-                                __p4 = self._cur_token
+                                __p5 = self._cur_token
                             except self.TPGWrongMatch:
-                                self._cur_token = __p4
+                                self._cur_token = __p5
                                 break
                         parsers.add(p)
                     except self.TPGWrongMatch, e:
                         self.ParserError(e.last)
                 except self.TPGWrongMatch:
-                    self._cur_token = __p2
+                    self._cur_token = __p3
                     self._eat('_kw_main') # main
                     self._eat('_tok_3') # :
                     try:
-                        __p5 = self._cur_token
+                        __p6 = self._cur_token
                         while 1:
                             try:
                                 c = self._eat('code')
                                 parsers.add(Code(c))
-                                __p5 = self._cur_token
+                                __p6 = self._cur_token
                             except self.TPGWrongMatch:
-                                self._cur_token = __p5
+                                self._cur_token = __p6
                                 break
                     except self.TPGWrongMatch, e:
                         self.ParserError(e.last)
-                __p2 = self._cur_token
+                __p3 = self._cur_token
             except self.TPGWrongMatch:
-                self._cur_token = __p2
+                self._cur_token = __p3
                 break
         return parsers
 
@@ -220,7 +227,7 @@ class TPGParser(base.ToyParser,):
                     try:
                         self.kw(r"CSL")
                         try:
-                            opts.set('CSL', 1) 
+                            opts.set('CSL', 'CSL') 
                         except self.TPGWrongMatch, e:
                             self.ParserError(e.last)
                     except self.TPGWrongMatch:

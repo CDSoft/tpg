@@ -86,8 +86,9 @@ def _p(prec0, prec1):
 class Parsers(list):
     """ List of parsers """
 
-    def __init__(self, opts):
+    def __init__(self, opts, prologue):
         self.opts = opts
+        self.prologue = prologue
 
     def add(self, obj):
         """ Add a parser or a code """
@@ -100,6 +101,7 @@ class Parsers(list):
         code = [
             self.magic(),                           # magic line : #!...
             self.warning(),
+            self.prologue and self.prologue.genCode() or [],
             self.runtime(),                         # runtime if necessary
             [ p.genCode() for p in self ],          # parsers and codes
             "",
