@@ -35,6 +35,8 @@ set magic = "/usr/bin/env python"
 # History                                                 #
 # #######                                                 #
 #                                                         #
+# v 2.0.3 - 24/06/2002                                    #
+#         - Bug fix in runtime generation                 #
 # v 2.0.2 - 23/06/2002                                    #
 #         - doc strings modified                          #
 #         - add python code as objects (params, ret value)#
@@ -141,7 +143,7 @@ class Parsers(list):
 	def getTags(self, file):
 		""" Extract TPG tags from the source file """
 		tag_pat = re.compile(r"#<(\w+)>(.*)#</\1>",re.S)
-		f = open(file)
+		f = open(file.replace('.pyc','.py'))
 		code = f.read()
 		f.close()
 		i = 0
