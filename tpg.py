@@ -44,8 +44,8 @@ trees while parsing.
 from __future__ import generators
 
 __tpgname__ = 'TPG'
-__version__ = '3.0.3'
-__date__ = '2004-04-30'
+__version__ = '3.0.4'
+__date__ = '2004-11-20'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -53,8 +53,15 @@ __author__ = 'Christophe Delord'
 __email__ = 'christophe.delord@free.fr'
 __url__ = 'http://christophe.delord.free.fr/en/tpg/'
 
+import parser
 import re
+import sre_parse
 import sys
+
+try:
+    enumerate
+except NameError:
+    enumerate = lambda seq: zip(xrange(sys.maxint), seq)
 
 _id = lambda x: x
 tab = " "*4
@@ -108,7 +115,7 @@ class SyntacticError(Error):
     pass
 
 class SemanticError(Error):
-    """ SemanticError((line, row), msg)
+    """ SemanticError(msg)
 
     SemanticError is raised by user actions when an error is detected.
 
@@ -1185,7 +1192,7 @@ class TPGParser(tpg.Parser):
         |   'token'         $ token_type = self.DefToken
         )
         ident/name ':'?
-        string/expr
+        @t string/expr      $ self.re_check(expr, t)
         (   PY_EXPR/code ';'?
         |   ';'             $ code = None
         )
@@ -1217,7 +1224,7 @@ class TPGParser(tpg.Parser):
     ATOM_EXPR/a ->
             SYMBOL/a
         |   INLINE_TOKEN/a
-        |   code/a
+        |   @t code/a               $ self.code_check(a, t)
         |   '\(' OR_EXPR/a '\)'
         |   'check' PY_EXPR/cond    $ a = self.Check(cond)
         |   'error' PY_EXPR/msg     $ a = self.Error(msg)
@@ -1239,7 +1246,10 @@ class TPGParser(tpg.Parser):
 
     SYMBOL/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET/ret ;
 
-    INLINE_TOKEN/$self.InlineToken(expr, ret)$ -> string/expr RET/ret ;
+    INLINE_TOKEN/$self.InlineToken(expr, ret)$ ->
+        @t string/expr  $ self.re_check(expr, t)
+        RET/ret
+        ;
 
     OPT_ARGS/args -> ARGS/args | $ args = self.Args() $ ;
 
@@ -1359,7 +1369,9 @@ class TPGParser(tpg.Parser):
             self.eat('_tok_5') # ':'
         except tpg.WrongToken:
             self.lexer.back(_p2)
+        t = self.mark()
         expr = self.eat('string')
+        self.re_check(expr, t)
         _p3 = self.lexer.token()
         try:
             code = self.PY_EXPR()
@@ -1444,7 +1456,9 @@ class TPGParser(tpg.Parser):
                     a = self.INLINE_TOKEN()
                 except tpg.WrongToken:
                     self.lexer.back(_p1)
+                    t = self.mark()
                     a = self.eat('code')
+                    self.code_check(a, t)
         except tpg.WrongToken:
             self.lexer.back(_p1)
             try:
@@ -1523,7 +1537,9 @@ class TPGParser(tpg.Parser):
 
     def INLINE_TOKEN(self, ):
         r""" INLINE_TOKEN -> string RET """
+        t = self.mark()
         expr = self.eat('string')
+        self.re_check(expr, t)
         ret = self.RET()
         return self.InlineToken(expr, ret)
 
@@ -1628,6 +1644,19 @@ class TPGParser(tpg.Parser):
             self.env = _globals
         else:
             self.env = {}
+
+    def re_check(self, expr, tok):
+        try:
+            sre_parse.parse(eval('r'+expr))
+        except Exception, e:
+            raise LexicalError((tok.line, tok.row), "Invalid regular expression: %s (%s)"%(expr, e))
+
+    def code_check(self, code, tok):
+        try:
+            parser.suite(code.code)
+        except Exception, e:
+            erroneous_code = "\n".join([ "%2d: %s"%(i+1, l) for (i, l) in enumerate(code.code.splitlines()) ])
+            raise LexicalError((tok.line, tok.row), "Invalid Python code (%s): \n%s"%(e, erroneous_code))
 
     class Options:
         option_dict = {

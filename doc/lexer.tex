@@ -38,7 +38,7 @@ See figure~\ref{lexer:tokens} for examples.
 \end{verbatimtab}
 \end{code}
 
-The order of the declaration of the tokens is important. The first token that is matched is returned. The regular expression has a special treatment. If it describes a keyword, TPG also looks for a word boundary after the keyword. If you try to match the keywords \emph{if} and \emph{ifxyz} TPG will internally search \verb$if\b$ and \verb$ifxyz\b$. This way, \emph{if} won't match \emph{ifxyz} and won't interfere with general identifiers (\verb$\w+$ for example). This behaviour can be disabled since the verision 3 of TPG (see~\ref{grammar:word_boundary_option}).
+The order of the declaration of the tokens is important. The first token that is matched is returned. The regular expression has a special treatment. If it describes a keyword, TPG also looks for a word boundary after the keyword. If you try to match the keywords \emph{if} and \emph{ifxyz} TPG will internally search \verb$if\b$ and \verb$ifxyz\b$. This way, \emph{if} won't match \emph{ifxyz} and won't interfere with general identifiers (\verb$\w+$ for example). This behaviour can be disabled since the version 3 of TPG (see~\ref{grammar:word_boundary_option}).
 
 There are two kinds of tokens. Tokens defined by the \emph{token} keyword are parsed by the parser and tokens defined by the \emph{separator} keyword are considered as separators (white spaces or comments for example) and are wiped out by the lexer.
 
@@ -90,7 +90,7 @@ The token text (or the result of the function associated to the token) can be sa
 \end{verbatimtab}
 \end{code}
 
-Inline tokens have a similar syntax. You just write the regular expression (in a string). Its text can also be save (see figure~\ref{lexer:inline_token_ret_val}).
+Inline tokens have a similar syntax. You just write the regular expression (in a string). Its text can also be saved (see figure~\ref{lexer:inline_token_ret_val}).
 
 \begin{code}
 \caption{Token usage examples}                              \label{lexer:inline_token_ret_val}

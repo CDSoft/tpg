@@ -1,6 +1,19 @@
+2004-11-20  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 3.0.4:
+        Bug fix
+
+    * Bug fix:
+        - Check regular expressions before building the lexer
+        in order to detect incorrect tokens in a more explicit
+        way (thanks to Laszlo Kalman for reporting the bug).
+        - Check Python code before compiling the parser
+        in order to detect Python syntax errors in a more
+        explicit way too.
+
 2004-04-08  Christophe Delord <christophe.delord@free.fr>
 
-    * Version 3.0.3-dev:
+    * Version 3.0.3:
         Bug fix
 
     * Bug fix:
