@@ -95,3 +95,53 @@ Inline tokens have a similar syntax. You just write the regular expression (in a
 	S -> '(' '\w+'/i ')';
 \end{verbatimtab}
 \end{code}
+
+\section{Special tokens}                                    \label{lexer:special_tokens}
+
+Their are some special tokens that have been requested by some users but these tokens can not be easily
+described by TPG using classical token definition (see~\ref{lexer:token_def}).
+
+\subsection{Indent and deindent tokens}                     \label{lexer:indent_deindent}
+
+TPG is written in Python so is should be easy to handle INDENT and DEINDENT tokens as in Python language.
+These tokens are introduced in the source to be parsed by a preprocessor, before the lexer is activated.
+Spaces in the beginning the lines are replaced by indent and deindent tokens when needed.
+These special tokens are characters which ASCII codes are 16 and 17.
+These characters may not be used in regular text files.
+
+\subsubsection{Indent definition}
+
+The \emph{indent} option (see~\ref{grammar:options}) has been added to define the indentation.
+It has two values.
+The first one is a regular expression describing the indentation, usually spaces and tabulations.
+The second one is a regular expression describing the lines not to be taken into account, usually comments.
+This second parameter describes the beginning of the line, i.e. \emph{"\#"} will match lines starting
+with a \emph{\#}.
+
+\begin{code}
+\caption{Indent and deindent definition example}            \label{lexer:indent_definition}
+\begin{verbatimtab}[4]
+    set indent = "\s", "#"
+\end{verbatimtab}
+\end{code}
+
+\subsubsection{Indent and deindent usage}                   \label{lexer:indent_usage}
+
+When the \emph{indent} option is active, \emph{indent} and \emph{deindent} tokens are defined.
+They can be used as any other token.
+
+\begin{code}
+\caption{Indent and deindent example}            \label{lexer:indent_example}
+\begin{verbatimtab}[4]
+parser IndentParser:
+
+    set indent = "\s", "#"
+
+    BLOCK ->
+        (   INSTR
+        |   indent
+                BLOCK
+            deindent
+        )*;
+\end{verbatimtab}
+\end{code}

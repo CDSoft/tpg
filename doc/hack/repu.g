@@ -1,11 +1,11 @@
 
 parser Repetitions:
 
-	USER_DEFINED ->
+    USER_DEFINED ->
 
-	
-	
-	
 
-		A{2,5}
-		;
+
+
+
+        A{2,5}
+        ;

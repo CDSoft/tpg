@@ -1,30 +1,30 @@
 
 parser Repetitions:
 
-	ZERO_or_ONE ->
-
-
-	
-		A ?
-		;
-
-		
-	ZERO_or_MORE ->
+    ZERO_or_ONE ->
 
 
 
-	
-		A *
-		;
+        A ?
+        ;
+
+
+    ZERO_or_MORE ->
 
 
 
 
-	ONE_or_MORE ->
+        A *
+        ;
 
 
-	
 
 
-		A +
-		;
+    ONE_or_MORE ->
+
+
+
+
+
+        A +
+        ;

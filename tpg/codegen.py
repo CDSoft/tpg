@@ -26,6 +26,9 @@ from __future__ import generators
 import re
 import sys
 
+import base
+import parser
+
 warning = """
 #........[ TOY PARSER GENERATOR ].........................!
 #                                                        ! !
@@ -94,20 +97,15 @@ class Parsers(list):
 
     def genCode(self):
         """ Generate code for all parsers """
-        CSL = self.CSL()
         code = [
             self.magic(),                           # magic line : #!...
             self.warning(),
             self.runtime(),                         # runtime if necessary
-            [ p.genCode(CSL=CSL) for p in self ],   # parsers and codes
+            [ p.genCode() for p in self ],          # parsers and codes
             "",
         ]
         code = "\n".join(flatten(code))
         return code
-
-    def CSL(self):
-        if self.opts['CSL']: return "CSL"
-        return ""
 
     def magic(self):
         """ Generate the magic line if provided """
@@ -210,9 +208,10 @@ class Collector:
 class Parser(list):
     """ Container for a set of rules """
 
-    def __init__(self, name, bases):
+    def __init__(self, name, bases, opts):
         self.name = name        # name of the parser class
         self.bases = bases      # list of the base classes
+        self.opts = opts
 
     def add(self, obj):
         """ Add a token, a rule or a code section """
@@ -221,28 +220,50 @@ class Parser(list):
 
     def __str__(self): return "%s(%s)"%(self.name, self.bases)
 
-    def genCode(self, CSL=""):
+    def genCode(self):
         """ Generate the code of the parser in 2 passes:
             1) get inline token, token and symbol list
             2) generate the code
         """
+        # Context Sensitive Lexer
+        CSL = self.opts['CSL'] or ""
+
+        # Indentation preprocessor
+        indent_re = self.opts['indent']
+        indent_re = indent_re and _2str(indent_re)
+        noindent_re = self.opts['noindent']
+        noindent_re = noindent_re and _2str(noindent_re)
+        if indent_re:
+            self.insert(0, parser.Token('indent', r"\%s"%oct(ord(base.ToyParser.INDENT_CHAR)), None, 0))
+            self.insert(1, parser.Token('deindent', r"\%s"%oct(ord(base.ToyParser.DEINDENT_CHAR)), None, 0))
+        
         collector = Collector()
         for p in self: p.collect(collector)
         return [
             "class %s(tpg.base.ToyParser%s,%s):"%(self.name, CSL, self.bases.genCode()),
             "",
-                self.genInitCode(1, collector.get_inline_tokens(), collector.get_tokens(), CSL=CSL),
+                self.genInitCode(1, collector.get_inline_tokens(), collector.get_tokens(), indent_re, noindent_re, CSL=CSL),
                 [ obj.genCode(1, CSL=CSL) for obj in self ],
             "",
         ]
 
-    def genInitCode(self, indent, inline_tokens, tokens, CSL=""):
+    def genInitCode(self, indent, inline_tokens, tokens, indent_re, noindent_re, CSL=""):
         """ Generate the initialisation code of the scanner """
         tab = tabs(indent)
         tab1 = tabs(indent+1)
         tab2 = tabs(indent+2)
+
+        if indent_re:
+            indent_prepro = [
+                tab  +  "def _init_indent_preprocessor(self):",
+                tab1 +      "self._indent_preprocessor = self.indent_deindent(%s, %s)"%(indent_re, noindent_re),
+                ""
+            ]
+        else:
+            indent_prepro = []
+
         if not CSL:
-            return [
+            init_scanner = [
                 tab  +  "def _init_scanner(self):",
                 tab1 +      "self._lexer = tpg.base._Scanner(",
                 [ tab2 +        "tpg.base._TokenDef(%s, %s),"%t for t in inline_tokens ],
@@ -251,7 +272,12 @@ class Parser(list):
                 "",
             ]
         else:
-            return []
+            init_scanner = []
+
+        return [
+            indent_prepro,
+            init_scanner,
+        ]
 
 class Object:
     """ Object (identifier or number) container """
@@ -608,7 +634,7 @@ def balance(alt):
     def tree(alts):
         if len(alts) >= 2:
             m = len(alts)/2
-            return Alternative(tree(alts[0:m]),tree(alts[m:]))
+            return Alternative(tree(alts[:m]),tree(alts[m:]))
         else:
             return alts[0]
     return tree(collect(alt))

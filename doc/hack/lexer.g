@@ -5,15 +5,15 @@ parser Foo:
 
 
 
-	token integer: '\d+' int ;
-	token arrow: '->' ;
-	separator spaces: '\s+' ;
+    token integer: '\d+' int ;
+    token arrow: '->' ;
+    separator spaces: '\s+' ;
 
 
-	S ->
-	
-		'\('
-		integer
-		arrow
-		'\)'
-		;
+    S ->
+
+        '\('
+        integer
+        arrow
+        '\)'
+        ;

@@ -1,4 +1,4 @@
 
 parser Foo:
 
-	S -> A B C ;
+    S -> A B C ;

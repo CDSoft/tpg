@@ -53,10 +53,10 @@ class TPGParser(base.ToyParser,):
             base._TokenDef(r"_kw_main", r"main"),
             base._TokenDef(r"_kw_set", r"set"),
             base._TokenDef(r"_tok_4", r"="),
+            base._TokenDef(r"_tok_5", r","),
             base._TokenDef(r"_kw_token", r"token"),
             base._TokenDef(r"_kw_separator", r"separator"),
-            base._TokenDef(r"_tok_5", r";"),
-            base._TokenDef(r"_tok_6", r","),
+            base._TokenDef(r"_tok_6", r";"),
             base._TokenDef(r"_tok_7", r"<"),
             base._TokenDef(r"_tok_8", r">"),
             base._TokenDef(r"_tok_9", r"\.\."),
@@ -85,14 +85,19 @@ class TPGParser(base.ToyParser,):
             base._TokenDef(r"ident", r"\w+", None, 0),
         )
 
+    def kw(self,name):
+        """ kw -> ident """
+        i = self._eat('ident')
+        self.check(i==name )
+
     def START(self,):
         """ START -> PARSERS """
         parsers = self.PARSERS()
         return parsers.genCode()
 
     def PARSERS(self,):
-        """ PARSERS -> OPTIONS (code)* ('parser' ident ('\(' ARGS '\)' | ) ':' (code | TOKEN | RULE | LEX_RULE)* | 'main' ':' (code)*)* """
-        opts = self.OPTIONS()
+        """ PARSERS -> GLOBAL_OPTIONS (code)* ('parser' ident ('\(' ARGS '\)' | ) ':' LOCAL_OPTIONS (code | TOKEN | RULE | LEX_RULE)* | 'main' ':' (code)*)* """
+        opts = self.GLOBAL_OPTIONS()
         parsers = Parsers(opts)
         __p1 = self._cur_token
         while 1:
@@ -128,7 +133,9 @@ class TPGParser(base.ToyParser,):
                     except self.TPGWrongMatch, e:
                         self.ParserError(e.last)
                     try:
-                        p = Parser(id,ids)
+                        opts = self.LOCAL_OPTIONS()
+                        p = Parser(id,ids,opts)
+                        self.current_parser = p
                         __p4 = self._cur_token
                         while 1:
                             try:
@@ -178,35 +185,60 @@ class TPGParser(base.ToyParser,):
                 break
         return parsers
 
-    def OPTIONS(self,):
-        """ OPTIONS -> ('set' ident ('=' string | ))* """
+    def GLOBAL_OPTIONS(self,):
+        """ GLOBAL_OPTIONS -> ('set' kw '=' string)* """
         opts = Options()
-        self.CSL = 0
         __p1 = self._cur_token
         while 1:
             try:
                 self._eat('_kw_set') # set
                 try:
-                    opt = self._eat('ident')
-                    __p2 = self._cur_token
+                    self.kw(r"magic")
                     try:
                         self._eat('_tok_4') # =
+                        val = self._eat('string')
+                        opts.set('magic', val) 
+                    except self.TPGWrongMatch, e:
+                        self.ParserError(e.last)
+                except self.TPGWrongMatch, e:
+                    self.ParserError(e.last)
+                __p1 = self._cur_token
+            except self.TPGWrongMatch:
+                self._cur_token = __p1
+                break
+        return opts
+
+    def LOCAL_OPTIONS(self,):
+        """ LOCAL_OPTIONS -> ('set' (kw | kw '=' string (',' string)?))* """
+        opts = Options()
+        __p1 = self._cur_token
+        while 1:
+            try:
+                self._eat('_kw_set') # set
+                try:
+                    __p2 = self._cur_token
+                    try:
+                        self.kw(r"CSL")
                         try:
-                            val = self._eat('string')
+                            opts.set('CSL', 1) 
                         except self.TPGWrongMatch, e:
                             self.ParserError(e.last)
                     except self.TPGWrongMatch:
                         self._cur_token = __p2
-                        val = 1
-                    if opt.startswith('no'): opt, val = opt[2:], None 
-                    __p3 = self._cur_token
-                    try:
-                        self.check(opt in [ 'magic', 'CSL' ])
-                    except self.TPGWrongMatch:
-                        self._cur_token = __p3
-                        self.error("Unknown option: %s"%opt )
-                    opts.set(opt,val) 
-                    if opt == 'CSL': self.CSL = val 
+                        self.kw(r"indent")
+                        try:
+                            self._eat('_tok_4') # =
+                            tabs = self._eat('string')
+                            opts.set('indent', tabs) 
+                            __p3 = self._cur_token
+                            try:
+                                self._eat('_tok_5') # ,
+                                regexp = self._eat('string')
+                                opts.set('noindent', regexp) 
+                            except self.TPGWrongMatch:
+                                self._cur_token = __p3
+                        except self.TPGWrongMatch, e:
+                            self.ParserError(e.last)
                 except self.TPGWrongMatch, e:
                     self.ParserError(e.last)
                 __p1 = self._cur_token
@@ -219,7 +251,7 @@ class TPGParser(base.ToyParser,):
         """ CHECK_CSL ->  |  """
         __p1 = self._cur_token
         try:
-            self.check(self.CSL )
+            self.check(self.current_parser.opts['CSL'] )
         except self.TPGWrongMatch:
             self._cur_token = __p1
             self.error("%s: Only for CSL lexers"%obj )
@@ -228,7 +260,7 @@ class TPGParser(base.ToyParser,):
         """ CHECK_NOT_CSL ->  |  """
         __p1 = self._cur_token
         try:
-            self.check(not self.CSL )
+            self.check(not self.current_parser.opts['CSL'] )
         except self.TPGWrongMatch:
             self._cur_token = __p1
             self.error("%s: Only for non CSL lexers"%obj )
@@ -257,7 +289,7 @@ class TPGParser(base.ToyParser,):
             except self.TPGWrongMatch:
                 self._cur_token = __p2
                 f = None
-            self._eat('_tok_5') # ;
+            self._eat('_tok_6') # ;
         except self.TPGWrongMatch, e:
             self.ParserError(e.last)
         return Token(t,e,f,s)
@@ -272,7 +304,7 @@ class TPGParser(base.ToyParser,):
             __p2 = self._cur_token
             while 1:
                 try:
-                    self._eat('_tok_6') # ,
+                    self._eat('_tok_5') # ,
                     arg = self.ARG()
                     args.add(arg)
                     __p2 = self._cur_token
@@ -382,7 +414,7 @@ class TPGParser(base.ToyParser,):
             __p2 = self._cur_token
             while 1:
                 try:
-                    self._eat('_tok_6') # ,
+                    self._eat('_tok_5') # ,
                     obj = self.OBJECT()
                     objs.add(obj)
                     __p2 = self._cur_token
@@ -427,7 +459,7 @@ class TPGParser(base.ToyParser,):
         self._eat('_tok_13') # ->
         try:
             e = self.EXPR()
-            self._eat('_tok_5') # ;
+            self._eat('_tok_6') # ;
         except self.TPGWrongMatch, e:
             self.ParserError(e.last)
         return Rule(s,e)
@@ -449,7 +481,7 @@ class TPGParser(base.ToyParser,):
             self.ParserError(e.last)
         try:
             e = self.EXPR()
-            self._eat('_tok_5') # ;
+            self._eat('_tok_6') # ;
         except self.TPGWrongMatch, e:
             self.ParserError(e.last)
         return LexRule(s,e)
@@ -656,7 +688,7 @@ class TPGParser(base.ToyParser,):
                         m = self.NB(0)
                         __p3 = self._cur_token
                         try:
-                            self._eat('_tok_6') # ,
+                            self._eat('_tok_5') # ,
                             try:
                                 M = self.NB(None)
                             except self.TPGWrongMatch, e:
@@ -716,6 +748,7 @@ class TPGParser(base.ToyParser,):
 
 
 
+
 _TPGParser = TPGParser()
 
 def _compile(grammar):
@@ -730,3 +763,4 @@ def translate(grammar):
 def compile(grammar):
     """ Compile a grammer into a Python code object """
     return _compile(grammar)[1]
+

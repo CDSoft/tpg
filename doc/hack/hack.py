@@ -8,9 +8,9 @@ force = 0
 
 to_be_removed = [
 """
-	def _init_scanner(self):
-		self._lexer = tpg.base._Scanner(
-		)
+    def _init_scanner(self):
+        self._lexer = tpg.base._Scanner(
+        )
 """,
 "import tpg.base"
 ]
@@ -28,7 +28,7 @@ def gen(name):
 		grammar = f.read()
 		f.close()
 		#code = tpg.compile(grammar).replace('\r','')
-		code = tpg.compile(grammar)
+		code = tpg.translate(grammar)
 		code = "".join([ "%s\n"%l for l in code.splitlines() if not comment(l) ])
 		for rem in to_be_removed:
 			code = code.replace(rem, '')

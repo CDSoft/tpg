@@ -113,6 +113,7 @@ class ToyParser:
             self.last = last
 
     def __init__(self, *args):
+        self._init_indent_preprocessor()
         self._init_scanner()
         try:
             self.init(*args)
@@ -160,6 +161,7 @@ class ToyParser:
 
     def parse(self, symbol, input, *args):
         """ Parses an input start at a given symbol """
+        input = self._indent_preprocessor(input)
         try:
             self._tokens = self._lexer.tokens(input)    # scan tokens
             self._cur_token = 0                         # start at the first token
@@ -196,10 +198,56 @@ class ToyParser:
         else:
             return self._tokens[-1].lineno
 
+    def _indent_preprocessor(self, source): return source
+    def _init_indent_preprocessor(self): pass        
+
+    INDENT_CHAR = chr(16)
+    DEINDENT_CHAR = chr(17)
+
+    def indent_deindent(self, indent, noindent):
+
+        if indent:
+
+            indent_re = re.compile(indent + "*")
+            noindent_re = re.compile(noindent or "$")
+            indent_char = ToyParser.INDENT_CHAR
+            deindent_char = ToyParser.DEINDENT_CHAR
+
+            def prepro(source):
+                indent_stack = [0]
+                lines = []
+                lineno = 0
+                for line in source.splitlines():
+                    lineno += 1
+                    spaces = indent_re.match(line).group()
+                    line = line[len(spaces):]
+                    if not line or noindent_re.match(line):
+                        lines.append(spaces)
+                    elif len(spaces) > indent_stack[-1]:
+                        indent_stack.append(len(spaces))
+                        lines.append(indent_char)
+                    else:
+                        while len(spaces) < indent_stack[-1]:
+                            indent_stack.pop(-1)
+                            lines.append(deindent_char)
+                        if len(spaces) != indent_stack[-1]:
+                            raise IndentationError(lineno)
+                    lines.append(line+"\n")
+                lines.append(deindent_char*(len(indent_stack)-1))
+                return "".join(lines)
+
+        else:
+
+            def prepro(source):
+                return source
+
+        return prepro
+
 class ToyParserCSL(ToyParser):
     """ Base class for CSL parsers (parsers with Context Sensitive Lexer) """
 
     def __init__(self, *args):
+        self._init_indent_preprocessor()
         self._patterns = {}
         try:
             self.init(*args)
@@ -266,6 +314,7 @@ class ToyParserCSL(ToyParser):
 
     def parse(self, symbol, input, *args):
         """ Parses an input start at a given symbol """
+        input = self._indent_preprocessor(input)
         try:
             self.setInput(input)
             return getattr(self, symbol)(*args)
@@ -307,3 +356,10 @@ class SemanticError(Error):
         self.error = error
     def __str__(self):
         return "%s (%s)"%(Error.__str__(self), self.error)
+
+class IndentationError(Exception):
+    def __init__(self, lineno):
+        self.lineno = lineno
+    def __str__(self):
+        return "%s: Indendation error"%self.lineno
+

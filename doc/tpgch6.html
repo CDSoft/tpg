@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2003-01-26 17:30:00"> 
+<meta name="date" content="2003-04-21 19:13:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
@@ -18,9 +18,9 @@ href="tpgch5.html#tailtpgch5.html" >prev-tail</a>] [<a
 href="#tailtpgch6.html">tail</a>] [<a 
 href="tpgpa2.html#tpgch6.html" >up</a>] </p></div>
    <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;6</span><br><a 
-  name="x19-370006"></a>Lexer</h2>
+  name="x19-400006"></a>Lexer</h2>
    <h3 class="sectionHead"><span class="titlemark">6.1   </span> <a 
-  name="x19-380006.1"></a>Regular expression syntax</h3>
+  name="x19-410006.1"></a>Regular expression syntax</h3>
 <!--l. 3--><p class="noindent">The lexer is based on the <span 
 class="cmti-10">re</span><a 
 href="tpg20.html" name="tpg20.html" ><sup>1</sup></a>
@@ -30,10 +30,10 @@ familiar with regular expressions.
 class="cmti-10">re </span>module except from the grouping
 syntax since it is used by TPG to decide which token is recognized.
    <h3 class="sectionHead"><span class="titlemark">6.2   </span> <a 
-  name="x19-390006.2"></a>Token definition</h3>
+  name="x19-420006.2"></a>Token definition</h3>
 <!--l. 11--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">6.2.1   </span> <a 
-  name="x19-400006.2.1"></a>Predefined tokens</h4>
+  name="x19-430006.2.1"></a>Predefined tokens</h4>
 <!--l. 13--><p class="noindent">Tokens can be explicitely defined by the <span 
 class="cmti-10">token </span>and <span 
 class="cmti-10">separator </span>keywords.
@@ -56,7 +56,7 @@ class="description">which can translate the matched text into a Python object. I
 <!--l. 24--><p class="indent">   Token definitions end with a <span 
 class="cmti-10">; </span>.
 <!--l. 26--><p class="indent">   See figure&nbsp; <a 
-href="#x19-400011">6.1<!--tex4ht:ref: lexer:tokens --></a> for examples.
+href="#x19-430011">6.1<!--tex4ht:ref: lexer:tokens --></a> for examples.
 <!--l. 28--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -64,7 +64,7 @@ href="#x19-400011">6.1<!--tex4ht:ref: lexer:tokens --></a> for examples.
 
                                                                                  
 <a 
-  name="x19-400011"></a>
+  name="x19-430011"></a>
                                                                                  
 
                                                                                  
@@ -76,7 +76,7 @@ class="hline"><td><hr></td></tr><tr
  valign="baseline" id="TBL-16-1-"><td  align="left" id="TBL-16-1-1"  
 class="td11"><br> <div align="center" class="caption"><table class="caption" 
 ><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;6.1: </td><td  
-class="content">Token definition examples</td></tr></table></div><!--tex4ht:label?: x19-400011 -->
+class="content">Token definition examples</td></tr></table></div><!--tex4ht:label?: x19-430011 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
@@ -115,12 +115,12 @@ tokens defined by the <span
 class="cmti-10">separator </span>keyword are considered as separators (white spaces or comments for
 example) and are wiped out by the lexer.
    <h4 class="subsectionHead"><span class="titlemark">6.2.2   </span> <a 
-  name="x19-410006.2.2"></a>Inline tokens</h4>
+  name="x19-440006.2.2"></a>Inline tokens</h4>
 <!--l. 46--><p class="noindent">Tokens can also be defined on the fly. Their definition are then inlined in the grammar rules. This feature
 may be useful for keywords or punctuation signs. Inline tokens can not be transformed by an action as
 predefined tokens. They always return the token in a string.
 <!--l. 51--><p class="indent">   See figure&nbsp; <a 
-href="#x19-410012">6.2<!--tex4ht:ref: lexer:inline_tokens --></a> for examples.
+href="#x19-440012">6.2<!--tex4ht:ref: lexer:inline_tokens --></a> for examples.
 <!--l. 53--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -128,7 +128,7 @@ href="#x19-410012">6.2<!--tex4ht:ref: lexer:inline_tokens --></a> for examples.
 
                                                                                  
 <a 
-  name="x19-410012"></a>
+  name="x19-440012"></a>
                                                                                  
 
                                                                                  
@@ -140,7 +140,7 @@ class="hline"><td><hr></td></tr><tr
  valign="baseline" id="TBL-17-1-"><td  align="left" id="TBL-17-1-1"  
 class="td11"><br> <div align="center" class="caption"><table class="caption" 
 ><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;6.2: </td><td  
-class="content">Inline token definition examples</td></tr></table></div><!--tex4ht:label?: x19-410012 -->
+class="content">Inline token definition examples</td></tr></table></div><!--tex4ht:label?: x19-440012 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
@@ -165,26 +165,26 @@ class="cmti-10">if </span>won&#8217;t
 be matched as a predefined <span 
 class="cmti-10">identifier</span>).
    <h3 class="sectionHead"><span class="titlemark">6.3   </span> <a 
-  name="x19-420006.3"></a>Token matching</h3>
+  name="x19-450006.3"></a>Token matching</h3>
 <!--l. 68--><p class="noindent">TPG works in two stages. The lexer first splits the input string into a list of tokens and then the parser
 parses this list.
 <!--l. 71--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">6.3.1   </span> <a 
-  name="x19-430006.3.1"></a>Splitting the input string</h4>
+  name="x19-460006.3.1"></a>Splitting the input string</h4>
 <!--l. 73--><p class="noindent">The lexer split the input string according to the token definitions (see&nbsp; <a 
-href="#x19-390006.2">6.2<!--tex4ht:ref: lexer:token_def --></a>). When the input string can
+href="#x19-420006.2">6.2<!--tex4ht:ref: lexer:token_def --></a>). When the input string can
 not be matched a <span 
 class="cmti-10">tpg.LexerError </span>exception is raised.
 <!--l. 75--><p class="indent">   The lexer may loop indefinitely if a token can match an empty string since empty strings are
 everywhere.
 <!--l. 77--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">6.3.2   </span> <a 
-  name="x19-440006.3.2"></a>Matching tokens in grammar rules</h4>
+  name="x19-470006.3.2"></a>Matching tokens in grammar rules</h4>
 <!--l. 79--><p class="noindent">Tokens are matched as symbols are recognized. Predefined tokens have the same syntax than non
 terminal symbols. The token text (or the result of the function associated to the token) can be saved by
 the infix <span 
 class="cmti-10">/ </span>operator (see figure&nbsp; <a 
-href="#x19-440013">6.3<!--tex4ht:ref: lexer:token_ret_val --></a>).
+href="#x19-470013">6.3<!--tex4ht:ref: lexer:token_ret_val --></a>).
 <!--l. 83--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -192,7 +192,7 @@ href="#x19-440013">6.3<!--tex4ht:ref: lexer:token_ret_val --></a>).
 
                                                                                  
 <a 
-  name="x19-440013"></a>
+  name="x19-470013"></a>
                                                                                  
 
                                                                                  
@@ -204,7 +204,7 @@ class="hline"><td><hr></td></tr><tr
  valign="baseline" id="TBL-18-1-"><td  align="left" id="TBL-18-1-1"  
 class="td11"><br> <div align="center" class="caption"><table class="caption" 
 ><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;6.3: </td><td  
-class="content">Token usage examples</td></tr></table></div><!--tex4ht:label?: x19-440013 -->
+class="content">Token usage examples</td></tr></table></div><!--tex4ht:label?: x19-470013 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
@@ -222,7 +222,7 @@ class="td11">                                                                   
    </td></tr></table></div><hr class="endfigure">
 <!--l. 90--><p class="indent">   Inline tokens have a similar syntax. You just write the regular expression (in a string). Its text can
 also be save (see figure&nbsp; <a 
-href="#x19-440024">6.4<!--tex4ht:ref: lexer:inline_token_ret_val --></a>).
+href="#x19-470024">6.4<!--tex4ht:ref: lexer:inline_token_ret_val --></a>).
 <!--l. 92--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -230,7 +230,7 @@ href="#x19-440024">6.4<!--tex4ht:ref: lexer:inline_token_ret_val --></a>).
 
                                                                                  
 <a 
-  name="x19-440024"></a>
+  name="x19-470024"></a>
                                                                                  
 
                                                                                  
@@ -242,7 +242,7 @@ class="hline"><td><hr></td></tr><tr
  valign="baseline" id="TBL-19-1-"><td  align="left" id="TBL-19-1-1"  
 class="td11"><br> <div align="center" class="caption"><table class="caption" 
 ><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;6.4: </td><td  
-class="content">Token usage examples</td></tr></table></div><!--tex4ht:label?: x19-440024 -->
+class="content">Token usage examples</td></tr></table></div><!--tex4ht:label?: x19-470024 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
@@ -258,6 +258,117 @@ class="td11">                                                                   
 
                                                                                  
    </td></tr></table></div><hr class="endfigure">
+   <h3 class="sectionHead"><span class="titlemark">6.4   </span> <a 
+  name="x19-480006.4"></a>Special tokens</h3>
+<!--l. 101--><p class="noindent">Their are some special tokens that have been requested by some users but these tokens can not be easily
+described by TPG using classical token definition (see&nbsp; <a 
+href="#x19-420006.2">6.2<!--tex4ht:ref: lexer:token_def --></a>).
+<!--l. 104--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">6.4.1   </span> <a 
+  name="x19-490006.4.1"></a>Indent and deindent tokens</h4>
+<!--l. 106--><p class="noindent">TPG is written in Python so is should be easy to handle INDENT and DEINDENT tokens as in Python
+language. These tokens are introduced in the source to be parsed by a preprocessor, before the lexer is
+activated. Spaces in the beginning the lines are replaced by indent and deindent tokens when needed.
+These special tokens are characters which ASCII codes are 16 and 17. These characters may not be used
+in regular text files.
+<!--l. 112--><p class="noindent">
+   <h5 class="subsubsectionHead"><a 
+  name="x19-500006.4.1"></a>Indent definition</h5>
+<!--l. 114--><p class="noindent">The <span 
+class="cmti-10">indent </span>option (see&nbsp; <a 
+href="tpgch5.html#x18-270005.3">5.3<!--tex4ht:ref: grammar:options --></a>) has been added to define the indentation. It has two values. The first one is
+a regular expression describing the indentation, usually spaces and tabulations. The second one is a
+regular expression describing the lines not to be taken into account, usually comments. This
+second parameter describes the beginning of the line, i.e. <span 
+class="cmti-10">&#8221;#&#8221; </span>will match lines starting with a
+<span 
+class="cmti-10">#</span>.
+<!--l. 121--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x19-500015"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-20-" ><colgroup id="TBL-20-1g"><col 
+id="TBL-20-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-20-1-"><td  align="left" id="TBL-20-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;6.5: </td><td  
+class="content">Indent and deindent definition example</td></tr></table></div><!--tex4ht:label?: x19-500015 -->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;set&nbsp;indent&nbsp;=&nbsp;&#34;\s&#34;,&nbsp;&#34;#&#34;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-20-2-"><td  align="left" id="TBL-20-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+   <h5 class="subsubsectionHead"><a 
+  name="x19-510006.4.1"></a>Indent and deindent usage</h5>
+<!--l. 130--><p class="noindent">When the <span 
+class="cmti-10">indent </span>option is active, <span 
+class="cmti-10">indent </span>and <span 
+class="cmti-10">deindent </span>tokens are defined. They can be used as any other
+token.
+<!--l. 133--><p class="indent">   <hr class="figure"><div align="center" class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  name="x19-510016"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-21-" ><colgroup id="TBL-21-1g"><col 
+id="TBL-21-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-21-1-"><td  align="left" id="TBL-21-1-1"  
+class="td11"><br> <div align="center" class="caption"><table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;6.6: </td><td  
+class="content">Indent and deindent example</td></tr></table></div><!--tex4ht:label?: x19-510016 -->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+parser&nbsp;IndentParser:
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;set&nbsp;indent&nbsp;=&nbsp;&#34;\s&#34;,&nbsp;&#34;#&#34;
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;BLOCK&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;&nbsp;&nbsp;INSTR
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;indent
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BLOCK
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deindent
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)*;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-21-2-"><td  align="left" id="TBL-21-2-1"  
+class="td11">                                                                                                                               </td> </tr><!--"| p{\textwidth } |"--></table>
+</div>
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
                                                                                  
 
                                                                                  
@@ -267,5 +378,5 @@ href="tpgch5.html" >prev</a>] [<a
 href="tpgch5.html#tailtpgch5.html" >prev-tail</a>] [<a 
 href="tpgch6.html" >front</a>] [<a 
 href="tpgpa2.html#tpgch6.html" >up</a>] </p></div><a 
-  name="tailtpgch6.html"></a>    
+  name="tailtpgch6.html"></a>     
 </body></html> 

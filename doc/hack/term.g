@@ -4,13 +4,13 @@ parser Foo:
 
 
 
-	token predef: 'bar' ;
+    token predef: 'bar' ;
 
-	
-	S ->
 
-		'inline'
-		predef
-		'inline'/s1
-		predef/s2
-		;
+    S ->
+
+        'inline'
+        predef
+        'inline'/s1
+        predef/s2
+        ;

@@ -1,3 +1,20 @@
+2003-04-20  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 2.1.5:
+        Optionnal indent and deindent tokens (indent option).
+        Global and local (to a single parser) options.
+
+    * base.py:
+        Indent and deindent preprocessor.
+
+    * codegen.py:
+        Distinction between global and local options.
+        Indent and deindent preprocessor code generation.
+
+    * parser.g:
+        Distinction between global and local options.
+        Indent and deindent definition.
+
 2002-10-20  Christophe Delord <christophe.delord@free.fr>
 
     * Version 2.1.4:

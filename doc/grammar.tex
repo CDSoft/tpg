@@ -49,16 +49,21 @@ Comments in TPG start with \emph{\#} and run until the end of the line.
 
 \section{Options}											\label{grammar:options}
 
-Some options can be set at the beginning of TPG grammars.
+Some options can be set at the beginning of TPG grammars (global options)
+or at the beginning of each parser (local options).
 The syntax for options is:
 
 \begin{description}
 	\item [set \emph{name}] sets the boolean \emph{name} option to \emph{true}.
-	\item [set \emph{name} = "\emph{value}"] sets the \emph{name} option to \emph{value}.
-	\item [set no\emph{name}] disables the \emph{name} option.
+	\item [set \emph{name} = "\emph{$value$}"] sets the \emph{name} option to \emph{$value$}.
+	\item [set \emph{name} = "\emph{$value_1$}", ..., "\emph{$value_n$}"] sets the \emph{name} option to the list \emph{$value_1$}, ..., \emph{$value_n$} when more than one value in requested.
 \end{description}
 
-\subsection{Magic option}
+\subsection{Global options}
+
+Global options are defined at the beginning of the file and are active for all parsers.
+
+\subsubsection{Magic option}
 
 The magic option tells TPG which interpreter is called when the script is run.
 The first line of the generated code will start with \verb$#!$ and contains the command line to execute the appropriate interpreter (\verb$/usr/bin/env python$ for example).
@@ -66,17 +71,30 @@ This has no effect on M\$ Windows.
 
 \begin{description}
 	\item [set magic = "/usr/bin/env python"] adds \verb$#!/usr/bin/env python$ to the first line.
-	\item [set nomagic] generates no magic line. This is the default behaviour.
 \end{description}
 
-\subsection{CSL options}									\label{grammar:CSL}
+\subsection{Local options}
+
+Local options are defined at the beginning of each parser and only apply to the parser in which they are defined.
+
+\subsubsection{CSL option}									\label{grammar:CSL}
 
 By default TPG lexers are context free.
 The \emph{CSL} option tells TPG to generate a context sensitive lexer (see~\ref{tpg:CSL}).
 
 \begin{description}
 	\item [set CSL] generates context sensitive lexers.
-	\item [set noCSL] generates context free lexers. This is the default behaviour.
+\end{description}
+
+\subsubsection{Indent option}                               \label{grammar:indent_option}
+
+This option adds \emph{indent} and \emph{deindent} tokens to the current parser.
+These tokens are similar to INDENT and DEINDENT tokens in Python language.
+
+\begin{description}
+    \item [set indent = "indent\_re", "no\_indent\_re"] tells TPG how to recognize indentation.
+        \emph{indent\_re} is a regular expression for indentation (usually spaces and tabulations).
+        \emph{no\_indent\_re} is a regular expression for lines to be ignores (usually comments).
 \end{description}
 
 \section{Python code}										\label{grammar:code}

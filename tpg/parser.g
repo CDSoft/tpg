@@ -46,14 +46,18 @@ parser TPGParser:
     token star: "\*";
     token ident: "\w+";
 
+    kw<name> -> ident/i check {{ i==name }};
+
     START/parsers.genCode<> -> PARSERS/parsers ;
 
     PARSERS/parsers ->
-        OPTIONS/opts
+        GLOBAL_OPTIONS/opts
         parsers = Parsers<opts>
         ( code/c parsers-Code<c> )*
         (   'parser' ! ident/id ! ( '\(' ! ARGS/ids '\)' | ids = Args<> ) ':' !
-            p = Parser<id, ids>
+            LOCAL_OPTIONS/opts
+            p = Parser<id, ids, opts>
+            self.current_parser = p
             (   code/c p-Code<c>
             |   TOKEN/t p-t
             |   RULE/r p-r
@@ -64,22 +68,29 @@ parser TPGParser:
         )*
         ;
 
-    OPTIONS/opts ->
+    GLOBAL_OPTIONS/opts ->
         opts = Options<>
-        self.CSL = 0
-        (   'set' ! ident/opt ( '=' ! string/val | val = 1 )
-            {{ if opt.startswith('no'): opt, val = opt[2:], None }}
-            (   check {{opt in [ 'magic', 'CSL' ]}}
-            |   error {{ "Unknown option: %s"%opt }}
+        (   'set' !
+            (   kw<'magic'> ! '=' string/val        {{ opts.set('magic', val) }}
             )
-            {{ opts.set(opt,val) }}
-            {{ if opt == 'CSL': self.CSL = val }}
         )*
         ;
 
-    CHECK_CSL<obj> -> check {{ self.CSL }} | error {{ "%s: Only for CSL lexers"%obj }} ;
+    LOCAL_OPTIONS/opts ->
+        opts = Options<>
+        (   'set' !
+            (   kw<'CSL'> !                         {{ opts.set('CSL', 1) }}
+            |   kw<'indent'> ! '='
+                    string/tabs                     {{ opts.set('indent', tabs) }}
+                    ( ',' string/regexp             {{ opts.set('noindent', regexp) }}
+                    )?
+            )
+        )*
+        ;
 
-    CHECK_NOT_CSL<obj> -> check {{ not self.CSL }} | error {{ "%s: Only for non CSL lexers"%obj }} ;
+    CHECK_CSL<obj> -> check {{ self.current_parser.opts['CSL'] }} | error {{ "%s: Only for CSL lexers"%obj }} ;
+
+    CHECK_NOT_CSL<obj> -> check {{ not self.current_parser.opts['CSL'] }} | error {{ "%s: Only for non CSL lexers"%obj }} ;
 
     TOKEN/Token<t,e,f,s> ->
         (   'token' s = 0

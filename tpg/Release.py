@@ -2,9 +2,9 @@
 
 name = 'TPG'
 
-version = '2.1.4'
+version = '2.1.5'
 
-date = '2002-10-20'
+date = '2003-05-18'
 
 description = "A Python parser generator"
 
