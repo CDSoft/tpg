@@ -1,4 +1,4 @@
-#!/usr/bin/python2.2
+#!/usr/bin/env python
 
 # conversion d'expressions infixes/préfixes/postfixes
 

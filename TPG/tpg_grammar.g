@@ -1,5 +1,5 @@
 set noruntime		# the runtime is in the grammar
-set magic = "/usr/bin/env python2.2"
+set magic = "/usr/bin/env python"
 
 {{
 #<copyright>
@@ -35,6 +35,10 @@ set magic = "/usr/bin/env python2.2"
 # History                                                 #
 # #######                                                 #
 #                                                         #
+# v 2.0.2 - 23/06/2002                                    #
+#         - doc strings modified                          #
+#         - add python code as objects (params, ret value)#
+#         - bug fix in the grammar                        #
 # v 2.0.1 - 05/06/2002                                    #
 #         - minor changes                                 #
 #         - bug fix (scanner without runtime didn't find  #
@@ -51,8 +55,8 @@ import re
 
 import tpg
 
-__date__ = "05 june 2002"
-__version__ = "2.0.1"
+__date__ = "23 june 2002"
+__version__ = "2.0.2"
 __author__ = "Christophe Delord <christophe.delord@free.fr>"
 
 def compile(grammar):
@@ -87,6 +91,11 @@ def _if(cond, trueval, falseval):
 	""" C-ternary operator like """
 	if cond: return trueval
 	else   : return falseval
+
+def _p(prec0, prec1):
+	""" Add parenthesis according to precedences """
+	if prec1 < prec0: return "(%s)"
+	return "%s"
 
 class Parsers(list):
 	""" List of parsers """
@@ -166,11 +175,13 @@ class Code:
 	def __str__(self): return self.code
 
 	def genCode(self, indent=0, vargen=None, p=None):
-		return reindent(self.code.splitlines(), indent)
+		return "\n".join(reindent(self.code.splitlines(), indent))
 
 	def collect(self, collector): pass
 
-	def doc(self): return ""
+	def doc(self, prec): return ""
+
+	def empty(self): return 1
 
 def _2str(st):
 	return 'r"%s"'%st
@@ -277,7 +288,7 @@ class Object:
 
 	def genCode(self): return self.name
 
-	def doc(self): return self.name
+	def doc(self, prec): return self.name
 
 class String:
 	""" String container """
@@ -289,7 +300,7 @@ class String:
 
 	def genCode(self): return self.name
 
-	def doc(self): return self.name
+	def doc(self, prec): return self.name
 
 class Objects(list):
 	""" Object list container (tuples, arguments, ...) """
@@ -301,7 +312,8 @@ class Objects(list):
 
 	def genCode(self): return ','.join([o.genCode() for o in self])
 
-	def doc(self): return ','.join([o.doc() for o in self])
+	def doc(self, prec): return _p(prec,self.prec)%(','.join([o.doc(self.prec) for o in self]))
+	prec = 100
 
 class Composition:
 	""" Composition container (object.ident) """
@@ -311,7 +323,8 @@ class Composition:
 
 	def __str__(self): return "%s.%s"%(self.o1, self.o2)
 
-	def doc(self): return "%s.%s"%(self.o1.doc(), self.o2.doc())
+	def doc(self, prec): return _p(prec,self.prec)%("%s.%s"%(self.o1.doc(self.prec), self.o2.doc(self.prec)))
+	prec = 120
 
 	def genCode(self): return "%s.%s"%(self.o1.genCode(), self.o2.genCode())
 
@@ -324,8 +337,9 @@ class Application:
 	def __str__(self):
 		return "%s(%s)"%(self.o, ','.join(map(str,self.as)))
 
-	def doc(self):
-		return "%s<%s>"%(self.o.doc(), self.as.doc())
+	def doc(self, prec):
+		return _p(prec,self.prec)%("%s<%s>"%(self.o.doc(self.prec), self.as.doc(self.prec)))
+	prec = 120
 
 	def genCode(self): return "%s(%s)"%(self.o.genCode(), self.as.genCode())
 
@@ -338,8 +352,9 @@ class Indexation:
 	def __str__(self):
 		return "%s[%s]"%(self.o, self.i)
 
-	def doc(self):
-		return "%s[%s]"%(self.o.doc(), self.i.doc())
+	def doc(self, prec):
+		return _p(prec,self.prec)%("%s[%s]"%(self.o.doc(self.prec), self.i.doc(self.prec)))
+	prec = 120
 
 	def genCode(self):
 		return "%s[%s]"%(self.o.genCode(), self.i.genCode())
@@ -353,8 +368,9 @@ class Slice:
 	def __str__(self):
 		return "%s:%s"%(self.i, self.j)
 
-	def doc(self):
-		return "%s:%s"%(self.i.doc(), self.j.doc())
+	def doc(self, prec):
+		return _p(prec,self.prec)%("%s:%s"%(self.i.doc(self.prec), self.j.doc(self.prec)))
+	prec = 110
 
 	def genCode(self):
 		return "%s:%s"%(self.i.genCode(), self.j.genCode())
@@ -407,14 +423,15 @@ class Rule:
 		ret = self.symbol.genRetCode()
 		return [
 			self.symbol.genDefCode(indent),							# def symbol(args):
-			"\t"*(indent+1)+self.doc(),								#	""" head -> body """
+			"\t"*(indent+1)+self.doc(self.prec),					#	""" head -> body """
 			self.expr.genCode(indent+1,vargen=VariableGenerator()),	#	code
 			_if(ret, "\t"*(indent+1)+"return %s"%ret, []),			#	return code
 			"",
 		]
 
-	def doc(self):
-		return '""" %s -> %s """'%(self.symbol.doc(), self.expr.doc())
+	def doc(self, prec):
+		return '""" %s -> %s """'%(self.symbol.doc(self.prec), self.expr.doc(self.prec))
+	prec = 0
 
 class Symbol:
 	""" Symbol container """
@@ -448,7 +465,9 @@ class Symbol:
 		if self.ret: return self.ret.genCode()
 		else: return ""
 
-	def doc(self): return self.name
+	def doc(self, prec): return self.name
+
+	def empty(self): return 0
 
 class Sequence(list):
 	""" Container for a sequence in a rule """
@@ -461,10 +480,16 @@ class Sequence(list):
 	def collect(self, collector):
 		for i in self: i.collect(collector)
 
-	def doc(self): return " ".join([(isinstance(e,Alternative) and "(%s)" or "%s")%e.doc() for e in self])
+	def doc(self, prec): return _p(prec,self.prec)%" ".join([e.doc(self.prec) for e in self if not e.empty()])
+	prec = 20
 
 	def genCode(self, indent, vargen=None, p=None):
 		return [ e.genCode(indent,vargen=vargen) for e in self ]
+
+	def empty(self):
+		for e in self:
+			if not e.empty(): return 0
+		return 1
 
 class Alternative:
 	""" Container for a choice in a rule """
@@ -479,7 +504,8 @@ class Alternative:
 		self.a.collect(collector)
 		self.b.collect(collector)
 
-	def doc(self): return "%s | %s"%(self.a.doc(), self.b.doc())
+	def doc(self, prec): return _p(prec,self.prec)%("%s | %s"%(self.a.doc(self.prec), self.b.doc(self.prec)))
+	prec = 10
 
 	def genCode(self, indent, vargen=None, p=None):
 		tab = "\t"*indent
@@ -497,6 +523,9 @@ class Alternative:
 				self.b.genCode(indent+1,vargen=vargen,p=p),
 		]
 
+	def empty(self):
+		return self.a.empty() and self.b.empty()
+
 class MakeAST:
 	""" Container for an AST affectation (LHS=RHS) """
 
@@ -508,10 +537,12 @@ class MakeAST:
 
 	def collect(self, collector): pass
 
-	def doc(self): return ""
+	def doc(self, prec): return ""
 
 	def genCode(self, indent, vargen=None, p=None):
 		return "\t"*indent + "%s = %s"%(self.LHS.genCode(), self.RHS.genCode())
+
+	def empty(self): return 1
 
 class AddAST:
 	""" Container for an AST update (LHS-RHS) """
@@ -524,16 +555,19 @@ class AddAST:
 
 	def collect(self, collector): pass
 
-	def doc(self): return ""
+	def doc(self, prec): return ""
 
 	def genCode(self, indent, vargen=None, p=None):
 		return "\t"*indent + "%s.add(%s)"%(self.LHS.genCode(), self.RHS.genCode())
+
+	def empty(self): return 1
 
 class Rep:
 	""" Container for a repeated expression (*, +, ?, {m,n}) """
 
 	def __init__(self, parser, m, M, e):
 		if None not in (m, M) and m>M: parser.WrongMatch()
+		if e.empty(): parser.WrongMatch()
 		self.e = e	# expression
 		self.m = m	# min loops
 		self.M = M	# max loops
@@ -543,14 +577,14 @@ class Rep:
 	def collect(self, collector):
 		self.e.collect(collector)
 
-	def doc(self):
+	def doc(self, prec):
 		if self.m == 0:
 			if self.M == 1:
 				r = "?"
 			elif self.M is None:
 				r = "*"
 			else:
-				r = "{,%M}"%self.M
+				r = "{,%s}"%self.M
 		elif self.m == 1:
 			if self.M is None:
 				r = "+"
@@ -559,9 +593,12 @@ class Rep:
 		else:
 			if self.M is None:
 				r = "{%s,}"%self.m
+			elif self.m == self.M:
+				r = "{%s}"%self.m
 			else:
 				r = "{%s,%s}"%(self.m, self.M)
-		return "(%s)%s"%(self.e.doc(), r)
+		return _p(prec,self.prec)%self.e.doc(self.prec) + r
+	prec = 30
 
 	def genCode(self, indent, vargen=None, p=None):
 		tab = "\t"*indent
@@ -569,40 +606,50 @@ class Rep:
 		p = vargen.next("__p")
 		if (m, M) == (0, 1):	# "e ?"
 			return [
-				tab + "%s = self._cur_token"%p,					# get current token
+				tab + "%s = self._cur_token"%p,							# get current token
 				tab + "try:",
-					self.e.genCode(indent+1, vargen=vargen),	# try to match e once
-				tab + "except tpg.TPGWrongMatch:",				# if failed
-				tab + "\tself._cur_token = %s"%p,				# go back to the current token
+					self.e.genCode(indent+1, vargen=vargen, p=p),		# try to match e once
+				tab + "except tpg.TPGWrongMatch:",						# if failed
+				tab + "\tself._cur_token = %s"%p,						# go back to the current token
 			]
 		elif (m, M) == (0, None):	# "e *"
 			return [
-				tab + "%s = self._cur_token"%p,						# get current token
-				tab + "while 1:",									# loop as much as possible
+				tab + "%s = self._cur_token"%p,							# get current token
+				tab + "while 1:",										# loop as much as possible
 				tab + "\ttry:",
-						self.e.genCode(indent+2, vargen=vargen),	# try to match e
-				tab + "\t\t%s = self._cur_token"%p,					# if succeded get the new current token
+						self.e.genCode(indent+2, vargen=vargen,p=p),	# try to match e
+				tab + "\t\t%s = self._cur_token"%p,						# if succeded get the new current token
 				tab + "\texcept tpg.TPGWrongMatch:",
-				tab + "\t\tself._cur_token = %s"%p,					# otherwise go back to the current token
-				tab + "\t\tbreak",									# and exit the loop
+				tab + "\t\tself._cur_token = %s"%p,						# otherwise go back to the current token
+				tab + "\t\tbreak",										# and exit the loop
 			]
 		else:						# "e +" or "e {m,M}"
 			n = vargen.next("__n")
+			if m <= 1: p1 = p		# for {0,*} or {1,*}, use the same position variable
+			else: p1 = None			# for {2..,*} use a new variable to be able to backtrack on the first
 			return [
-				tab + "%s = self._cur_token"%p,						# get current token
-				tab + "%s = 0"%n,									# loop counter = 0
-				tab + "while %s:"%_if(M is None,"1","%s<%s"%(n,M)),	# loop until counter = M
+				tab + "%s = self._cur_token"%p,							# get current token
+				tab + "%s = 0"%n,										# loop counter = 0
+				tab + "while %s:"%_if(M is None,"1","%s<%s"%(n,M)),		# loop until counter = M
 				tab + "\ttry:",
-						self.e.genCode(indent+2, vargen=vargen),	# try to match e
-				tab + "\t\t%s += 1"%n,								# inc loop counter
-				tab + "\t\t%s = self._cur_token"%p,					# if succeded get the new current token
+						self.e.genCode(indent+2, vargen=vargen, p=p1),	# try to match e
+				tab + "\t\t%s += 1"%n,									# inc loop counter
+				tab + "\t\t%s = self._cur_token"%p,						# if succeded get the new current token
 				tab + "\texcept tpg.TPGWrongMatch:",
-				tab + "\t\tif %s >= %s:"%(n, m),					# otherwise if enough loops
-				tab + "\t\t\tself._cur_token = %s"%p,				# go back to the current token
-				tab + "\t\t\tbreak",								# and exit the loop
+				_if( m>0,
+				[
+				tab + "\t\tif %s >= %s:"%(n, m),						# otherwise if enough loops
+				tab + "\t\t\tself._cur_token = %s"%p,					# go back to the current token
+				tab + "\t\t\tbreak",									# and exit the loop
 				tab + "\t\telse:",
-				tab + "\t\t\tself.WrongMatch()",					# otherwise fail
+				tab + "\t\t\tself.WrongMatch()",						# otherwise fail
+				],
+				[
+				tab + "\t\tself._cur_token = %s"%p,				# go back to the current token
+				])
 			]
+
+	def empty(self): return self.e.empty()
 
 class InlineToken:
 	""" Container for inline tokens """
@@ -629,7 +676,9 @@ class InlineToken:
 			comment = ""
 		return "\t"*indent + ret + "self._eat('%s')%s"%(name, comment)
 
-	def doc(self): return "'%s'"%self.expr
+	def doc(self, prec): return "'%s'"%self.expr
+
+	def empty(self): return 0
 
 class Mark:
 	""" Container for marks """
@@ -644,7 +693,9 @@ class Mark:
 	def genCode(self, indent, vargen=None, p=None):
 		return "\t"*indent + "%s = self._mark()"%self.obj.genCode()
 
-	def doc(self): return ""
+	def doc(self, prec): return ""
+
+	def empty(self): return 1
 
 class Extraction:
 	""" Container for text extraction """
@@ -660,7 +711,9 @@ class Extraction:
 	def genCode(self, vargen=None, p=None):
 		return "self._extract(%s,%s)"%(self.start.genCode(), self.end.genCode())
 
-	def doc(self): return ""
+	def doc(self, prec): return ""
+
+	def empty(self): return 1
 
 #<runtime>
 class _TokenDef:
@@ -894,6 +947,7 @@ parser TPGParser:
 			ident/o SOBJECT<Object<o>>/o
 		|	string/o SOBJECT<String<o>>/o
 		|	'<' OBJECTS/o '>'
+		|	code/c {{ self.check(c.count('\n')==0) }} o = Code<c>
 		;
 
 	SOBJECT<o>/o ->
@@ -954,7 +1008,7 @@ parser TPGParser:
 		)?
 		;
 
-	NB<n>/eval<n> -> ident/n ? ;
+	NB<n>/n -> ( ident/n eval<n> )? ;
 
 	INLINE_TOKEN/InlineToken<expr, ret> ->
 		string/expr

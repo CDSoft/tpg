@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.2
+#!/usr/bin/env python
 
 #........[ TOY PARSER GENERATOR ].........................!
 #                                                        ! !
@@ -16,36 +16,39 @@ import re
 
 
 class _TokenDef:
+	""" Token definition for the scanner """
 
 	ident_pat = re.compile(r'^\w+$')
 	
 	def __init__(self, tok, regex=None, action=None, separator=0):
 		if regex is None: regex = tok
-		if self.ident_pat.match(regex): regex += r'\b'
-		if action is None: action = lambda x:x
-		elif not callable(action): action = lambda x,y=action:y
-		self.tok = tok
-		self.regex = '(?P<%s>%s)'%(tok, regex)
-		self.action = action
-		self.separator = separator
+		if self.ident_pat.match(regex): regex += r'\b'	# match 'if\b' instead of 'if'
+		if action is None: action = lambda x:x			# default action if identity
+		elif not callable(action): action = lambda x,y=action:y	# action must be callable
+		self.tok = tok							# token name
+		self.regex = '(?P<%s>%s)'%(tok, regex)	# token regexp
+		self.action = action					# token modifier
+		self.separator = separator				# is this a separator ?
 
 	def __str__(self):
 		return "token %s: %s %s;"%(self.tok, self.regex, self.action)
 
 class _Token:
+	""" Token instanciated while scanning """
 
 	def __init__(self, tok, text, val, lineno, start, end):
-		self.tok = tok
-		self.text = text
-		self.val = val
-		self.lineno = lineno
-		self.start = start
-		self.end = end
+		self.tok = tok			# token type
+		self.text = text		# matched text
+		self.val = val			# value (ie action(text))
+		self.lineno = lineno	# token line number
+		self.start = start		# token start index
+		self.end = end			# token end index
 
 	def __str__(self):
 		return "%d:%s[%s]"%(self.lineno, self.tok, self.val)
 
 class _Eof:
+	""" EOF token """
 
 	def __init__(self, lineno='EOF'):
 		self.lineno = lineno
@@ -56,40 +59,43 @@ class _Eof:
 		return "%s:Eof"%self.lineno
 
 class _Scanner:
+	""" Lexical scanner """
 
 	def __init__(self, *tokens):
-		regex = []
-		actions = {}
-		separator = {}
+		regex = []				# regex list
+		actions = {}			# dict token->action
+		separator = {}			# set of separators
 		for token in tokens:
 			regex.append(token.regex)
 			actions[token.tok] = token.action
 			separator[token.tok] = token.separator
-		self.regex = re.compile('|'.join(regex))
+		self.regex = re.compile('|'.join(regex))	# regex is the choice between all tokens
 		self.actions = actions
 		self.separator = separator
 
 	def tokens(self, input):
+		""" Scan input and return a list of _Token instances """
 		self.input = input
-		i = 0
+		i = 0				# start of the next token
 		l = len(input)
-		lineno = 1
-		toks = []
-		while i<l:
-			token = self.regex.match(input,i)
-			if not token:
+		lineno = 1			# current token line number
+		toks = []			# token list
+		while i<l:												# while not EOF
+			token = self.regex.match(input,i)					# get next token
+			if not token:										# if none raise LexicalError
 				last = toks and toks[-1] or _Eof(lineno)
 				raise LexicalError(last)
-			j = token.end()
-			for (t,v) in token.groupdict().items():
+			j = token.end()										# end of the current token
+			for (t,v) in token.groupdict().items():				# search the matched token
 				if v is not None and self.actions.has_key(t):
-					tok = t
-					text = token.group()
-					val = self.actions[tok](text)
+					tok = t										# get its type
+					text = token.group()						# get matched text
+					val = self.actions[tok](text)				# compute its value
 					break
-			if not self.separator[tok]: toks.append(_Token(tok, text, val, lineno, i, j))
-			lineno += input.count('\n', i, j)
-			i = j
+			if not self.separator[tok]:								# if the matched token is a real token
+				toks.append(_Token(tok, text, val, lineno, i, j))	# store it
+			lineno += input.count('\n', i, j)					# update lineno
+			i = j												# go to the start of the next token
 		return toks
 
 class TPGWrongMatch(Exception):
@@ -115,46 +121,57 @@ class SyntaxError(Exception):
 			return "1: Syntax error"
 
 class ToyParser:
+	""" Base class for every TPG parsers """
 
-	def _init_scanner(self, *tokens):
-		self._lexer = _Scanner(*[_TokenDef(*t) for t in tokens])
-		self._cur_token = 0
+	def __init__(self):
+		self._init_scanner()
 
 	def _eat(self, token):
+		""" Eat one token """
 		try:
-			t = self._tokens[self._cur_token]
-		except IndexError:
-			self.WrongMatch()
-		if t.tok == token:
-			self._cur_token += 1
-			return t.val
+			t = self._tokens[self._cur_token]	# get current token
+		except IndexError:						# if EOF
+			self.WrongMatch()					# raise TPGWrongMatch to backtrack
+		if t.tok == token:						# if current is an expected token
+			self._cur_token += 1				# go to the next one
+			return t.val						# and return its value
 		else:
-			self.WrongMatch()
+			self.WrongMatch()					# else backtrack
 
 	def WrongMatch(self):
+		""" Backtracking """
 		try:
 			raise TPGWrongMatch(self._tokens[self._cur_token])
 		except IndexError:
 			raise TPGWrongMatch(_Eof())
 
+	def check(self, cond):
+		""" Check a condition while parsing """
+		if not cond:			# if condition is false
+			self.WrongMatch()	# backtrack
+
 	def __call__(self, input, *args):
+		""" Parse the axiom of the grammar (if any) """
 		return self.parse('START', input, *args)
 
 	def parse(self, symbol, input, *args):
+		""" Parse an input start at a given symbol """
 		try:
-			self._tokens = self._lexer.tokens(input)
-			self._cur_token = 0
-			ret = getattr(self, symbol)(*args)
-			if self._cur_token < len(self._tokens):
-				self.WrongMatch()
-			return ret
-		except TPGWrongMatch, e:
-			raise SyntaxError(e.last)
+			self._tokens = self._lexer.tokens(input)	# scan tokens
+			self._cur_token = 0							# start at the first token
+			ret = getattr(self, symbol)(*args)			# call the symbol
+			if self._cur_token < len(self._tokens):		# if there are unparsed tokens
+				self.WrongMatch()						# raise an error
+			return ret									# otherwise return the result
+		except TPGWrongMatch, e:					# convert an internal TPG error
+			raise SyntaxError(e.last)				# into a SyntaxError
 
 	def _mark(self):
+		""" Get a mark for the current token """
 		return self._cur_token
 
 	def _extract(self, a, b):
+		""" Extract text between 2 marks """
 		if not self._tokens: return ""
 		if a<len(self._tokens):
 			start = self._tokens[a].start
@@ -167,12 +184,13 @@ class ToyParser:
 		return self._lexer.input[start:end]
 
 	def lineno(self, mark=None):
+		""" Get the line number of a mark (or the current token if none) """
 		if mark is None: mark = self._cur_token
 		if not self._tokens: return 0
 		if mark<len(self._tokens):
-			return self._tokens[mark].start
+			return self._tokens[mark].lineno
 		else:
-			return self._tokens[-1].end
+			return self._tokens[-1].lineno
 	
 
 
@@ -180,22 +198,22 @@ from string import atoi, atof, atol
 from math import sqrt, cos, sin, tan, acos, asin, atan
 class Calc(ToyParser,dict):
 
-	def __init__(self):
-		self._init_scanner(
-			(r"vars", r"vars"),
-			(r"_tok_1", r"="),
-			(r"_tok_2", r"\("),
-			(r"_tok_3", r"\)"),
-			(r"_tok_4", r","),
-			(r"space", r"(\s|\n)+", None, 1),
-			(r"pow_op", r"\^|\*\*", self.make_op, 0),
-			(r"add_op", r"[+-]", self.make_op, 0),
-			(r"mul_op", r"[*/%]", self.make_op, 0),
-			(r"funct1", r"(cos|sin|tan|acos|asin|atan|sqr|sqrt|abs)\b", self.make_op, 0),
-			(r"funct2", r"(norm)\b", self.make_op, 0),
-			(r"real", r"(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+", atof, 0),
-			(r"integer", r"\d+", atol, 0),
-			(r"VarId", r"[a-zA-Z_]\w*", None, 0),
+	def _init_scanner(self):
+		self._lexer = _Scanner(
+			_TokenDef(r"vars", r"vars"),
+			_TokenDef(r"_tok_1", r"="),
+			_TokenDef(r"_tok_2", r"\("),
+			_TokenDef(r"_tok_3", r"\)"),
+			_TokenDef(r"_tok_4", r","),
+			_TokenDef(r"space", r"(\s|\n)+", None, 1),
+			_TokenDef(r"pow_op", r"\^|\*\*", self.make_op, 0),
+			_TokenDef(r"add_op", r"[+-]", self.make_op, 0),
+			_TokenDef(r"mul_op", r"[*/%]", self.make_op, 0),
+			_TokenDef(r"funct1", r"(cos|sin|tan|acos|asin|atan|sqr|sqrt|abs)\b", self.make_op, 0),
+			_TokenDef(r"funct2", r"(norm)\b", self.make_op, 0),
+			_TokenDef(r"real", r"(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+", atof, 0),
+			_TokenDef(r"integer", r"\d+", atol, 0),
+			_TokenDef(r"VarId", r"[a-zA-Z_]\w*", None, 0),
 		)
 
 	
@@ -210,6 +228,7 @@ class Calc(ToyParser,dict):
 			'-'   : (lambda x,y:x-y),
 			'*'   : (lambda x,y:x*y),
 			'/'   : (lambda x,y:x/y),
+			'%'   : (lambda x,y:x%y),
 			'^'   : (lambda x,y:x**y),
 			'**'  : (lambda x,y:x**y),
 			'cos' : cos,
@@ -224,7 +243,7 @@ class Calc(ToyParser,dict):
 			'norm': (lambda x,y:sqrt(x*x+y*y)),
 		}[op]
 	def START(self,):
-		""" START -> 'vars'  | VarId '=' Expr  | Expr """
+		""" START -> 'vars' | VarId '=' Expr | Expr """
 		__p1 = self._cur_token
 		try:
 			try:
@@ -247,7 +266,7 @@ class Calc(ToyParser,dict):
 		return self.get(v,0)
 
 	def Expr(self,):
-		""" Expr -> Term (add_op Term )* """
+		""" Expr -> Term (add_op Term)* """
 		e = self.Term()
 		__p1 = self._cur_token
 		while 1:
@@ -262,7 +281,7 @@ class Calc(ToyParser,dict):
 		return e
 
 	def Term(self,):
-		""" Term -> Fact (mul_op Fact )* """
+		""" Term -> Fact (mul_op Fact)* """
 		t = self.Fact()
 		__p1 = self._cur_token
 		while 1:
@@ -277,7 +296,7 @@ class Calc(ToyParser,dict):
 		return t
 
 	def Fact(self,):
-		""" Fact -> add_op Fact  | Pow """
+		""" Fact -> add_op Fact | Pow """
 		__p1 = self._cur_token
 		try:
 			op = self._eat('add_op')
@@ -289,7 +308,7 @@ class Calc(ToyParser,dict):
 		return f
 
 	def Pow(self,):
-		""" Pow -> Atom (pow_op Fact )? """
+		""" Pow -> Atom (pow_op Fact)? """
 		f = self.Atom()
 		__p1 = self._cur_token
 		try:
@@ -325,7 +344,7 @@ class Calc(ToyParser,dict):
 		return a
 
 	def Function(self,):
-		""" Function -> funct1 '\(' Expr '\)'  | funct2 '\(' Expr ',' Expr '\)'  """
+		""" Function -> funct1 '\(' Expr '\)' | funct2 '\(' Expr ',' Expr '\)' """
 		__p1 = self._cur_token
 		try:
 			f = self._eat('funct1')

@@ -1,5 +1,5 @@
 set runtime
-set magic = "/usr/bin/env python2.2"
+set magic = "/usr/bin/env python"
 
 {{
 from string import atoi, atof, atol
@@ -20,6 +20,7 @@ parser Calc(dict):
 			'-'   : (lambda x,y:x-y),
 			'*'   : (lambda x,y:x*y),
 			'/'   : (lambda x,y:x/y),
+			'%'   : (lambda x,y:x%y),
 			'^'   : (lambda x,y:x**y),
 			'**'  : (lambda x,y:x**y),
 			'cos' : cos,

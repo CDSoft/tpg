@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.2
+#!/usr/bin/env python
 
 import tpg
 from string import atoi, atof, atol
@@ -19,6 +19,7 @@ parser Calc(dict):
 			'-'   : (lambda x,y:x-y),
 			'*'   : (lambda x,y:x*y),
 			'/'   : (lambda x,y:x/y),
+			'%'   : (lambda x,y:x%y),
 			'^'   : (lambda x,y:x**y),
 			'**'  : (lambda x,y:x**y),
 			'cos' : cos,
@@ -84,7 +85,7 @@ while 1:
 	if l:
 		try:
 			print calc(l)
-		except (SyntaxError, LexicalError), e:
+		except (tpg.SyntaxError, tpg.LexicalError), e:
 			print e
 		except ZeroDivisionError:
 			print "Zero Division Error"

@@ -1,4 +1,4 @@
-set magic = "/usr/bin/env python2.2"
+set magic = "/usr/bin/env python"
 
 {{
 import tpg
@@ -20,6 +20,7 @@ parser Calc(dict):
 			'-'   : (lambda x,y:x-y),
 			'*'   : (lambda x,y:x*y),
 			'/'   : (lambda x,y:x/y),
+			'%'   : (lambda x,y:x%y),
 			'^'   : (lambda x,y:x**y),
 			'**'  : (lambda x,y:x**y),
 			'cos' : cos,
