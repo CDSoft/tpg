@@ -1,26 +1,27 @@
 #!/usr/bin/env python
+import tpg.base
 
 import tpg
 from string import atoi, atof, atol
 from math import sqrt, cos, sin, tan, acos, asin, atan
-class Calc(tpg.ToyParser,dict):
+class Calc(tpg.base.ToyParser,dict):
 
 	def _init_scanner(self):
-		self._lexer = tpg._Scanner(
-			tpg._TokenDef(r"vars", r"vars"),
-			tpg._TokenDef(r"_tok_1", r"="),
-			tpg._TokenDef(r"_tok_2", r"\("),
-			tpg._TokenDef(r"_tok_3", r"\)"),
-			tpg._TokenDef(r"_tok_4", r","),
-			tpg._TokenDef(r"space", r"(\s|\n)+", None, 1),
-			tpg._TokenDef(r"pow_op", r"\^|\*\*", self.make_op, 0),
-			tpg._TokenDef(r"add_op", r"[+-]", self.make_op, 0),
-			tpg._TokenDef(r"mul_op", r"[*/%]", self.make_op, 0),
-			tpg._TokenDef(r"funct1", r"(cos|sin|tan|acos|asin|atan|sqr|sqrt|abs)\b", self.make_op, 0),
-			tpg._TokenDef(r"funct2", r"(norm)\b", self.make_op, 0),
-			tpg._TokenDef(r"real", r"(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+", atof, 0),
-			tpg._TokenDef(r"integer", r"\d+", atol, 0),
-			tpg._TokenDef(r"VarId", r"[a-zA-Z_]\w*", None, 0),
+		self._lexer = tpg.base._Scanner(
+			tpg.base._TokenDef(r"vars", r"vars"),
+			tpg.base._TokenDef(r"_tok_1", r"="),
+			tpg.base._TokenDef(r"_tok_2", r"\("),
+			tpg.base._TokenDef(r"_tok_3", r"\)"),
+			tpg.base._TokenDef(r"_tok_4", r","),
+			tpg.base._TokenDef(r"space", r"(\s|\n)+", None, 1),
+			tpg.base._TokenDef(r"pow_op", r"\^|\*\*", self.make_op, 0),
+			tpg.base._TokenDef(r"add_op", r"[+-]", self.make_op, 0),
+			tpg.base._TokenDef(r"mul_op", r"[*/%]", self.make_op, 0),
+			tpg.base._TokenDef(r"funct1", r"(cos|sin|tan|acos|asin|atan|sqr|sqrt|abs)\b", self.make_op, 0),
+			tpg.base._TokenDef(r"funct2", r"(norm)\b", self.make_op, 0),
+			tpg.base._TokenDef(r"real", r"(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+", atof, 0),
+			tpg.base._TokenDef(r"integer", r"\d+", atol, 0),
+			tpg.base._TokenDef(r"VarId", r"[a-zA-Z_]\w*", None, 0),
 		)
 
 	
@@ -56,13 +57,13 @@ class Calc(tpg.ToyParser,dict):
 			try:
 				self._eat('vars')
 				e = self.mem()
-			except tpg.TPGWrongMatch:
+			except self.TPGWrongMatch:
 				self._cur_token = __p1
 				v = self._eat('VarId')
 				self._eat('_tok_1') # =
 				e = self.Expr()
 				self[v] = e
-		except tpg.TPGWrongMatch:
+		except self.TPGWrongMatch:
 			self._cur_token = __p1
 			e = self.Expr()
 		return e
@@ -82,7 +83,7 @@ class Calc(tpg.ToyParser,dict):
 				t = self.Term()
 				e = op(e,t)
 				__p1 = self._cur_token
-			except tpg.TPGWrongMatch:
+			except self.TPGWrongMatch:
 				self._cur_token = __p1
 				break
 		return e
@@ -97,7 +98,7 @@ class Calc(tpg.ToyParser,dict):
 				f = self.Fact()
 				t = op(t,f)
 				__p1 = self._cur_token
-			except tpg.TPGWrongMatch:
+			except self.TPGWrongMatch:
 				self._cur_token = __p1
 				break
 		return t
@@ -109,7 +110,7 @@ class Calc(tpg.ToyParser,dict):
 			op = self._eat('add_op')
 			f = self.Fact()
 			f = op(0,f)
-		except tpg.TPGWrongMatch:
+		except self.TPGWrongMatch:
 			self._cur_token = __p1
 			f = self.Pow()
 		return f
@@ -122,7 +123,7 @@ class Calc(tpg.ToyParser,dict):
 			op = self._eat('pow_op')
 			e = self.Fact()
 			f = op(f,e)
-		except tpg.TPGWrongMatch:
+		except self.TPGWrongMatch:
 			self._cur_token = __p1
 		return f
 
@@ -134,16 +135,16 @@ class Calc(tpg.ToyParser,dict):
 				try:
 					try:
 						a = self._eat('real')
-					except tpg.TPGWrongMatch:
+					except self.TPGWrongMatch:
 						self._cur_token = __p1
 						a = self._eat('integer')
-				except tpg.TPGWrongMatch:
+				except self.TPGWrongMatch:
 					self._cur_token = __p1
 					a = self.Function()
-			except tpg.TPGWrongMatch:
+			except self.TPGWrongMatch:
 				self._cur_token = __p1
 				a = self.Var()
-		except tpg.TPGWrongMatch:
+		except self.TPGWrongMatch:
 			self._cur_token = __p1
 			self._eat('_tok_2') # \(
 			a = self.Expr()
@@ -159,7 +160,7 @@ class Calc(tpg.ToyParser,dict):
 			x = self.Expr()
 			self._eat('_tok_3') # \)
 			y = f(x)
-		except tpg.TPGWrongMatch:
+		except self.TPGWrongMatch:
 			self._cur_token = __p1
 			f = self._eat('funct2')
 			self._eat('_tok_2') # \(

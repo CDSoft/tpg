@@ -117,8 +117,12 @@ if __name__ == "__main__":
 	while 1:
 		e = raw_input(":")
 		if e == "": break
-		expr, t = parser(e+"\n")
-		print "Expression", t
-		print "\tinfixe   :", expr.infixe()
-		print "\tprefixe  :", expr.prefixe()
-		print "\tpostfixe :", expr.postfixe()
+		try:
+			expr, t = parser(e+"\n")
+		except (tpg.LexicalError, tpg.SyntaxError), e:
+			print e
+		else:
+			print "Expression", t
+			print "\tinfixe   :", expr.infixe()
+			print "\tprefixe  :", expr.prefixe()
+			print "\tpostfixe :", expr.postfixe()

@@ -1,0 +1,137 @@
+2002-07-12  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.1:
+		Packaged in a package directory + distutils
+		Any previous version needs to be uninstalled before
+		upgrading
+
+	* codegen.py:
+		Minimalist runtime, cannot generate autonomous parsers
+		TPG needs to be installed and imported
+
+2002-07-10  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.0.5
+
+	* tpg_grammar.g: Bug fix in the command line parser
+
+2002-05-07  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.0.4
+	
+	* tpg_grammar.g:
+		Bug fix in NB rule
+		Bug fix in object and arg list code generation
+
+	* License: Now licensed with the LGPL
+
+2002-06-24  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.0.3
+
+	* tpg_grammar.g: Bug fix in runtime generation
+
+2002-06-23  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.0.2
+
+	* tpg_grammar.g:
+		Doc strings updated
+		Add Python code as objects (parameters, return values)
+		Bug fix in the grammar
+
+2002-06-05  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.0.1
+
+	* tpg_grammar.g:
+		Minor changes
+		Bug fix (scanner without runtime didn't find _TokenDef class)
+
+2002-05-26  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.0: Not compatible with TPG 0.1.9
+
+	* tpg_grammar.g:
+		Complete rewrite of TPG
+		Faster lexical scanner
+		Smaller generated code
+
+2002-04-27  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.9
+
+	* install-TPG-0.1.9.py: Bug fix in the installation procedure
+
+2002-04-06  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.8
+
+	* install-TPG-0.1.8.py: TPG is now packaged with Install Maker
+
+2002-03-27  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.7
+
+	* tp.g:
+		Some code rewriting
+		Bug fix: when an error occurs, an empty file was created
+
+2002-03-13  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.6
+
+	* tp.g:
+		Bug fix, remove backtracking in some regexp and now use
+		re (sre) instead of pre (thanks to Fredrik Lundh) and
+		speed improvement (thanks to Nick Mathewson)
+
+2002-02-07  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.5
+
+	* tp.g:
+		Changed command line parsing (do not use TPG anymore)
+
+2002-01-20  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.4
+
+	* tp.g:
+		Changed unindent function
+		Command line is now parsed by TPG
+
+2002-01-16  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.3
+
+	* tp.g:
+		Add __all__ definition
+		Changed runtime option behaviour
+		Changed the way to add the runtime (#<> tags)
+		Changed genCode/genRetVal into genLValue and genRValue
+		String built by joining lists instead step by step concatenating
+		Bug fix: begin mark code fixed (missing '=')
+
+2002-01-09  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.2
+
+	* tp.g:
+		New features:
+			Distinction between lexical and syntactic rules
+			Mark definition and text extraction
+		Bug fix:
+			Code is now delimited by {{ ... }} (otherwise symbol <<code>>
+			was recognised as symbol with <code> as attribute
+
+2001-12-29  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1.1
+
+	* tp.g: Bug fix
+		'a b' was recognised as if b was a parameter of a
+
+2001-12-23  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 0.1: Initial version
