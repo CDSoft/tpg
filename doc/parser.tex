@@ -4,8 +4,7 @@ A parser is declared with the \emph{parser} keyword.
 The declaration may have a list of base classes from which the parser will inherit.
 Then follows grammar rules and code sections.
 
-\section{Base classes of TPG parsers}
-\label{parser:inheritance}
+\section{Base classes of TPG parsers}							\label{parser:inheritance}
 
 TPG parsers can inherit from other Python classes.
 
@@ -18,15 +17,14 @@ TPG parsers always inherits from the \emph{tpg.base.ToyParser} class which defin
 The user can add more base classes to TPG parsers by adding a class list to the parser definition as in figure~\ref{parser:base_classes}.
 
 \begin{code}
-\caption{User defined base classes for TPG parsers} \label{parser:base_classes}
+\caption{User defined base classes for TPG parsers}				\label{parser:base_classes}
 \begin{verbatimtab}[4]
 parser MyParser(BaseClass1, BaseClass2):
 	...
 \end{verbatimtab}
 \end{code}
 
-\section{Grammar rules}
-\label{parser:grammar_rules}
+\section{Grammar rules}											\label{parser:grammar_rules}
 
 Rule declarations have two parts.
 The left side declares the symbol associated to the rule, its attributes and its return value.
@@ -40,7 +38,7 @@ The return value - if any - is extracted by the infix \emph{/} operator.
 See figure~\ref{parser:rule} for example.
 
 \begin{code}
-\caption{Rule declaration} \label{parser:rule}
+\caption{Rule declaration}										\label{parser:rule}
 \begin{verbatimtab}[4]
 	SYMBOL <att1, att2, att3> / return_expression_of_SYMBOL ->
 
@@ -56,8 +54,7 @@ See figure~\ref{parser:rule} for example.
 
 Each time a terminal symbol is encountered in a rule, the parser compares it to the current token in the token list. If it is different the parser backtracks.
 
-\section{Parsing non terminal symbols}
-\label{parser:nterm}
+\section{Parsing non terminal symbols}							\label{parser:nterm}
 
 \subsection{Starting the parser}
 
@@ -93,8 +90,7 @@ you can write:
 
 To parse a non terminal symbol in a rule, TPG call the rule corresponding to the symbol.
 
-\section{Sequences}
-\label{parser:sequences}
+\section{Sequences}												\label{parser:sequences}
 
 Sequences in grammar rules describe in which order symbols should appear in the input string.
 For example the sequence \emph{A~B} recognizes an \emph{A} followed by a \emph{B}.
@@ -105,8 +101,7 @@ For example to say that a \emph{sum} is a \emph{term} \emph{plus} another \emph{
 	Sum -> Term '+' Term ;
 \end{verbatimtab}
 
-\section{Alternatives}
-\label{parser:alternatives}
+\section{Alternatives}											\label{parser:alternatives}
 
 Alternatives in grammar rules describe several possible decompositions of a symbol.
 The infix pipe operator (\emph{$\mid$}) is used to separate alternatives.
@@ -121,8 +116,7 @@ you can write:
 	Atom -> integer | '\(' Expr '\)' ;
 \end{verbatimtab}
 
-\section{Repetitions}
-\label{parser:repetitions}
+\section{Repetitions}											\label{parser:repetitions}
 
 Repetitions in grammar rules describe how many times an expression should be matched.
 
@@ -143,7 +137,7 @@ The figure~\ref{parser:precedence} lists the different structures in increasing 
 To override the default precedence you can group expressions with parenthesis.
 
 \begin{tableau}
-\caption{Precedence in TPG expressions} \label{parser:precedence}
+\caption{Precedence in TPG expressions}							\label{parser:precedence}
 \begin{tabular}{| l | l |}
 \hline
 	Structure			& Example \\
@@ -165,8 +159,7 @@ To override the default precedence you can group expressions with parenthesis.
 Grammar rules can contain actions and Python code.
 Actions are handled by TPG and Python code is copied verbatim into the generated code.
 
-\subsection{Abstract syntax trees}
-\label{parser:AST}
+\subsection{Abstract syntax trees}								\label{parser:AST}
 
 An abstract syntax tree (AST) is an abstract representation of the structure of the input.
 A node of an AST is a Python object (there is no constraint about its class).
@@ -175,7 +168,7 @@ AST nodes are completely defined by the user.
 The figure~\ref{parser:ASTinst} shows a node symbolizing a couple.
 
 \begin{code}
-\caption{AST example} \label{parser:ASTinst}
+\caption{AST example}											\label{parser:ASTinst}
 \begin{verbatimtab}[4]
 {{
 	class Couple:
@@ -204,7 +197,7 @@ This method is defined by the user.
 TPG won't check that the class actually has an \emph{add} method.
 
 \begin{code}
-\caption{AST update example} \label{parser:ASTadd}
+\caption{AST update example}									\label{parser:ASTadd}
 \begin{verbatimtab}[4]
 {{
 	class List(list):
@@ -223,15 +216,13 @@ parser ListParser:
 \end{verbatimtab}
 \end{code}
 
-\subsection{Text extraction}
-\label{parser:mark}
+\subsection{Text extraction}									\label{parser:mark}
 
 TPG can extract a portion of the input string.
 The idea is to put marks while parsing and then extract the text between the two marks.
 This extracts the whole text between the marks, including the tokens defined as separators.
 
-\subsection{Object}
-\label{parser:object}
+\subsection{Object}												\label{parser:object}
 
 TPG knows some basics about Python objects.
 An object in TPG is a Python object using a special syntax.
@@ -347,7 +338,7 @@ The user can force the parser to backtrack in rule actions.
 The parser classes have a \emph{WrongMatch} method for that purpose (see figure~\ref{parser:wrongmatch}).
 
 \begin{code}
-\caption{Backtracking with \emph{WrongMatch} example} \label{parser:wrongmatch}
+\caption{Backtracking with \emph{WrongMatch} example}			\label{parser:wrongmatch}
 \begin{verbatimtab}[4]
 	# NATURAL matches integers greater than 0
 	NATURAL/n ->
@@ -362,7 +353,7 @@ This method checks a condition.
 If this condition is false then \emph{WrongMatch} if called in order to backtrack.
 
 \begin{code}
-\caption{Backtracking with the \emph{check} method example} \label{parser:check}
+\caption{Backtracking with the \emph{check} method example}		\label{parser:check}
 \begin{verbatimtab}[4]
 	# NATURAL matches integers greater than 0
 	NATURAL/n ->
@@ -375,7 +366,7 @@ If this condition is false then \emph{WrongMatch} if called in order to backtrac
 A shortcut for the \emph{check} method is the \emph{check} keyword followed by the condition to check (see figure~\ref{parser:checkkw}).
 
 \begin{code}
-\caption{Backtracking with the \emph{check} keyword example} \label{parser:checkkw}
+\caption{Backtracking with the \emph{check} keyword example}	\label{parser:checkkw}
 \begin{verbatimtab}[4]
 	# NATURAL matches integers greater than 0
 	NATURAL/n ->
@@ -384,3 +375,34 @@ A shortcut for the \emph{check} method is the \emph{check} keyword followed by t
 		;
 \end{verbatimtab}
 \end{code}
+
+\subsubsection{Error reporting}
+
+The user can force the parser to stop and raise an exception.
+The parser classes have a \emph{error} method for that purpose (see figure~\ref{parser:error_method}).
+This method raises a \emph{SemanticError}.
+
+\begin{code}
+\caption{Error reporting the \emph{error} method example}	\label{parser:error_method}
+\begin{verbatimtab}[4]
+	# FRACT parses fractions
+	FRACT/<n,d> ->
+		number/n '/' number/d
+		{{ if d==0: self.error("Division by zero") }}
+		;
+\end{verbatimtab}
+\end{code}
+
+A shortcut for the \emph{error} method is the \emph{error} keyword followed by the object to give to the \emph{SemanticError} exception (see figure~\ref{parser:error_kw}).
+
+\begin{code}
+\caption{Error reporting the \emph{error} keyword example}	\label{parser:error_kw}
+\begin{verbatimtab}[4]
+	# FRACT parses fractions
+	FRACT/<n,d> ->
+		number/n '/' number/d
+		( check d | error "Division by zero" )
+		;
+\end{verbatimtab}
+\end{code}
+

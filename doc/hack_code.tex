@@ -2,7 +2,7 @@
 \newcommand{\hack}[3]
 {
 	\begin{tableau}
-	\caption{#2} \label{#3}
+	\caption{#2}											\label{#3}
 	\begin{tabular}{| p{6cm} | p{8cm} | }
 	\hline
 		Grammar & Generated code \\
@@ -68,16 +68,14 @@ Non terminal symbols can have attributes, a return value or both.
 \hack{nterm}{Non terminal symbol matching example}{hack:nterm}
 
 \clearpage
-\subsection{Sequences}
-\label{hack:sequences}
+\subsection{Sequences}										\label{hack:sequences}
 
 The token number is updated by the \emph{\_eat} method when called so a sequence (see \ref{parser:sequences}) in a rule is translated into a sequence of statements in Python (see figure~\ref{hack:seq}).
 
 \hack{seq}{Sequence of expressions example}{hack:seq}
 
 \clearpage
-\subsection{Alternatives}
-\label{hack:alternatives}
+\subsection{Alternatives}									\label{hack:alternatives}
 
 Alternatives (see \ref{parser:alternatives}) are tried in the order they are declared.
 Before trying the first branch, TPG saves the current token number.
@@ -89,8 +87,7 @@ This is how the computation of any prediction table is avoided.
 \hack{alt}{Alternative in expressions example}{hack:alt}
 
 \clearpage
-\subsection{Repetitions}
-\label{hack:repetitions}
+\subsection{Repetitions}									\label{hack:repetitions}
 
 Repetitions (see \ref{parser:repetitions}) are implemented in a similar way to alternatives.
 The \emph{TPGWrongMatch} tells TPG when to go out of the loop.

@@ -13,7 +13,7 @@ We describe such grammars with rules. A rule describe the composition of an item
 The grammar of this tutorial is given in figure~\ref{tut:gramsymb_calc}.
 
 \begin{tableau}
-\caption{Grammar for expressions} \label{tut:gramsymb_calc}
+\caption{Grammar for expressions}							\label{tut:gramsymb_calc}
 \begin{tabular}{| l | p{7cm} |}
 \hline
 	Grammar rule & Description \\
@@ -35,7 +35,7 @@ We have defined here the grammar rules (i.e. the sentences of the language). We 
 To simplify the grammar and then the Python script we define two terminal symbols to group the operators (additive and multiplicative operators). We can also define a special symbol that is ignored by TPG. This symbol is used as a separator. This is generaly usefull for white spaces and comments. The terminal symbols are given in figure~\ref{tut:token_calc}
 
 \begin{tableau}
-\caption{Terminal symbol definition for expressions} \label{tut:token_calc}
+\caption{Terminal symbol definition for expressions}		\label{tut:token_calc}
 \begin{tabular}{| l | l | l |}
 \hline
 	Terminal symbol & Regular expression & Comment \\
@@ -55,7 +55,7 @@ To simplify the grammar and then the Python script we define two terminal symbol
 This is sufficient to define our parser with TPG. The grammar of the expressions in TPG can be found in figure \ref{tut:recognizer}.
 
 \begin{code}
-\caption{Grammar of the expression recognizer} \label{tut:recognizer}
+\caption{Grammar of the expression recognizer}				\label{tut:recognizer}
 \begin{verbatimtab}[4]
 parser Calc:
 
@@ -87,7 +87,7 @@ This string can be read by catching the return value of terminal symbols. By def
 \emph{int} is a Python function converting objects to integers and \emph{make\_op} is a user defined function (figure~\ref{tut:make_op}).
 
 \begin{code}
-\caption{\emph{make\_op} function} \label{tut:make_op}
+\caption{\emph{make\_op} function}							\label{tut:make_op}
 \begin{verbatimtab}[4]
 def make_op(s):
 	return {
@@ -102,7 +102,7 @@ def make_op(s):
 To associate a function to a token it must be added after the token definition as in figure~\ref{tut:tokens}
 
 \begin{code}
-\caption{Token definitions with functions} \label{tut:tokens}
+\caption{Token definitions with functions}					\label{tut:tokens}
 \begin{verbatimtab}[4]
 	separator spaces: '\s+' ;
 	token number: '\d+' int ;
@@ -115,7 +115,7 @@ We have specified the value returned by the token. To read this value after a te
 In fact terminal and non terminal symbols can return a value. The syntax is the same for both sort of symbols. In non terminal symbol definitions the return value defined at the left hand side is the expression return by the symbol. The return values defined in the right hand side are just variables to which values are saved. A small example may be easier to understand (figure~\ref{tut:ret_val}).
 
 \begin{tableau}
-\caption{Return values for (non) terminal symbols} \label{tut:ret_val}
+\caption{Return values for (non) terminal symbols}			\label{tut:ret_val}
 \begin{tabular}{| l | p{9cm} |}
 \hline
 	Rule & Comment \\
@@ -140,7 +140,7 @@ This example shows how to include Python code in a rule. Here \verb!{{...}}! is 
 Finally the complete parser is given in figure~\ref{tut:parser}.
 
 \begin{code}
-\caption{Expression recognizer and evaluator} \label{tut:parser}
+\caption{Expression recognizer and evaluator}				\label{tut:parser}
 \begin{verbatimtab}[4]
 parser Calc:
 
@@ -168,7 +168,7 @@ One way to use this parser is to \emph{exec} its definition.
 A practical way to build parsers is to \emph{exec} the result of \emph{tpg.compile} (figure~\ref{tut:build_scheme}).
 
 \begin{code}
-\caption{Python code generation from a grammar} \label{tut:build_scheme}
+\caption{Python code generation from a grammar}				\label{tut:build_scheme}
 \begin{verbatimtab}[4]
 import tpg
 
@@ -181,7 +181,7 @@ exec(tpg.compile(r""" # Your grammar here """))
 To use this parser you now just need to import tpg, compile the grammar and instanciate an object of the class \emph{Calc} as in figure~\ref{tut:calc}.
 
 \begin{code}
-\caption{Complete Python script with expression parser} \label{tut:calc}
+\caption{Complete Python script with expression parser}		\label{tut:calc}
 \begin{verbatimtab}[4]
 import tpg
 

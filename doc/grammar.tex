@@ -14,7 +14,7 @@ TPG grammars may contain three parts:
 See figure~\ref{grammar:struct} for a generic TPG grammar.
 
 \begin{code}
-\caption{TPG grammar structure} \label{grammar:struct}
+\caption{TPG grammar structure}								\label{grammar:struct}
 \begin{verbatimtab}[4]
 # Options
 set magic = "/usr/bin/env python"
@@ -47,11 +47,10 @@ Comments in TPG start with \emph{\#} and run until the end of the line.
 	# This is a comment
 \end{verbatimtab}
 
-\section{Options}
-\label{grammar:options}
+\section{Options}											\label{grammar:options}
 
 Some options can be set at the beginning of TPG grammars.
-The syntax for options is :
+The syntax for options is:
 
 \begin{description}
 	\item [set \emph{name}] sets the boolean \emph{name} option to \emph{true}.
@@ -62,8 +61,7 @@ The syntax for options is :
 \subsection{Magic option}
 
 The magic option tells TPG which interpreter is called when the script is run.
-The first line of the generated code will start with \verb$#!$ and contains the command line to execute
-the appropriate interpreter (\verb$/usr/bin/env python$ for example).
+The first line of the generated code will start with \verb$#!$ and contains the command line to execute the appropriate interpreter (\verb$/usr/bin/env python$ for example).
 This has no effect on M\$ Windows.
 
 \begin{description}
@@ -71,12 +69,27 @@ This has no effect on M\$ Windows.
 	\item [set nomagic] generates no magic line. This is the default behaviour.
 \end{description}
 
-\section{Python code}
-\label{grammar:code}
+\subsection{CSL options}									\label{grammar:CSL}
+
+By default TPG lexers are context free.
+The \emph{CSL} option tells TPG to generate a context sensitive lexer (see~\ref{tpg:CSL}).
+
+\begin{description}
+	\item [set CSL] generates context sensitive lexers.
+	\item [set noCSL] generates context free lexers. This is the default behaviour.
+\end{description}
+
+\section{Python code}										\label{grammar:code}
 
 Python code section are not handled by TPG.
 TPG won't complain about syntax errors in Python code sections, it is Python's job.
 They are copied verbatim to the generated Python parser.
+
+\subsection{Syntax}
+
+Python code is enclosed in double curly brackets.
+That means that Python code must not contain to consecutive close brackets.
+You can avoid this by writting \emph{\}~\}} (with a space) instead of \emph{\}\}} (without space).
 
 \subsection{Indentation}
 
@@ -84,13 +97,15 @@ Python code can appear in several parts of a grammar.
 Since indentation has a special meaning in Python it is important to know how TPG handles spaces and tabulations at the beginning of the lines.
 In TPG indentation is important only in Python code sections (in \emph{main} parts, in \emph{parser} parts and in \emph{rules}).
 
-When TPG encounters some Python code it removes in all non blank lines the spaces and tabulations that are common to every lines. TPG considers spaces and tabulations as the same character so it is important to always use the same indentation style. Thus it is advised not to mix spaces and tabulations in indentation.
+When TPG encounters some Python code it removes in all non blank lines the spaces and tabulations that are common to every lines.
+TPG considers spaces and tabulations as the same character so it is important to always use the same indentation style.
+Thus it is advised not to mix spaces and tabulations in indentation.
 Then this code will be reindented when generated according to its location (in a class, in a method or in global space).
 
 The figure~\ref{grammar:indent} shows how TPG handles indentation.
 
 \begin{tableau}
-\caption{Code indentation examples} \label{grammar:indent}
+\caption{Code indentation examples}							\label{grammar:indent}
 \begin{tabular}{| p{5cm} | p{4cm} | p{4cm} |}
 \hline
 	Code in grammars & Generated code & Comment \\
@@ -114,7 +129,7 @@ else:
     print "OK"
 	\end{verbatim*}
 	&
-	\emph{Correct}: these lines have four spaces in common. These spaces are removed.
+	\emph{Correct}: these lines have four spaces in common.  These spaces are removed.
 	\\
 
 \hline
@@ -134,7 +149,7 @@ if 1==2:
       print "OK"
 	\end{verbatim*}
 	&
-	\emph{WRONG}: it's a bad idea to start a multiline code section on the first line since the common indentation may be different from what you expect. No error will be raised by TPG but Python won't compile this code.
+	\emph{WRONG}: it's a bad idea to start a multiline code section on the first line since the common indentation may be different from what you expect.  No error will be raised by TPG but Python won't compile this code.
 	\\
 
 \hline
@@ -155,17 +170,23 @@ print "OK"
 \end{tabular}
 \end{tableau}
 
-\section{TPG parsers}
-\label{grammar:parser}
+\section{TPG parsers}										\label{grammar:parser}
 
 A grammar can contain as many parsers as needed.
 A parser declaration starts with the \emph{parser} keyword and contains rules and Python code sections (local to the parser).
+
+\subsection{Initialisation}
+
+The initialisation of Python objects is made by the \emph{\_\_init\_\_} method.
+This method is generated by TPG and cannot be overriden.
+To resolve this problem an \emph{init} method (i.e. without the double underscores) is called at initialization time with the arguments given to \emph{\_\_init\_\_}.
+See~\ref{grammar:python_code} to add methods to a parser.
 
 \subsection{Rules}
 
 Each rule will be translated into a method of the parser.
 
-\subsection{Python code}
+\subsection{Python code}									\label{grammar:python_code}
 
 Python code that is local to a parser will be copied in the generated class.
 This is usually used to add methods or attributes to the parser.

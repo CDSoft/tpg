@@ -27,6 +27,7 @@ def gen(name):
 		f = open(name)
 		grammar = f.read()
 		f.close()
+		#code = tpg.compile(grammar).replace('\r','')
 		code = tpg.compile(grammar)
 		code = "".join([ "%s\n"%l for l in code.splitlines() if not comment(l) ])
 		for rem in to_be_removed:

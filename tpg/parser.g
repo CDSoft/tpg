@@ -1,4 +1,3 @@
-
 {{
 
 """
@@ -37,8 +36,9 @@ parser TPGParser:
 	token code: "\{\{(\}?[^\}]+)*\}\}" cut<2>;
 	token obra: "\{";
 	token cbra: "\}";
+	token retsplit: "//";
+	token ret: "/";
 	token ident: "\w+";
-
 
 	START/parsers.genCode<> -> PARSERS/parsers ;
 
@@ -50,7 +50,8 @@ parser TPGParser:
 			p = Parser<id, ids>
 			(	code/c p-Code<c>
 			|	TOKEN/t p-t
-			|	RULE/c p-c
+			|	RULE/r p-r
+			|	LEX_RULE/r p-r
 			)*
 			parsers-p
 		|	'main' ':' ( code/c parsers-Code<c> )*
@@ -59,17 +60,24 @@ parser TPGParser:
 
 	OPTIONS/opts ->
 		opts = Options<>
+		self.CSL = 0
 		(	'set' ident/opt ( '=' string/val | val = 1 )
 			{{ if opt.startswith('no'): opt, val = opt[2:], None }}
-			check {{opt in [ 'magic' ]}}
+			check {{opt in [ 'magic', 'CSL' ]}}
 			{{ opts.set(opt,val) }}
+			{{ if opt == 'CSL': self.CSL = val }}
 		)*
 		;
+
+	CHECK_CSL -> check {{ self.CSL }} | error "Only for CSL lexers" ;
+
+	CHECK_NOT_CSL -> check {{ not self.CSL }} | error "Only for non CSL lexers" ;
 
 	TOKEN/Token<t,e,f,s> ->
 		(	'token' s = 0
 		|	'separator' s = 1
 		)
+		CHECK_NOT_CSL
 		ident/t ':' string/e ( OBJECT/f | f = None )
 		';'
 		;
@@ -112,6 +120,15 @@ parser TPGParser:
 
 	RULE/Rule<s,e> -> SYMBOL/s '->' EXPR/e ';' ;
 
+	LEX_RULE/LexRule<s,e> ->
+		'lex'
+		CHECK_CSL
+		(	'separator'/name s=Symbol<name, Args<>, None>
+		|	SYMBOL/s
+		)
+		'->' EXPR/e ';'
+		;
+
 	SYMBOL/Symbol<id,as,ret> ->
 		ident/id
 		( '<' ARGS/as '>' | as = Args<> )
@@ -130,16 +147,18 @@ parser TPGParser:
 		|	code/c f=Code<c>
 		|	ATOM/f REP<f>/f
 		|	'check' OBJECT/cond f=Check<cond>
+		|	'error' OBJECT/err f=Error<err>
 		;
 
-	AST_OP/op ->
+	AST_OP/op<o1,o2> ->
 		OBJECT/o1
-		(	'=' OBJECT/o2 op = MakeAST<o1,o2>
-		|	'-' OBJECT/o2 op = AddAST<o1,o2>
+		(	'=' op=MakeAST
+		|	'-' op=AddAST
 		)
+		OBJECT/o2
 		;
 
-	MARK_OP/op -> '!' OBJECT/o op = Mark<o> ;
+	MARK_OP/Mark<o> -> '!' OBJECT/o ;
 
 	ATOM/a ->
 		(	SYMBOL/a
@@ -152,15 +171,18 @@ parser TPGParser:
 		(	'\?'										a = Rep<self,0,1,a>
 		|	'\*'										a = Rep<self,0,None,a>
 		|	'\+'										a = Rep<self,1,None,a>
-		|	obra NB<0>/m ( ',' NB<None>/M | M=m ) cbra	a = Rep<self,m,M,a>
+		|	'\{' NB<0>/m ( ',' NB<None>/M | M=m ) '\}'	a = Rep<self,m,M,a>
 		)?
 		;
 
-	NB<n>/n -> ( ident/n n=eval<n> )? ;
+	NB<n>/n -> ident/n ? ;
 
-	INLINE_TOKEN/InlineToken<expr, ret> ->
+	INLINE_TOKEN/InlineToken<expr, ret, split> ->
 		string/expr
-		( '/' OBJECT/ret | ret = None )
+		(	'/' OBJECT/ret				split = None
+		|	'//' CHECK_CSL OBJECT/ret	split = 1
+		| 	ret = None					split = None
+		)
 		;
 
 main:

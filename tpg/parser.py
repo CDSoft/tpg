@@ -60,19 +60,22 @@ class TPGParser(base.ToyParser,):
 			base._TokenDef(r"_tok_11", r"\["),
 			base._TokenDef(r"_tok_12", r"\]"),
 			base._TokenDef(r"_tok_13", r"->"),
-			base._TokenDef(r"_tok_14", r"/"),
-			base._TokenDef(r"_tok_15", r"\|"),
+			base._TokenDef(r"lex", r"lex"),
+			base._TokenDef(r"_tok_14", r"\|"),
 			base._TokenDef(r"check", r"check"),
-			base._TokenDef(r"_tok_16", r"-"),
-			base._TokenDef(r"_tok_17", r"!"),
-			base._TokenDef(r"_tok_18", r"\?"),
-			base._TokenDef(r"_tok_19", r"\*"),
-			base._TokenDef(r"_tok_20", r"\+"),
+			base._TokenDef(r"error", r"error"),
+			base._TokenDef(r"_tok_15", r"-"),
+			base._TokenDef(r"_tok_16", r"!"),
+			base._TokenDef(r"_tok_17", r"\?"),
+			base._TokenDef(r"_tok_18", r"\*"),
+			base._TokenDef(r"_tok_19", r"\+"),
 			base._TokenDef(r"space", r"\s+|#.*", None, 1),
 			base._TokenDef(r"string", r"\"(\\.|[^\"\\]+)*\"|'(\\.|[^'\\]+)*'", cut(1), 0),
 			base._TokenDef(r"code", r"\{\{(\}?[^\}]+)*\}\}", cut(2), 0),
 			base._TokenDef(r"obra", r"\{", None, 0),
 			base._TokenDef(r"cbra", r"\}", None, 0),
+			base._TokenDef(r"retsplit", r"//", None, 0),
+			base._TokenDef(r"ret", r"/", None, 0),
 			base._TokenDef(r"ident", r"\w+", None, 0),
 		)
 
@@ -82,7 +85,7 @@ class TPGParser(base.ToyParser,):
 		return parsers.genCode()
 
 	def PARSERS(self,):
-		""" PARSERS -> OPTIONS (code)* ('parser' ident ('\(' ARGS '\)' | ) ':' (code | TOKEN | RULE)* | 'main' ':' (code)*)* """
+		""" PARSERS -> OPTIONS (code)* ('parser' ident ('\(' ARGS '\)' | ) ':' (code | TOKEN | RULE | LEX_RULE)* | 'main' ':' (code)*)* """
 		opts = self.OPTIONS()
 		parsers = Parsers(opts)
 		__p1 = self._cur_token
@@ -115,16 +118,21 @@ class TPGParser(base.ToyParser,):
 						try:
 							try:
 								try:
-									c = self._eat('code')
-									p.add(Code(c))
+									try:
+										c = self._eat('code')
+										p.add(Code(c))
+									except self.TPGWrongMatch:
+										self._cur_token = __p4
+										t = self.TOKEN()
+										p.add(t)
 								except self.TPGWrongMatch:
 									self._cur_token = __p4
-									t = self.TOKEN()
-									p.add(t)
+									r = self.RULE()
+									p.add(r)
 							except self.TPGWrongMatch:
 								self._cur_token = __p4
-								c = self.RULE()
-								p.add(c)
+								r = self.LEX_RULE()
+								p.add(r)
 							__p4 = self._cur_token
 						except self.TPGWrongMatch:
 							self._cur_token = __p4
@@ -152,6 +160,7 @@ class TPGParser(base.ToyParser,):
 	def OPTIONS(self,):
 		""" OPTIONS -> ('set' ident ('=' string | ))* """
 		opts = Options()
+		self.CSL = 0
 		__p1 = self._cur_token
 		while 1:
 			try:
@@ -165,16 +174,35 @@ class TPGParser(base.ToyParser,):
 					self._cur_token = __p2
 					val = 1
 				if opt.startswith('no'): opt, val = opt[2:], None 
-				self.check(opt in [ 'magic' ])
+				self.check(opt in [ 'magic', 'CSL' ])
 				opts.set(opt,val) 
+				if opt == 'CSL': self.CSL = val 
 				__p1 = self._cur_token
 			except self.TPGWrongMatch:
 				self._cur_token = __p1
 				break
 		return opts
 
+	def CHECK_CSL(self,):
+		""" CHECK_CSL ->  |  """
+		__p1 = self._cur_token
+		try:
+			self.check(self.CSL )
+		except self.TPGWrongMatch:
+			self._cur_token = __p1
+			self.error(r"Only for CSL lexers")
+
+	def CHECK_NOT_CSL(self,):
+		""" CHECK_NOT_CSL ->  |  """
+		__p1 = self._cur_token
+		try:
+			self.check(not self.CSL )
+		except self.TPGWrongMatch:
+			self._cur_token = __p1
+			self.error(r"Only for non CSL lexers")
+
 	def TOKEN(self,):
-		""" TOKEN -> ('token' | 'separator') ident ':' string (OBJECT | ) ';' """
+		""" TOKEN -> ('token' | 'separator') CHECK_NOT_CSL ident ':' string (OBJECT | ) ';' """
 		__p1 = self._cur_token
 		try:
 			self._eat('token')
@@ -183,6 +211,7 @@ class TPGParser(base.ToyParser,):
 			self._cur_token = __p1
 			self._eat('separator')
 			s = 1
+		self.CHECK_NOT_CSL()
 		t = self._eat('ident')
 		self._eat('_tok_3') # :
 		e = self._eat('string')
@@ -323,6 +352,22 @@ class TPGParser(base.ToyParser,):
 		self._eat('_tok_5') # ;
 		return Rule(s,e)
 
+	def LEX_RULE(self,):
+		""" LEX_RULE -> 'lex' CHECK_CSL ('separator' | SYMBOL) '->' EXPR ';' """
+		self._eat('lex')
+		self.CHECK_CSL()
+		__p1 = self._cur_token
+		try:
+			name = self._eat('separator')
+			s = Symbol(name,Args(),None)
+		except self.TPGWrongMatch:
+			self._cur_token = __p1
+			s = self.SYMBOL()
+		self._eat('_tok_13') # ->
+		e = self.EXPR()
+		self._eat('_tok_5') # ;
+		return LexRule(s,e)
+
 	def SYMBOL(self,):
 		""" SYMBOL -> ident ('<' ARGS '>' | ) ('/' OBJECT | ) """
 		id = self._eat('ident')
@@ -336,7 +381,7 @@ class TPGParser(base.ToyParser,):
 			as = Args()
 		__p2 = self._cur_token
 		try:
-			self._eat('_tok_14') # /
+			self._eat('ret') # /
 			ret = self.OBJECT()
 		except self.TPGWrongMatch:
 			self._cur_token = __p2
@@ -349,7 +394,7 @@ class TPGParser(base.ToyParser,):
 		__p1 = self._cur_token
 		while 1:
 			try:
-				self._eat('_tok_15') # \|
+				self._eat('_tok_14') # \|
 				t = self.TERM()
 				e = Alternative(e,t)
 				__p1 = self._cur_token
@@ -373,52 +418,56 @@ class TPGParser(base.ToyParser,):
 		return t
 
 	def FACT(self,):
-		""" FACT -> AST_OP | MARK_OP | code | ATOM REP | 'check' OBJECT """
+		""" FACT -> AST_OP | MARK_OP | code | ATOM REP | 'check' OBJECT | 'error' OBJECT """
 		__p1 = self._cur_token
 		try:
 			try:
 				try:
 					try:
-						f = self.AST_OP()
+						try:
+							f = self.AST_OP()
+						except self.TPGWrongMatch:
+							self._cur_token = __p1
+							f = self.MARK_OP()
 					except self.TPGWrongMatch:
 						self._cur_token = __p1
-						f = self.MARK_OP()
+						c = self._eat('code')
+						f = Code(c)
 				except self.TPGWrongMatch:
 					self._cur_token = __p1
-					c = self._eat('code')
-					f = Code(c)
+					f = self.ATOM()
+					f = self.REP(f)
 			except self.TPGWrongMatch:
 				self._cur_token = __p1
-				f = self.ATOM()
-				f = self.REP(f)
+				self._eat('check')
+				cond = self.OBJECT()
+				f = Check(cond)
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
-			self._eat('check')
-			cond = self.OBJECT()
-			f = Check(cond)
+			self._eat('error')
+			err = self.OBJECT()
+			f = Error(err)
 		return f
 
 	def AST_OP(self,):
-		""" AST_OP -> OBJECT ('=' OBJECT | '-' OBJECT) """
+		""" AST_OP -> OBJECT ('=' | '-') OBJECT """
 		o1 = self.OBJECT()
 		__p1 = self._cur_token
 		try:
 			self._eat('_tok_4') # =
-			o2 = self.OBJECT()
-			op = MakeAST(o1,o2)
+			op = MakeAST
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
-			self._eat('_tok_16') # -
-			o2 = self.OBJECT()
-			op = AddAST(o1,o2)
-		return op
+			self._eat('_tok_15') # -
+			op = AddAST
+		o2 = self.OBJECT()
+		return op(o1,o2)
 
 	def MARK_OP(self,):
 		""" MARK_OP -> '!' OBJECT """
-		self._eat('_tok_17') # !
+		self._eat('_tok_16') # !
 		o = self.OBJECT()
-		op = Mark(o)
-		return op
+		return Mark(o)
 
 	def ATOM(self,):
 		""" ATOM -> (SYMBOL | INLINE_TOKEN | '\(' EXPR '\)') """
@@ -437,25 +486,25 @@ class TPGParser(base.ToyParser,):
 		return a
 
 	def REP(self,a):
-		""" REP -> ('\?' | '\*' | '\+' | obra NB (',' NB | ) cbra)? """
+		""" REP -> ('\?' | '\*' | '\+' | '\{' NB (',' NB | ) '\}')? """
 		__p1 = self._cur_token
 		try:
 			try:
 				try:
 					try:
-						self._eat('_tok_18') # \?
+						self._eat('_tok_17') # \?
 						a = Rep(self,0,1,a)
 					except self.TPGWrongMatch:
 						self._cur_token = __p1
-						self._eat('_tok_19') # \*
+						self._eat('_tok_18') # \*
 						a = Rep(self,0,None,a)
 				except self.TPGWrongMatch:
 					self._cur_token = __p1
-					self._eat('_tok_20') # \+
+					self._eat('_tok_19') # \+
 					a = Rep(self,1,None,a)
 			except self.TPGWrongMatch:
 				self._cur_token = __p1
-				self._eat('obra')
+				self._eat('obra') # \{
 				m = self.NB(0)
 				__p2 = self._cur_token
 				try:
@@ -464,33 +513,41 @@ class TPGParser(base.ToyParser,):
 				except self.TPGWrongMatch:
 					self._cur_token = __p2
 					M = m
-				self._eat('cbra')
+				self._eat('cbra') # \}
 				a = Rep(self,m,M,a)
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
 		return a
 
 	def NB(self,n):
-		""" NB -> (ident)? """
+		""" NB -> ident? """
 		__p1 = self._cur_token
 		try:
 			n = self._eat('ident')
-			n = eval(n)
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
 		return n
 
 	def INLINE_TOKEN(self,):
-		""" INLINE_TOKEN -> string ('/' OBJECT | ) """
+		""" INLINE_TOKEN -> string ('/' OBJECT | '//' CHECK_CSL OBJECT | ) """
 		expr = self._eat('string')
 		__p1 = self._cur_token
 		try:
-			self._eat('_tok_14') # /
-			ret = self.OBJECT()
+			try:
+				self._eat('ret') # /
+				ret = self.OBJECT()
+				split = None
+			except self.TPGWrongMatch:
+				self._cur_token = __p1
+				self._eat('retsplit') # //
+				self.CHECK_CSL()
+				ret = self.OBJECT()
+				split = 1
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
 			ret = None
-		return InlineToken(expr,ret)
+			split = None
+		return InlineToken(expr,ret,split)
 
 
 

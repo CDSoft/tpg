@@ -1,3 +1,34 @@
+2002-08-07  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.1.2:
+		The context sensitive lexer of TPG 0.1.9 has been
+		reintroduced (CSL option). TPG can produce both
+		type of lexers.
+
+	* base.py:
+		The ToyParserCSL class inherits from ToyParser and
+		is the base class for CSL parsers.
+		ToyParser and ToyParserCSL classes have a 'init' method
+		to provide the user a way to initialize the parser,
+		a 'error' method to stop parsing and raise an error
+		as a SemanticError exception.
+
+	* codegen.py:
+		Parsers, Code, Parser, Rule, Symbol, Sequence,
+		Alternative, MakeAST, AddAST, Check, Rep, Mark
+		and Extraction InlineToken have been updated to
+		generate CSL code.
+		LexRule has been added to generate the code for
+		lexical rules.
+		class Error: code generator for the error keyword.
+		Bug fix: Check.collect was buggy
+
+	* parser.g:
+		PARSERS, OPTIONS, TOKEN and INLINE_TOKEN updated
+		to parse CSL grammars.
+		LEX_RULE added to parse lexical rules.
+		ATOM updated to parse the 'error' statement.
+
 2002-08-05  Christophe Delord <christophe.delord@free.fr>
 
 	* Version 2.1.1:

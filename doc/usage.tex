@@ -1,7 +1,7 @@
 \section{Package content}
 
 TPG is a package which main function is to take a grammar and return a parser\footnote{More precisely it returns the Python source code of the parser}.
-You only need to import TPG and use these 3 objects:
+You only need to import TPG and use these four objects:
 
 \begin{description}
 	\item [tpg.compile(grammar):]
@@ -12,12 +12,15 @@ You only need to import TPG and use these 3 objects:
 		This exception is raised when the lexer fails.
 	\item [tpg.SyntaxError:]
 		This exception is raised when the parser fails.
+	\item [tpg.SemanticError:]
+		This exception is raised by the grammar itself
+		when some semantic properties fail.
 \end{description}
 
 The grammar must be in a string (see figure~\ref{usage:embed}).
 
 \begin{code}
-\caption{Grammar embeding example} \label{usage:embed}
+\caption{Grammar embeding example}							\label{usage:embed}
 \begin{verbatimtab}[4]
 	my_grammar = r"""
 
@@ -34,7 +37,7 @@ The grammar must be in a string (see figure~\ref{usage:embed}).
 The \emph{tpg.compile} function produces Python code from the grammar (see figure~\ref{usage:comp}).
 
 \begin{code}
-\caption{Parser compilation example} \label{usage:comp}
+\caption{Parser compilation example}						\label{usage:comp}
 \begin{verbatimtab}[4]
 	exec(tpg.compile(my_grammar))    # Compiles my_grammar
 \end{verbatimtab}
@@ -43,7 +46,7 @@ The \emph{tpg.compile} function produces Python code from the grammar (see figur
 Then you can use the new generated parser. The parser is now simply a Python class (see figure~\ref{usage:inst}).
 
 \begin{code}
-\caption{Parser usage example} \label{usage:inst}
+\caption{Parser usage example}								\label{usage:inst}
 \begin{verbatimtab}[4]
 	test = "bar"
 	my_parser = Foo()

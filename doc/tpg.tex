@@ -1,19 +1,42 @@
+% PDF : pdflatex tpg
+% HTML: htlatex tpg "html,3,subsections"
+
 %\documentclass[a4paper,twoside,11pt]{report}
 \documentclass[a4paper,twoside]{report}
 
 \usepackage{a4wide, moreverb}
-\usepackage[
-	pdftex,
-	pdftitle={Toy Parser Generator},
-	pdfsubject={A simple parser generator for Python},
-	pdfcreator={Christophe Delord <christophe.delord@free.fr>},
-	pdfauthor={Christophe Delord <christophe.delord@free.fr>},
-	pdfproducer={Christophe Delord <christophe.delord@free.fr>},
-	pdfkeywords={Python, Parser, Generator, Toy Parser Generator},
-	colorlinks=true
-]{hyperref}
 
-\pdfcompresslevel=9
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+	\pdffalse
+\else
+	\pdfoutput=1
+	\pdftrue
+\fi
+
+\ifpdf
+	\usepackage[
+		pdftex,
+		pdftitle={Toy Parser Generator},
+		pdfsubject={A simple parser generator for Python},
+		pdfcreator={Christophe Delord <christophe.delord@free.fr>},
+		pdfauthor={Christophe Delord <christophe.delord@free.fr>},
+		pdfproducer={Christophe Delord <christophe.delord@free.fr>},
+		pdfkeywords={Python, Parser, Generator, Toy Parser Generator},
+		colorlinks=true
+	]{hyperref}
+	\pdfcompresslevel=9
+\else
+	\usepackage[
+		pdftitle={Toy Parser Generator},
+		pdfsubject={A simple parser generator for Python},
+		pdfcreator={Christophe Delord <christophe.delord@free.fr>},
+		pdfauthor={Christophe Delord <christophe.delord@free.fr>},
+		pdfproducer={Christophe Delord <christophe.delord@free.fr>},
+		pdfkeywords={Python, Parser, Generator, Toy Parser Generator},
+		colorlinks=true
+	]{hyperref}
+\fi
 
 \renewcommand{\url}[1]{\href{#1}{#1}}
 
@@ -62,19 +85,16 @@
 %\listoftables
 
 \cleardoublepage
-\part{Introduction and tutorial}
-\label{tpg:intro}
+\part{Introduction and tutorial}							\label{tpg:intro}
 	\chapter{Introduction}
 		\input{intro}
 	\chapter{Installation}
 		\input{install}
-	\chapter{Tutorial}
-	\label{tpg:tutorial}
+	\chapter{Tutorial}										\label{tpg:tutorial}
 		\input{tutorial}
 
 \cleardoublepage
-\part{TPG reference}
-\label{tpg:core}
+\part{TPG reference}										\label{tpg:core}
 	\chapter{Usage}
 		\input{usage}
 	\chapter{Grammar structure}
@@ -83,18 +103,18 @@
 		\input{lexer}
 	\chapter{Parser}
 		\input{parser}
+	\chapter{Context sensitive lexer}						\label{tpg:CSL}
+		\input{CSL}
 
 \cleardoublepage
-\part{Some examples to illustrate TPG}
-\label{tpg:examples}
+\part{Some examples to illustrate TPG}						\label{tpg:examples}
 	\chapter{Complete interactive calculator}
 		\input{calc}
 	\chapter{Infix/Prefix/Postfix notation converter}
 		\input{notation}
 
 \cleardoublepage
-\part{Internal structure of TPG for the curious}
-\label{tpg:hack}
+\part{Internal structure of TPG for the curious}			\label{tpg:hack}
 	\chapter{Structure of the package}
 		\input{hack_struct}
 	\chapter{Lexer}

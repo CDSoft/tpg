@@ -24,7 +24,7 @@ next versions. Now TPG can generate itself.
 Note: Python 2.2 or newer is required!
 
 All you need to use TPG is to import tpg
-and use these three objects:
+and use these four objects:
 
 tpg.compile(grammar):
 	This function takes a grammar in a string and produces
@@ -35,7 +35,11 @@ tpg.LexicalError:
 	This exception is raised when the lexer fails
 
 tpg.SyntaxError:
-	This exception
+	This exception is raised when the parser fails
+
+tpg.SemanticError:
+	This exception is raised by the grammar itself
+	when some semantic properties fail
 
 
 For further information about TPG, please visit
@@ -67,4 +71,4 @@ __licence__ = Release.license
 #	Release.py: release data
 
 from parser import compile
-from base import LexicalError, SyntaxError
+from base import LexicalError, SyntaxError, SemanticError

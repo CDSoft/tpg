@@ -1,0 +1,83 @@
+\section{Introduction}
+
+Before the version 2 of TPG, lexers were context sensitive.
+That means that the parser commands the lexer to match some tokens, i.e. different tokens can be matched in a same input string according to the grammar rules being used.
+These lexers were very flexible but slower than context free lexers because TPG backtracking caused tokens to be matched several times.
+
+In TPG 2, the lexer is called before the parser and produces a list of tokens from the input string.
+This list is then given to the parser.
+In this case when TPG backtracks the token list remains unchanged.
+
+Since TPG 2.1.2, context sensitive lexers have been reinstroduced in TPG.
+By default lexers are context free but the \emph{CSL} option (see~\ref{grammar:CSL}) turns TPG into a context sensitive lexer.
+
+\section{Grammar structure}
+
+CSL grammar have the same structure than non CSL grammars (see~\ref{grammar:struct}) except from the \emph{CSL} option (see~\ref{grammar:CSL}).
+
+\section{CSL lexers}
+
+\subsection{Regular expression syntax}
+
+The CSL lexer is based on the \emph{re} module.
+The difference with non CSL lexers is that the given regular expression is compiled as this, without any encapsulation.
+Grouping is then possible and usable.
+
+\subsection{Token definition}
+
+In CSL lexers there is no predefined tokens.
+Tokens are always inlined and there is no precedance issue since tokens are matched while parsing, when encountered in a grammar rule.
+
+A token definition can be simulated by defining a rule to match a particular token (see figure~\ref{CSL:token_def}).
+
+\begin{code}
+\caption{Token definition in CSL parsers example}			\label{CSL:token_def}
+\begin{verbatimtab}[4]
+	number/int<n> -> '\d+'/n ;
+\end{verbatimtab}
+\end{code}
+
+In non CSL parsers there are two kinds of tokens: true tokens and token separators.
+To declare separators in CSL parsers you must use the special \emph{separator} rule.
+This rule is implicitly used before matching a token.
+It is thus necessary to distinguish lexical rules from grammar rules.
+Lexical rule declarations start with the \emph{lex} keyword.
+In such rules, the \emph{separator} rule is not called to avoid infinite recursion (\emph{separator} calling \emph{separator} calling \emph{separator} \ldots).
+The figure~\ref{CSL:separator} shows a separator declaration with nested C++ like comments.
+
+\begin{code}
+\caption{Separator definition in CSL parsers examples}		\label{CSL:separator}
+\begin{verbatimtab}[4]
+	lex separator -> spaces | comment ;
+
+	lex spaces -> '\s+' ;
+
+	lex comment -> '/\*' in_comment* '\*/' ;        # C++ nested comments
+	lex in_comment -> comment | '\*[^/]|[^\*]' ;
+\end{verbatimtab}
+\end{code}
+
+\subsection{Token matching}
+
+In CSL parsers, tokens are matched as in non CSL parsers (see~\ref{lexer:token_matching}).
+There is a special feature in CSL parsers.
+The user can benefit from the grouping possibilities of CSL parsers.
+The text of the token can be saved with the infix \emph{/} operator.
+The groups of the token can also be saved with the infix \emph{//} operator.
+This operator (available only in CSL parsers) returns all the groups in a tuple.
+For example, the figure~\ref{CSL:token_usage} shows how to read entire tokens and to split tokens.
+
+\begin{code}
+\caption{Token usage in CSL parsers examples}				\label{CSL:token_usage}
+\begin{verbatimtab}[4]
+	lex identifier/i -> '\w+'/s ;			# a single identifier
+
+	lex string/s -> "'([^\']*)'"//<s> ;		# a string without the quotes
+
+	lex item/<key,val> -> "(\w+)=(.*)"//<key,val> ;	# a tuple (key, value)
+\end{verbatimtab}
+\end{code}
+
+\section{CSL parsers}
+
+There is no difference between CSL and non CSL parsers except from lexical rules which look like grammar rules\footnote{In fact lexical rules and grammar rule are translated into Python in a very similar way}.

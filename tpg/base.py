@@ -25,14 +25,14 @@ http://christophe.delord.free.fr/en/tpg
 
 import re
 
+_ident_pat = re.compile(r'^\w+$')
+
 class _TokenDef:
 	""" Token definition for the scanner """
 
-	ident_pat = re.compile(r'^\w+$')
-
 	def __init__(self, tok, regex=None, action=None, separator=0):
 		if regex is None: regex = tok
-		if self.ident_pat.match(regex): regex += r'\b'	# match 'if\b' instead of 'if'
+		if _ident_pat.match(regex): regex += r'\b'		# match 'if\b' instead of 'if'
 		if action is None: action = lambda x:x			# default action is identity
 		elif not callable(action): action = lambda x,y=action:y	# action must be callable
 		self.tok = tok							# token name
@@ -117,6 +117,10 @@ class ToyParser:
 
 	def __init__(self):
 		self._init_scanner()
+		try:
+			self.init(*args)
+		except AttributeError:
+			pass
 
 	def _eat(self, token):
 		""" Eat one token """
@@ -141,6 +145,13 @@ class ToyParser:
 		""" Check a condition while parsing """
 		if not cond:			# if condition is false
 			self.WrongMatch()	# backtrack
+
+	def error(self, error):
+		""" Raises an exception to abort parsing """
+		try:
+			raise SemanticError(self._tokens[self._cur_token],error)
+		except IndexError:
+			raise SemanticError(_Eof(),error)
 
 	def __call__(self, input, *args):
 		""" Parse the axiom of the grammar (if any) """
@@ -183,7 +194,96 @@ class ToyParser:
 			return self._tokens[mark].lineno
 		else:
 			return self._tokens[-1].lineno
-	
+
+class ToyParserCSL(ToyParser):
+	""" Base class for CSL parsers (parsers with Context Sensitive Lexer) """
+
+	def __init__(self, *args):
+		self._patterns = {}
+		try:
+			self.init(*args)
+		except AttributeError:
+			pass
+
+	class _pos:
+		def __init__(self, pos=0, line=1, text=None):
+			self.pos = pos
+			self.line = line
+			self.text = text
+		def copy(self): return ToyParserCSL._pos(self.pos, self.line, self.text)
+
+	def _eat(self, regexp, split=0):
+		""" Eat one token (separator* token) """
+		self._lex_separator()
+		return self._lex_eat(regexp, save_token=1, split=split)
+
+	def _lex_separator(self):
+		""" Skip separators if any (separator*) """
+		try:
+			separator = self.separator
+		except AttributeError:
+			return
+		while 1:
+			try:
+				separator()
+			except self.TPGWrongMatch:
+				break
+
+	def _lex_eat(self, regexp, save_token=0, split=0):
+		""" Eat one token """
+		try:
+			pat = self._patterns[regexp]
+		except KeyError:
+			if _ident_pat.match(regexp):
+				pat = re.compile(regexp+r'\b')
+			else:
+				pat = re.compile(regexp)
+			self._patterns[regexp] = pat
+		token = pat.match(self.input, self._cur_token.pos)
+		if token:
+			self._cur_token.line += self.input.count('\n', self._cur_token.pos, token.end())
+			self._cur_token.pos = token.end()
+			if save_token:
+				self._cur_token.text = token.group()
+			if split:
+				return token.groups()
+			else:
+				return token.group()
+		self.WrongMatch()
+
+	def WrongMatch(self):
+		""" Backtracking """
+		if self._cur_token.text is not None:
+			last = _Token(None, self._cur_token.text, None, self._cur_token.line, None, None)
+		else:
+			last = _Eof()
+		raise self.TPGWrongMatch(last)
+
+	def setInput(self, input):
+		self.input = input
+		self._cur_token = self._pos()
+
+	def parse(self, symbol, input, *args):
+		""" Parse an input start at a given symbol """
+		try:
+			self.setInput(input)
+			return getattr(self, symbol)(*args)
+		except self.TPGWrongMatch, e:
+			raise SyntaxError(e.last)
+
+	def _mark(self):
+		""" Get a mark for the current token """
+		return self._cur_token
+
+	def _extract(self, a, b):
+		""" Extract text between 2 marks """
+		return self.input[a.pos:b.pos]
+
+	def lineno(self, mark=None):
+		""" Get the line number of a mark (or the current token if none) """
+		if mark is None: mark = self._cur_token
+		return mark.line
+
 class LexicalError(Exception):
 	def __init__(self, last):
 		self.last = last
@@ -202,3 +302,12 @@ class SyntaxError(Exception):
 		else:
 			return "1: Syntax error"
 
+class SemanticError(Exception):
+	def __init__(self, last, error):
+		self.last = last
+		self.error = error
+	def __str__(self):
+		if self.last:
+			return "%s: Semantic error near %s (%s)"%(self.last.lineno, self.last.text, self.error)
+		else:
+			return "1: Semantic error (%s)"(self.error)
