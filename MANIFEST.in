@@ -8,7 +8,7 @@ include doc/*.dvi
 include doc/*.pdf
 include doc/*.html
 include doc/*.css
-include doc/*.gif
+include doc/*.png
 include doc/hack/*.g
 include doc/hack/*.py
 

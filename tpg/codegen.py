@@ -38,800 +38,808 @@ warning = """
 # http://christophe.delord.free.fr/en/tpg
 """
 
-_v = 0	# Verbosity level
+_v = 0  # Verbosity level
 
 def setVerbosity(v):
-	global _v
-	_v = v
+    global _v
+    _v = v
 
 def flatten(L):
-	""" Flatten a list. Each item is yielded """
-	for i in L:
-		if type(i) == list:
-			for j in flatten(i):
-				yield j
-		else:
-			yield i
+    """ Flatten a list. Each item is yielded """
+    for i in L:
+        if type(i) == list:
+            for j in flatten(i):
+                yield j
+        else:
+            yield i
+
+def tabs(indent=1): return ' '*(4*indent)
 
 def reindent(lines, indent):
-	""" Reindent a sequence of lines. Remove common tabs and spaces and add indent tabs """
-	def non_blank(l):
-		for c in l:
-			if c not in ' \t': return 1
-	def tabs(l):
-		t = 0
-		for c in l:
-			if c not in ' \t': break
-			t += 1
-		return t
-	t = min([tabs(l) for l in lines if non_blank(l)])
-	tab = '\t'*indent
-	return [tab+line[t:] for line in lines]
+    """ Reindent a sequence of lines. Remove common tabs and spaces and add indent tabs """
+    def non_blank(l):
+        for c in l:
+            if c not in ' \t': return 1
+    def nb_tabs(l):
+        t = 0
+        for c in l:
+            if c not in ' \t': break
+            t += 1
+        return t
+    t = min([nb_tabs(l) for l in lines if non_blank(l)])
+    tab = tabs(indent)
+    return [tab+line[t:] for line in lines]
 
 def _if(cond, trueval, falseval):
-	""" C-ternary operator like """
-	if cond: return trueval
-	else   : return falseval
+    """ C-ternary operator like """
+    if cond: return trueval
+    else   : return falseval
 
 def _p(prec0, prec1):
-	""" Add parenthesis according to precedences """
-	if prec1 < prec0: return "(%s)"
-	return "%s"
+    """ Add parenthesis according to precedences """
+    if prec1 < prec0: return "(%s)"
+    return "%s"
 
 class Parsers(list):
-	""" List of parsers """
+    """ List of parsers """
 
-	def __init__(self, opts):
-		self.opts = opts
+    def __init__(self, opts):
+        self.opts = opts
 
-	def add(self, obj):
-		""" Add a parser or a code """
-		if _v>=1:
-			if isinstance(obj, Parser): sys.stdout.write("%s\n"%obj)
-		self.append(obj)
+    def add(self, obj):
+        """ Add a parser or a code """
+        if _v>=1:
+            if isinstance(obj, Parser): sys.stdout.write("%s\n"%obj)
+        self.append(obj)
 
-	def genCode(self):
-		""" Generate code for all parsers """
-		CSL = self.CSL()
-		code = [
-			self.magic(),							# magic line : #!...
-			self.warning(),
-			self.runtime(),							# runtime if necessary
-			[ p.genCode(CSL=CSL) for p in self ],	# parsers and codes
-		]
-		code = "\n".join(flatten(code))
-		return code
+    def genCode(self):
+        """ Generate code for all parsers """
+        CSL = self.CSL()
+        code = [
+            self.magic(),                           # magic line : #!...
+            self.warning(),
+            self.runtime(),                         # runtime if necessary
+            [ p.genCode(CSL=CSL) for p in self ],   # parsers and codes
+            "",
+        ]
+        code = "\n".join(flatten(code))
+        return code
 
-	def CSL(self):
-		if self.opts['CSL']: return "CSL"
-		return ""
+    def CSL(self):
+        if self.opts['CSL']: return "CSL"
+        return ""
 
-	def magic(self):
-		""" Generate the magic line if provided """
-		magic = self.opts['magic']
-		return _if(magic,"#!%s"%magic,[])
-		
-	def runtime(self):
-		""" Generate the runtime if necessary """
-		return [
-			'import tpg.base',
-		]
+    def magic(self):
+        """ Generate the magic line if provided """
+        magic = self.opts['magic']
+        return _if(magic,"#!%s"%magic,[])
+        
+    def runtime(self):
+        """ Generate the runtime if necessary """
+        return [
+            'import tpg.base',
+        ]
 
-	def warning(self):
-		return warning.split('\n')
+    def warning(self):
+        return warning.split('\n')
 
 class Options:
-	""" Container for TPG options """
+    """ Container for TPG options """
 
-	def __init__(self):
-		self.opts = {}
+    def __init__(self):
+        self.opts = {}
 
-	def set(self, opt, val):
-		self.opts[opt] = val
+    def set(self, opt, val):
+        self.opts[opt] = val
 
-	def __getitem__(self, item):
-		return self.opts.get(item,None)
+    def __getitem__(self, item):
+        return self.opts.get(item,None)
 
 class Code:
-	""" Container for code sections """
+    """ Container for code sections """
 
-	def __init__(self, code):
-		self.code = code
+    def __init__(self, code):
+        self.code = code
 
-	def __str__(self): return self.code
+    def __str__(self): return self.code
 
-	def genCode(self, indent=0, vargen=None, p=None, CSL=None, lex=""):
-		return "\n".join(reindent(self.code.splitlines(), indent))
+    def genCode(self, indent=0, vargen=None, p=None, CSL=None, lex=""):
+        code = reindent(self.code.splitlines(), indent)
+        if len(code)==1: code = code[0]
+        return code
 
-	def collect(self, collector): pass
+    def collect(self, collector): pass
 
-	def doc(self, prec): return ""
+    def doc(self, prec): return ""
 
-	def empty(self): return 1
+    def empty(self): return 1
 
 def _2str(st):
-	return 'r"%s"'%st
+    return 'r"%s"'%st
 
 class Collector:
-	""" Container for token and rule definitions """
+    """ Container for token and rule definitions """
 
-	ident_pat = re.compile(r'^\w+$')	# keyword pattern
+    ident_pat = re.compile(r'^\w+$')    # keyword pattern
 
-	def __init__(self):
-		self.inline_tokens = []
-		self.tokens = []
-		self.token_name = {}	# dict: regexp -> token_name
-		self.inline_number = 0
-		self.rules = []
-		self.knowntokens = {}
+    def __init__(self):
+        self.inline_tokens = []
+        self.tokens = []
+        self.token_name = {}    # dict: regexp -> token_name
+        self.inline_number = 0
+        self.rules = []
+        self.knowntokens = {}
 
-	def add_inline_token(self, tok):
-		""" Add an inline token """
-		regexp = tok.expr
-		try:
-			name = self.token_name[regexp]			# this token has already been stored
-		except KeyError:							# if not
-			if self.ident_pat.match(regexp):		#	if it is a keyword
-				name = "_kw_%s"%regexp				#		the name is the regexp
-			else:									#	otherwise
-				self.inline_number += 1				#		make a new token name
-				name = "_tok_%s"%self.inline_number	#
-			self.token_name[regexp] = name			# store the new token name
-			self.inline_tokens.append(tok)			# and the new token definition
+    def add_inline_token(self, tok):
+        """ Add an inline token """
+        regexp = tok.expr
+        try:
+            name = self.token_name[regexp]          # this token has already been stored
+        except KeyError:                            # if not
+            if self.ident_pat.match(regexp):        #   if it is a keyword
+                name = "_kw_%s"%regexp              #       the name is the regexp
+            else:                                   #   otherwise
+                self.inline_number += 1             #       make a new token name
+                name = "_tok_%s"%self.inline_number #
+            self.token_name[regexp] = name          # store the new token name
+            self.inline_tokens.append(tok)          # and the new token definition
 
-	def add_token(self, tok):
-		""" Add a predefined token """
-		self.tokens.append(tok)					# definition
-		self.token_name[tok.expr] = tok.tok		# name
-		self.knowntokens[tok.tok] = tok			# remember that tok is a token, not a symbol
+    def add_token(self, tok):
+        """ Add a predefined token """
+        self.tokens.append(tok)                 # definition
+        self.token_name[tok.expr] = tok.tok     # name
+        self.knowntokens[tok.tok] = tok         # remember that tok is a token, not a symbol
 
-	def add_rule(self, rule):
-		""" Add a rule """
-		self.rules.append(rule)
+    def add_rule(self, rule):
+        """ Add a rule """
+        self.rules.append(rule)
 
-	def __str__(self):
-		return "\n".join(map(str,self.inline_tokens+self.tokens))
+    def __str__(self):
+        return "\n".join(map(str,self.inline_tokens+self.tokens))
 
-	def get_inline_tokens(self):
-		return	[ (_2str(self.token_name[t.expr]), _2str(t.expr)) for t in self.inline_tokens ]
+    def get_inline_tokens(self):
+        return  [ (_2str(self.token_name[t.expr]), _2str(t.expr)) for t in self.inline_tokens ]
 
-	def get_tokens(self):
-		return [ (_2str(t.tok), _2str(t.expr), t.action, t.sep) for t in self.tokens ]
+    def get_tokens(self):
+        return [ (_2str(t.tok), _2str(t.expr), t.action, t.sep) for t in self.tokens ]
 
-	def istoken(self, name):
-		""" Make the difference between a token and a symbol """
-		return name in self.knowntokens
+    def istoken(self, name):
+        """ Make the difference between a token and a symbol """
+        return name in self.knowntokens
 
 class Parser(list):
-	""" Container for a set of rules """
+    """ Container for a set of rules """
 
-	def __init__(self, name, bases):
-		self.name = name		# name of the parser class
-		self.bases = bases		# list of the base classes
+    def __init__(self, name, bases):
+        self.name = name        # name of the parser class
+        self.bases = bases      # list of the base classes
 
-	def add(self, obj):
-		""" Add a token, a rule or a code section """
-		if _v>=2: sys.stdout.write("%s\n"%obj)
-		self.append(obj)
+    def add(self, obj):
+        """ Add a token, a rule or a code section """
+        if _v>=2: sys.stdout.write("%s\n"%obj)
+        self.append(obj)
 
-	def __str__(self): return "%s(%s)"%(self.name, self.bases)
+    def __str__(self): return "%s(%s)"%(self.name, self.bases)
 
-	def genCode(self, CSL=""):
-		""" Generate the code of the parser in 2 passes:
-			1) get inline token, token and symbol list
-			2) generate the code
-		"""
-		collector = Collector()
-		for p in self: p.collect(collector)
-		return [
-			"class %s(tpg.base.ToyParser%s,%s):"%(self.name, CSL, self.bases.genCode()),
-			"",
-				self.genInitCode(1, collector.get_inline_tokens(), collector.get_tokens(), CSL=CSL),
-				[ obj.genCode(1, CSL=CSL) for obj in self ],
-		]
+    def genCode(self, CSL=""):
+        """ Generate the code of the parser in 2 passes:
+            1) get inline token, token and symbol list
+            2) generate the code
+        """
+        collector = Collector()
+        for p in self: p.collect(collector)
+        return [
+            "class %s(tpg.base.ToyParser%s,%s):"%(self.name, CSL, self.bases.genCode()),
+            "",
+                self.genInitCode(1, collector.get_inline_tokens(), collector.get_tokens(), CSL=CSL),
+                [ obj.genCode(1, CSL=CSL) for obj in self ],
+            "",
+        ]
 
-	def genInitCode(self, indent, inline_tokens, tokens, CSL=""):
-		""" Generate the initialisation code of the scanner """
-		tab = "\t"*indent
-		tab1 = tab+"\t"
-		tab2 = tab1+"\t"
-		if not CSL:
-			return [
-				tab  +	"def _init_scanner(self):",
-				tab1 +		"self._lexer = tpg.base._Scanner(",
-				[ tab2 +		"tpg.base._TokenDef(%s, %s),"%t for t in inline_tokens ],
-				[ tab2 +		"tpg.base._TokenDef(%s, %s, %s, %s),"%t for t in tokens ],
-				tab1 +		")",
-				"",
-			]
-		else:
-			return []
+    def genInitCode(self, indent, inline_tokens, tokens, CSL=""):
+        """ Generate the initialisation code of the scanner """
+        tab = tabs(indent)
+        tab1 = tabs(indent+1)
+        tab2 = tabs(indent+2)
+        if not CSL:
+            return [
+                tab  +  "def _init_scanner(self):",
+                tab1 +      "self._lexer = tpg.base._Scanner(",
+                [ tab2 +        "tpg.base._TokenDef(%s, %s),"%t for t in inline_tokens ],
+                [ tab2 +        "tpg.base._TokenDef(%s, %s, %s, %s),"%t for t in tokens ],
+                tab1 +      ")",
+                "",
+            ]
+        else:
+            return []
 
 class Object:
-	""" Object (identifier or number) container """
+    """ Object (identifier or number) container """
 
-	def __init__(self, name):
-		self.name = name
+    def __init__(self, name):
+        self.name = name
 
-	def __str__(self): return self.name
+    def __str__(self): return self.name
 
-	def genCode(self): return self.name
+    def genCode(self): return self.name
 
-	def doc(self, prec): return self.name
+    def doc(self, prec): return self.name
 
 class String:
-	""" String container """
+    """ String container """
 
-	def __init__(self, name):
-		self.name = 'r"%s"'%name;
+    def __init__(self, name):
+        self.name = 'r"%s"'%name;
 
-	def __str__(self): return self.name
+    def __str__(self): return self.name
 
-	def genCode(self): return self.name
+    def genCode(self): return self.name
 
-	def doc(self, prec): return self.name
+    def doc(self, prec): return self.name
 
 class ArgList:
-	""" *arg parameter """
+    """ *arg parameter """
 
-	def __init__(self, obj):
-		self.obj = obj
+    def __init__(self, obj):
+        self.obj = obj
 
-	def __str__(self): return "*%s"%self.obj
+    def __str__(self): return "*%s"%self.obj
 
-	def genCode(self): return "*%s"%self.obj.genCode()
+    def genCode(self): return "*%s"%self.obj.genCode()
 
-	def doc(self, prec): return "*%s"%self.obj.doc()
+    def doc(self, prec): return "*%s"%self.obj.doc()
 
 class ArgDict:
-	""" **kw parameter """
+    """ **kw parameter """
 
-	def __init__(self, obj):
-		self.obj = obj
+    def __init__(self, obj):
+        self.obj = obj
 
-	def __str__(self): return "**%s"%self.obj
+    def __str__(self): return "**%s"%self.obj
 
-	def genCode(self): return "**%s"%self.obj.genCode()
+    def genCode(self): return "**%s"%self.obj.genCode()
 
-	def doc(self, prec): return "**%s"%self.obj.doc()
+    def doc(self, prec): return "**%s"%self.obj.doc()
 
 class KeyWordArg:
-	""" kw=val parameter """
+    """ kw=val parameter """
 
-	def __init__(self, name, value):
-		self.name, self.value = name, value
+    def __init__(self, name, value):
+        self.name, self.value = name, value
 
-	def __str__(self): return "%s=%s"%(self.name, self.value)
+    def __str__(self): return "%s=%s"%(self.name, self.value)
 
-	def genCode(self): return "%s=%s"%(self.name, self.value.genCode())
+    def genCode(self): return "%s=%s"%(self.name, self.value.genCode())
 
-	def doc(self, prec): return "%s=%s"%(self.name, self.value.genCode())
+    def doc(self, prec): return "%s=%s"%(self.name, self.value.doc())
 
 class Objects(list):
-	""" Object list container (tuples, arguments, ...) """
+    """ Object list container (tuples, arguments, ...) """
 
-	def add(self, obj):
-		self.append(obj)
+    def add(self, obj):
+        self.append(obj)
 
-	def __str__(self): return "<%s>"%(','.join(map(str,self)))
+    def __str__(self): return "<%s>"%(','.join(map(str,self)))
 
-	def genCode(self): return "(%s)"%(''.join(['%s, '%o.genCode() for o in self]))
+    def genCode(self): return "(%s)"%(''.join(['%s, '%o.genCode() for o in self]))
 
-	def doc(self, prec): return _p(prec,self.prec)%("<%s>"%(','.join([o.doc(self.prec) for o in self])))
-	prec = 100
+    def doc(self, prec): return _p(prec,self.prec)%("<%s>"%(','.join([o.doc(self.prec) for o in self])))
+    prec = 100
 
 class Args(list):
-	""" Argument list container (tuples, arguments, ...) """
+    """ Argument list container (tuples, arguments, ...) """
 
-	def add(self, obj):
-		self.append(obj)
+    def add(self, obj):
+        self.append(obj)
 
-	def __str__(self): return ','.join(map(str,self))
+    def __str__(self): return ','.join(map(str,self))
 
-	def genCode(self): return ','.join([o.genCode() for o in self])
+    def genCode(self): return ','.join([o.genCode() for o in self])
 
-	def doc(self, prec): return _p(prec,self.prec)%(','.join([o.doc(self.prec) for o in self]))
-	prec = 100
+    def doc(self, prec): return _p(prec,self.prec)%(','.join([o.doc(self.prec) for o in self]))
+    prec = 100
 
 class Composition:
-	""" Composition container (object.ident) """
+    """ Composition container (object.ident) """
 
-	def __init__(self, o1, o2):
-		self.o1, self.o2 = o1, o2
+    def __init__(self, o1, o2):
+        self.o1, self.o2 = o1, o2
 
-	def __str__(self): return "%s.%s"%(self.o1, self.o2)
+    def __str__(self): return "%s.%s"%(self.o1, self.o2)
 
-	def doc(self, prec): return _p(prec,self.prec)%("%s.%s"%(self.o1.doc(self.prec), self.o2.doc(self.prec)))
-	prec = 120
+    def doc(self, prec): return _p(prec,self.prec)%("%s.%s"%(self.o1.doc(self.prec), self.o2.doc(self.prec)))
+    prec = 120
 
-	def genCode(self): return "%s.%s"%(self.o1.genCode(), self.o2.genCode())
+    def genCode(self): return "%s.%s"%(self.o1.genCode(), self.o2.genCode())
 
 class Application:
-	""" Application container (object<args>) """
+    """ Application container (object<args>) """
 
-	def __init__(self, o, as):
-		self.o, self.as = o, as
+    def __init__(self, o, as):
+        self.o, self.as = o, as
 
-	def __str__(self):
-		return "%s(%s)"%(self.o, ','.join(map(str,self.as)))
+    def __str__(self):
+        return "%s(%s)"%(self.o, ','.join(map(str,self.as)))
 
-	def doc(self, prec):
-		return _p(prec,self.prec)%("%s<%s>"%(self.o.doc(self.prec), self.as.doc(self.prec)))
-	prec = 120
+    def doc(self, prec):
+        return _p(prec,self.prec)%("%s<%s>"%(self.o.doc(self.prec), self.as.doc(self.prec)))
+    prec = 120
 
-	def genCode(self): return "%s(%s)"%(self.o.genCode(), self.as.genCode())
+    def genCode(self): return "%s(%s)"%(self.o.genCode(), self.as.genCode())
 
 class Indexation:
-	""" Indexation container (object[index]) """
+    """ Indexation container (object[index]) """
 
-	def __init__(self, o, i):
-		self.o, self.i = o, i
+    def __init__(self, o, i):
+        self.o, self.i = o, i
 
-	def __str__(self):
-		return "%s[%s]"%(self.o, self.i)
+    def __str__(self):
+        return "%s[%s]"%(self.o, self.i)
 
-	def doc(self, prec):
-		return _p(prec,self.prec)%("%s[%s]"%(self.o.doc(self.prec), self.i.doc(self.prec)))
-	prec = 120
+    def doc(self, prec):
+        return _p(prec,self.prec)%("%s[%s]"%(self.o.doc(self.prec), self.i.doc(self.prec)))
+    prec = 120
 
-	def genCode(self):
-		return "%s[%s]"%(self.o.genCode(), self.i.genCode())
+    def genCode(self): return "%s[%s]"%(self.o.genCode(), self.i.genCode())
 
 class Slice:
-	""" Slice container (object:object) """
+    """ Slice container (object:object) """
 
-	def __init__(self, i, j):
-		self.i, self.j = i, j
+    def __init__(self, i, j):
+        self.i, self.j = i, j
 
-	def __str__(self):
-		return "%s:%s"%(self.i, self.j)
+    def __str__(self):
+        return "%s:%s"%(self.i, self.j)
 
-	def doc(self, prec):
-		if self.i is None: i = ""
-		else: i = self.i.doc(self.prec)
-		if self.j is None: j = ""
-		else: j = self.j.doc(self.prec)
-		return _p(prec,self.prec)%("%s:%s"%(i, j))
-	prec = 110
+    def doc(self, prec):
+        if self.i is None: i = ""
+        else: i = self.i.doc(self.prec)
+        if self.j is None: j = ""
+        else: j = self.j.doc(self.prec)
+        return _p(prec,self.prec)%("%s:%s"%(i, j))
+    prec = 110
 
-	def genCode(self):
-		i = self.i and self.i.genCode() or ""
-		j = self.j and self.j.genCode() or ""
-		return "%s:%s"%(i, j)
+    def genCode(self):
+        i = self.i and self.i.genCode() or ""
+        j = self.j and self.j.genCode() or ""
+        return "%s:%s"%(i, j)
 
 class Token:
-	""" Token container """
+    """ Token container """
 
-	def __init__(self, tok, expr, fun, sep):
-		self.tok = tok			# token
-		self.expr = expr		# regular expression
-		self.action = fun		# function to apply to the token
-		self.sep = sep			# flag telling if tok is a separator
+    def __init__(self, tok, expr, fun, sep):
+        self.tok = tok          # token
+        self.expr = expr        # regular expression
+        self.action = fun       # function to apply to the token
+        self.sep = sep          # flag telling if tok is a separator
 
-	def __str__(self):
-		return "%s %s: '%s' %s"%(self.sep and "separator" or "token", self.tok, self.expr, self.action)
+    def __str__(self):
+        return "%s %s: '%s' %s"%(self.sep and "separator" or "token", self.tok, self.expr, self.action)
 
-	def collect(self, collector):
-		collector.add_token(self)
+    def collect(self, collector):
+        collector.add_token(self)
 
-	def genCode(self, indent, CSL=None):
-		return []	# scanner code is generated by Parser
+    def genCode(self, indent, CSL=None):
+        return []   # scanner code is generated by Parser
 
 class VariableGenerator:
-	""" New variable generator """
+    """ New variable generator """
 
-	def __init__(self):
-		self.variables = {}
+    def __init__(self):
+        self.variables = {}
 
-	def next(self, base):
-		n = self.variables.get(base,0)
-		n += 1
-		self.variables[base] = n
-		return "%s%d"%(base, n)
+    def next(self, base):
+        n = self.variables.get(base,0)
+        n += 1
+        self.variables[base] = n
+        return "%s%d"%(base, n)
 
 class Rule:
-	""" Rule container """
+    """ Rule container """
 
-	def __init__(self, symbol, expr):
-		self.symbol = symbol	# head
-		self.expr = expr		# body
+    def __init__(self, symbol, expr):
+        self.symbol = symbol    # head
+        self.expr = expr        # body
 
-	def __str__(self):
-		return "%s -> %s ;"%(self.symbol, self.expr)
+    def __str__(self):
+        return "%s -> %s ;"%(self.symbol, self.expr)
 
-	def collect(self, collector):
-		collector.add_rule(self)
-		self.expr.collect(collector)
+    def collect(self, collector):
+        collector.add_rule(self)
+        self.expr.collect(collector)
 
-	def genCode(self, indent, CSL=None):
-		ret = self.symbol.genRetCode()
-		return [
-			self.symbol.genDefCode(indent),							# def symbol(args):
-			"\t"*(indent+1)+self.doc(self.prec),					#	""" head -> body """
-			self.expr.genCode(indent+1,vargen=VariableGenerator(),CSL=CSL),	#	code
-			_if(ret, "\t"*(indent+1)+"return %s"%ret, []),			#	return code
-			"",
-		]
+    def genCode(self, indent, CSL=None):
+        ret = self.symbol.genRetCode()
+        return [
+            self.symbol.genDefCode(indent),                         # def symbol(args):
+            tabs(indent+1)+self.doc(self.prec),                     #   """ head -> body """
+            self.expr.genCode(indent+1,vargen=VariableGenerator(),CSL=CSL), #   code
+            _if(ret, tabs(indent+1)+"return %s"%ret, []),           #   return code
+            "",
+        ]
 
-	def doc(self, prec):
-		return '""" %s -> %s """'%(self.symbol.doc(self.prec), self.expr.doc(self.prec))
-	prec = 0
+    def doc(self, prec):
+        return '""" %s -> %s """'%(self.symbol.doc(self.prec), self.expr.doc(self.prec))
+    prec = 0
 
 class LexRule(Rule):
-	""" Lexical rule container """
+    """ Lexical rule container """
 
-	def __init__(self, symbol, expr):
-		Rule.__init__(self, symbol, expr)
+    def __init__(self, symbol, expr):
+        Rule.__init__(self, symbol, expr)
 
-	def __str__(self):
-		return "lex %s -> %s ;"%(self.symbol, self.expr)
+    def __str__(self):
+        return "lex %s -> %s ;"%(self.symbol, self.expr)
 
-	def genCode(self, indent, CSL=None):
-		ret = self.symbol.genRetCode()
-		return [
-			self.symbol.genDefCode(indent),									# def symbol(args):
-			"\t"*(indent+1)+self.doc(self.prec),							#	""" head -> body """
-			self.expr.genCode(indent+1,vargen=VariableGenerator(), CSL=1, lex="lex_"),	#	code
-			_if(ret, "\t"*(indent+1)+"return %s"%ret, []),					#	return code
-			"",
-		]
+    def genCode(self, indent, CSL=None):
+        ret = self.symbol.genRetCode()
+        return [
+            self.symbol.genDefCode(indent),                                 # def symbol(args):
+            tabs(indent+1)+self.doc(self.prec),                             #   """ head -> body """
+            self.expr.genCode(indent+1,vargen=VariableGenerator(), CSL=1, lex="lex_"),  #   code
+            _if(ret, tabs(indent+1)+"return %s"%ret, []),                   #   return code
+            "",
+        ]
 
-	def doc(self, prec):
-		return '""" lex %s -> %s """'%(self.symbol.doc(self.prec), self.expr.doc(self.prec))
+    def doc(self, prec):
+        return '""" lex %s -> %s """'%(self.symbol.doc(self.prec), self.expr.doc(self.prec))
 
 class Symbol:
-	""" Symbol container """
-	
-	def __init__(self, id, as, ret):
-		self.name = id
-		self.args = as
-		self.ret = ret
+    """ Symbol container """
+    
+    def __init__(self, id, as, ret):
+        self.name = id
+        self.args = as
+        self.ret = ret
 
-	def __str__(self): return "%s(%s)/%s"%(self.name, ','.join(map(str,self.args)), self.ret)
+    def __str__(self): return "%s(%s)/%s"%(self.name, ','.join(map(str,self.args)), self.ret)
 
-	def collect(self, collector):
-		self.collector = collector
+    def collect(self, collector):
+        self.collector = collector
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		""" Code to call a symbol """
-		if self.ret: c = "%s = "%self.ret.genCode()
-		else: c = ""
-		if self.collector.istoken(self.name):
-			c += "self._eat('%s')"%self.name
-		else:
-			c += "self.%s(%s)"%(self.name, self.args.genCode())
-		return "\t"*indent + c
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        """ Code to call a symbol """
+        if self.ret: c = "%s = "%self.ret.genCode()
+        else: c = ""
+        if self.collector.istoken(self.name):
+            c += "self._eat('%s')"%self.name
+        else:
+            c += "self.%s(%s)"%(self.name, self.args.genCode())
+        return tabs(indent) + c
 
-	def genDefCode(self, indent):
-		""" Code to define a symbol (ie a rule) """
-		return "\t"*indent + "def %s(self,%s):"%(self.name, self.args.genCode())
+    def genDefCode(self, indent):
+        """ Code to define a symbol (ie a rule) """
+        return tabs(indent) + "def %s(self,%s):"%(self.name, self.args.genCode())
 
-	def genRetCode(self):
-		""" Code for the return value of the symbol """
-		if self.ret: return self.ret.genCode()
-		else: return ""
+    def genRetCode(self):
+        """ Code for the return value of the symbol """
+        if self.ret: return self.ret.genCode()
+        else: return ""
 
-	def doc(self, prec): return self.name
+    def doc(self, prec): return self.name
 
-	def empty(self): return 0
+    def empty(self): return 0
 
 class Sequence(list):
-	""" Container for a sequence in a rule """
+    """ Container for a sequence in a rule """
 
-	def __init__(self, *args):
-		list.__init__(self)
-		self.extend(args)
+    def __init__(self, *args):
+        list.__init__(self)
+        self.extend(args)
 
-	def add(self, e):
-		self.append(e)
+    def add(self, e):
+        self.append(e)
 
-	def __str__(self): return " ".join(map(str,self))
+    def __str__(self): return " ".join(map(str,self))
 
-	def collect(self, collector):
-		for i in self: i.collect(collector)
+    def collect(self, collector):
+        for i in self: i.collect(collector)
 
-	def doc(self, prec): return _p(prec,self.prec)%" ".join([e.doc(self.prec) for e in self if not e.empty()])
-	prec = 20
+    def doc(self, prec): return _p(prec,self.prec)%" ".join([e.doc(self.prec) for e in self if not e.empty()])
+    prec = 20
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		return [ e.genCode(indent,vargen=vargen,CSL=CSL,lex=lex) for e in self ]
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        return [ e.genCode(indent,vargen=vargen,CSL=CSL,lex=lex) for e in self ]
 
-	def empty(self):
-		for e in self:
-			if not e.empty(): return 0
-		return 1
+    def empty(self):
+        for e in self:
+            if not e.empty(): return 0
+        return 1
 
 class Cut(Sequence):
-	""" Container for a cut term """
+    """ Container for a cut term """
 
-	def __str__(self): return "! " + Sequence.__str__(self)
+    def __str__(self): return "! " + Sequence.__str__(self)
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		tab = "\t" * indent
-		return	[	[
-						tab + "try:",
-							e.genCode(indent+1, vargen=vargen, p=p, CSL=CSL, lex=lex),
-						tab + "except self.TPGWrongMatch, e:",
-						tab + "\tself.ParserError(e.last)",
-					] for e in self
-				]
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        tab = tabs(indent)
+        t = tabs()
+        return  [   [
+                        tab +   "try:",
+                                    e.genCode(indent+1, vargen=vargen, p=p, CSL=CSL, lex=lex),
+                        tab +   "except self.TPGWrongMatch, e:",
+                        tab +   t + "self.ParserError(e.last)",
+                    ] for e in self
+                ]
 
 class Alternative:
-	""" Container for a choice in a rule """
+    """ Container for a choice in a rule """
 
-	def __init__(self, a, b):
-		self.a = a
-		self.b = b
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
 
-	def __str__(self): return "(%s | %s)"%(self.a, self.b)
+    def __str__(self): return "(%s | %s)"%(self.a, self.b)
 
-	def collect(self, collector):
-		self.a.collect(collector)
-		self.b.collect(collector)
+    def collect(self, collector):
+        self.a.collect(collector)
+        self.b.collect(collector)
 
-	def doc(self, prec): return _p(prec,self.prec)%("%s | %s"%(self.a.doc(self.prec), self.b.doc(self.prec)))
-	prec = 10
+    def doc(self, prec): return _p(prec,self.prec)%("%s | %s"%(self.a.doc(self.prec), self.b.doc(self.prec)))
+    prec = 10
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		copy = CSL and ".copy()" or ""
-		tab = "\t"*indent
-		if p is None:
-			p = vargen.next("__p")
-			pos = tab + "%s = self._cur_token%s"%(p, copy)
-		else:
-			pos = []
-		return [
-			pos,
-			tab + "try:",
-				self.a.genCode(indent+1,vargen=vargen,p=p,CSL=CSL,lex=lex),
-			tab + "except self.TPGWrongMatch:",
-			tab + "\tself._cur_token = %s%s"%(p, copy),
-				self.b.genCode(indent+1,vargen=vargen,p=p,CSL=CSL,lex=lex),
-		]
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        copy = CSL and ".copy()" or ""
+        tab = tabs(indent)
+        t = tabs()
+        if p is None:
+            p = vargen.next("__p")
+            pos = tab + "%s = self._cur_token%s"%(p, copy)
+        else:
+            pos = []
+        return [
+            pos,
+            tab +   "try:",
+                        self.a.genCode(indent+1,vargen=vargen,p=p,CSL=CSL,lex=lex),
+            tab +   "except self.TPGWrongMatch:",
+            tab +   t + "self._cur_token = %s%s"%(p, copy),
+                        self.b.genCode(indent+1,vargen=vargen,p=p,CSL=CSL,lex=lex),
+        ]
 
-	def empty(self):
-		return self.a.empty() and self.b.empty()
+    def empty(self):
+        return self.a.empty() and self.b.empty()
 
 def balance(alt):
-	""" Balances an alternative tree """
-	if not isinstance(alt, Alternative): return alt
-	def collect(alt):
-		if isinstance(alt, Alternative): return collect(alt.a)+collect(alt.b)
-		else: return [alt]
-	def tree(alts):
-		if len(alts) >= 2:
-			m = len(alts)/2
-			return Alternative(tree(alts[0:m]),tree(alts[m:]))
-		else:
-			return alts[0]
-	return tree(collect(alt))
+    """ Balances an alternative tree """
+    if not isinstance(alt, Alternative): return alt
+    def collect(alt):
+        if isinstance(alt, Alternative): return collect(alt.a)+collect(alt.b)
+        else: return [alt]
+    def tree(alts):
+        if len(alts) >= 2:
+            m = len(alts)/2
+            return Alternative(tree(alts[0:m]),tree(alts[m:]))
+        else:
+            return alts[0]
+    return tree(collect(alt))
 
 class MakeAST:
-	""" Container for an AST affectation (LHS=RHS) """
+    """ Container for an AST affectation (LHS=RHS) """
 
-	def __init__(self, LHS, RHS):
-		self.LHS = LHS
-		self.RHS = RHS
+    def __init__(self, LHS, RHS):
+        self.LHS = LHS
+        self.RHS = RHS
 
-	def __str__(self): return "%s = %s"%(self.LHS, self.RHS)
+    def __str__(self): return "%s = %s"%(self.LHS, self.RHS)
 
-	def collect(self, collector): pass
+    def collect(self, collector): pass
 
-	def doc(self, prec): return ""
+    def doc(self, prec): return ""
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		return "\t"*indent + "%s = %s"%(self.LHS.genCode(), self.RHS.genCode())
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        return tabs(indent) + "%s = %s"%(self.LHS.genCode(), self.RHS.genCode())
 
-	def empty(self): return 1
+    def empty(self): return 1
 
 class AddAST:
-	""" Container for an AST update (LHS-RHS) """
+    """ Container for an AST update (LHS-RHS) """
 
-	def __init__(self, LHS, RHS):
-		self.LHS = LHS
-		self.RHS = RHS
+    def __init__(self, LHS, RHS):
+        self.LHS = LHS
+        self.RHS = RHS
 
-	def __str__(self): return "%s-%s"%(self.LHS, self.RHS)
+    def __str__(self): return "%s-%s"%(self.LHS, self.RHS)
 
-	def collect(self, collector): pass
+    def collect(self, collector): pass
 
-	def doc(self, prec): return ""
+    def doc(self, prec): return ""
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		return "\t"*indent + "%s.add(%s)"%(self.LHS.genCode(), self.RHS.genCode())
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        return tabs(indent) + "%s.add(%s)"%(self.LHS.genCode(), self.RHS.genCode())
 
-	def empty(self): return 1
+    def empty(self): return 1
 
 class Check:
-	""" Condition checker """
+    """ Condition checker """
 
-	def __init__(self, cond):
-		self.cond = cond
+    def __init__(self, cond):
+        self.cond = cond
 
-	def __str__(self): return "check %s"%self.cond
+    def __str__(self): return "check %s"%self.cond
 
-	def collect(self, collector): pass
+    def collect(self, collector): pass
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		return "\t"*indent + "self.check(%s)"%self.cond.genCode()
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        return tabs(indent) + "self.check(%s)"%self.cond.genCode()
 
-	def doc(self, prec): return ""
+    def doc(self, prec): return ""
 
-	def empty(self): return 1
+    def empty(self): return 1
 
 class Error:
-	""" Error manager """
+    """ Error manager """
 
-	def __init__(self, error):
-		self.error = error
+    def __init__(self, error):
+        self.error = error
 
-	def __str__(self): return "error %s"%self.error
+    def __str__(self): return "error %s"%self.error
 
-	def collect(self, coolector): pass
+    def collect(self, coolector): pass
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		return "\t"*indent + "self.error(%s)"%self.error.genCode()
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        return tabs(indent) + "self.error(%s)"%self.error.genCode()
 
-	def doc(self, prec): return ""
+    def doc(self, prec): return ""
 
-	def empty(self): return 1
+    def empty(self): return 1
 
 class Rep:
-	""" Container for a repeated expression (*, +, ?, {m,n}) """
+    """ Container for a repeated expression (*, +, ?, {m,n}) """
 
-	def __init__(self, m, M, e):
-		self.e = e	# expression
-		self.m = m	# min loops
-		self.M = M	# max loops
+    def __init__(self, m, M, e):
+        self.e = e  # expression
+        self.m = m  # min loops
+        self.M = M  # max loops
 
-	def __str__(self): return "(%s){%s,%s}"%(self.e, self.m or "", self.M or "")
+    def __str__(self): return "(%s){%s,%s}"%(self.e, self.m or "", self.M or "")
 
-	def collect(self, collector):
-		self.e.collect(collector)
+    def collect(self, collector):
+        self.e.collect(collector)
 
-	def doc(self, prec):
-		if self.m == 0:
-			if self.M == 1:
-				r = "?"
-			elif self.M is None:
-				r = "*"
-			else:
-				r = "{,%s}"%self.M
-		elif self.m == 1:
-			if self.M is None:
-				r = "+"
-			else:
-				r = "{1,%s}"%self.M
-		else:
-			if self.M is None:
-				r = "{%s,}"%self.m
-			elif self.m == self.M:
-				r = "{%s}"%self.m
-			else:
-				r = "{%s,%s}"%(self.m, self.M)
-		return _p(prec,self.prec)%self.e.doc(self.prec) + r
-	prec = 30
+    def doc(self, prec):
+        if self.m == 0:
+            if self.M == 1:
+                r = "?"
+            elif self.M is None:
+                r = "*"
+            else:
+                r = "{,%s}"%self.M
+        elif self.m == 1:
+            if self.M is None:
+                r = "+"
+            else:
+                r = "{1,%s}"%self.M
+        else:
+            if self.M is None:
+                r = "{%s,}"%self.m
+            elif self.m == self.M:
+                r = "{%s}"%self.m
+            else:
+                r = "{%s,%s}"%(self.m, self.M)
+        return _p(prec,self.prec)%self.e.doc(self.prec) + r
+    prec = 30
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		copy = CSL and ".copy()" or ""
-		tab = "\t"*indent
-		m, M = self.m, self.M
-		p = vargen.next("__p")
-		if (m, M) == (0, 1):	# "e ?"
-			return [
-				tab + "%s = self._cur_token%s"%(p, copy),				# get current token
-				tab + "try:",
-					self.e.genCode(indent+1, vargen=vargen, p=p, CSL=CSL, lex=lex),		# try to match e once
-				tab + "except self.TPGWrongMatch:",						# if failed
-				tab + "\tself._cur_token = %s%s"%(p, copy),				# go back to the current token
-			]
-		elif (m, M) == (0, None):	# "e *"
-			return [
-				tab + "%s = self._cur_token%s"%(p, copy),				# get current token
-				tab + "while 1:",										# loop as much as possible
-				tab + "\ttry:",
-						self.e.genCode(indent+2, vargen=vargen, p=p, CSL=CSL, lex=lex),	# try to match e
-				tab + "\t\t%s = self._cur_token%s"%(p, copy),			# if succeded get the new current token
-				tab + "\texcept self.TPGWrongMatch:",
-				tab + "\t\tself._cur_token = %s%s"%(p, copy),			# otherwise go back to the current token
-				tab + "\t\tbreak",										# and exit the loop
-			]
-		else:						# "e +" or "e {m,M}"
-			n = vargen.next("__n")
-			if m <= 1: p1 = p		# for {0,*} or {1,*}, use the same position variable
-			else: p1 = None			# for {2..,*} use a new variable to be able to backtrack on the first
-			return [
-				tab + "%s = self._cur_token%s"%(p, copy),				# get current token
-				tab + "%s = 0"%n,										# loop counter = 0
-				tab + "while %s:"%_if(M is None,"1","%s<%s"%(n,M)),		# loop until counter = M
-				tab + "\ttry:",
-						self.e.genCode(indent+2, vargen=vargen, p=p1, CSL=CSL, lex=lex),	# try to match e
-				tab + "\t\t%s += 1"%n,									# inc loop counter
-				tab + "\t\t%s = self._cur_token%s"%(p, copy),			# if succeded get the new current token
-				tab + "\texcept self.TPGWrongMatch:",
-				_if( m>0,
-				[
-				tab + "\t\tif %s >= %s:"%(n, m),						# otherwise if enough loops
-				tab + "\t\t\tself._cur_token = %s%s"%(p, copy),			# go back to the current token
-				tab + "\t\t\tbreak",									# and exit the loop
-				tab + "\t\telse:",
-				tab + "\t\t\tself.WrongMatch()",						# otherwise fail
-				],
-				[
-				tab + "\t\tself._cur_token = %s%s"%(p, copy),			# go back to the current token
-				])
-			]
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        copy = CSL and ".copy()" or ""
+        tab = tabs(indent)
+        t = tabs()
+        m, M = self.m, self.M
+        p = vargen.next("__p")
+        if (m, M) == (0, 1):    # "e ?"
+            return [
+                tab +   "%s = self._cur_token%s"%(p, copy),             # get current token
+                tab +   "try:",
+                            self.e.genCode(indent+1, vargen=vargen, p=p, CSL=CSL, lex=lex), # try to match e once
+                tab +   "except self.TPGWrongMatch:",                   # if failed
+                tab +   t + "self._cur_token = %s%s"%(p, copy),         # go back to the current token
+            ]
+        elif (m, M) == (0, None):   # "e *"
+            return [
+                tab +   "%s = self._cur_token%s"%(p, copy),             # get current token
+                tab +   "while 1:",                                     # loop as much as possible
+                tab +   t + "try:",
+                                self.e.genCode(indent+2, vargen=vargen, p=p, CSL=CSL, lex=lex), # try to match e
+                tab +   t + t + "%s = self._cur_token%s"%(p, copy),     # if succeded get the new current token
+                tab +   t + "except self.TPGWrongMatch:",
+                tab +   t + t + "self._cur_token = %s%s"%(p, copy),     # otherwise go back to the current token
+                tab +   t + t + "break",                                # and exit the loop
+            ]
+        else:                       # "e +" or "e {m,M}"
+            n = vargen.next("__n")
+            if m <= 1: p1 = p       # for {0,*} or {1,*}, use the same position variable
+            else: p1 = None         # for {2..,*} use a new variable to be able to backtrack on the first
+            return [
+                tab +   "%s = self._cur_token%s"%(p, copy),             # get current token
+                tab +   "%s = 0"%n,                                     # loop counter = 0
+                tab +   "while %s:"%_if(M is None,"1","%s<%s"%(n,M)),   # loop until counter = M
+                tab +   t + "try:",
+                                self.e.genCode(indent+2, vargen=vargen, p=p1, CSL=CSL, lex=lex),    # try to match e
+                tab +   t + t + "%s += 1"%n,                            # inc loop counter
+                tab +   t + t + "%s = self._cur_token%s"%(p, copy),     # if succeded get the new current token
+                tab +   t + "except self.TPGWrongMatch:",
+                _if( m>0,
+                [
+                tab +   t + t + "if %s >= %s:"%(n, m),                  # otherwise if enough loops
+                tab +   t + t + t + "self._cur_token = %s%s"%(p, copy), # go back to the current token
+                tab +   t + t + t + "break",                            # and exit the loop
+                tab +   t + t + "else:",
+                tab +   t + t + t + "self.WrongMatch()",                # otherwise fail
+                ],
+                [
+                tab +   t + t + "self._cur_token = %s%s"%(p, copy),     # go back to the current token
+                ])
+            ]
 
-	def empty(self): return self.e.empty()
+    def empty(self): return self.e.empty()
 
 class InlineToken:
-	""" Container for inline tokens """
+    """ Container for inline tokens """
 
-	def __init__(self, expr, ret, split):
-		self.expr = expr	# expression
-		self.ret = ret		# return object
-		self.split = split	# split method for CSL parsers
+    def __init__(self, expr, ret, split):
+        self.expr = expr    # expression
+        self.ret = ret      # return object
+        self.split = split  # split method for CSL parsers
 
-	def __str__(self): return "'%s'/%s"%(self.expr, self.ret)
+    def __str__(self): return "'%s'/%s"%(self.expr, self.ret)
 
-	def collect(self, collector):
-		collector.add_inline_token(self)
-		self.collector = collector
+    def collect(self, collector):
+        collector.add_inline_token(self)
+        self.collector = collector
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		if self.ret:
-			ret = "%s = "%self.ret.genCode()
-		else:
-			ret = ""
-		if not CSL:
-			name = self.collector.token_name[self.expr]
-			if not self.expr.startswith(name):
-				comment = " # %s"%self.expr
-			else:
-				comment = ""
-			return "\t"*indent + ret + "self._eat('%s')%s"%(name, comment)
-		else:
-			if self.split:
-				return "\t"*indent + ret + "self._%seat(%s, split=%s)"%(lex, _2str(self.expr), self.split)
-			else:
-				return "\t"*indent + ret + "self._%seat(%s)"%(lex, _2str(self.expr))
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        if self.ret:
+            ret = "%s = "%self.ret.genCode()
+        else:
+            ret = ""
+        if not CSL:
+            name = self.collector.token_name[self.expr]
+            if not self.expr.startswith(name):
+                comment = " # %s"%self.expr
+            else:
+                comment = ""
+            return tabs(indent) + ret + "self._eat('%s')%s"%(name, comment)
+        else:
+            if self.split:
+                return tabs(indent) + ret + "self._%seat(%s, split=%s)"%(lex, _2str(self.expr), self.split)
+            else:
+                return tabs(indent) + ret + "self._%seat(%s)"%(lex, _2str(self.expr))
 
-	def doc(self, prec): return "'%s'"%self.expr
+    def doc(self, prec): return "'%s'"%self.expr
 
-	def empty(self): return 0
+    def empty(self): return 0
 
 class Mark:
-	""" Container for marks """
+    """ Container for marks """
 
-	def __init__(self, obj):
-		self.obj = obj;
+    def __init__(self, obj):
+        self.obj = obj;
 
-	def __str__(self): return "!%s"%self.obj
+    def __str__(self): return "@%s"%self.obj
 
-	def collect(self, collector): pass
+    def collect(self, collector): pass
 
-	def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
-		return "\t"*indent + "%s = self._mark()"%self.obj.genCode()
+    def genCode(self, indent, vargen=None, p=None, CSL=None, lex=""):
+        return tabs(indent) + "%s = self._mark()"%self.obj.genCode()
 
-	def doc(self, prec): return ""
+    def doc(self, prec): return ""
 
-	def empty(self): return 1
+    def empty(self): return 1
 
 class Extraction:
-	""" Container for text extraction """
+    """ Container for text extraction """
 
-	def __init__(self, start, end):
-		self.start = start
-		self.end = end
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
 
-	def __str__(self): return "%s..%s"%(self.start, self.end)
+    def __str__(self): return "%s..%s"%(self.start, self.end)
 
-	def collect(self, collector): pass
+    def collect(self, collector): pass
 
-	def genCode(self, vargen=None, p=None, CSL=None, lex=""):
-		return "self._extract(%s,%s)"%(self.start.genCode(), self.end.genCode())
+    def genCode(self, vargen=None, p=None, CSL=None, lex=""):
+        return "self._extract(%s,%s)"%(self.start.genCode(), self.end.genCode())
 
-	def doc(self, prec): return ""
+    def doc(self, prec): return ""
 
-	def empty(self): return 1
+    def empty(self): return 1
 

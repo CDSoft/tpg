@@ -41,45 +41,45 @@ from distutils.core import setup
 # Update the documentation when building a source dist
 if 'sdist' in sys.argv[1:]:
 
-	to_update = [
-		# Precompiled TPG parser
-		( 'tpg/parser.py', ['tpg/parser.g'],
-			"cd tpg && make"
-		),
-		# Documentation / Tutorial
-		( 'doc/tpg.html', ['doc/*.tex', 'doc/hack/*.g'],
-			"cd doc/hack && hack.py && cd .. && ( export TEXINPUTS=.:~/local/tex4ht.dir//:/usr/share/texmf/tex//; ~/local/tex4ht.dir/htlatex tpg html,2 ) && rm tpg.dvi"
-		),
-		( 'doc/tpg.dvi', ['doc/*.tex', 'doc/hack/*.g'],
-			"cd doc/hack && hack.py && cd .. && latex tpg && latex tpg && latex tpg"
-		),
-		( 'doc/tpg.pdf', ['doc/*.tex', 'doc/hack/*.g'],
-			"cd doc/hack && hack.py && cd .. && pdflatex tpg && pdflatex tpg && pdflatex tpg"
-		),
-		# Examples
-		( 'examples/calc/calc.py', [ 'examples/calc/calc.g' ],
-			"cd examples/calc/ && tpg calc.g"
-		),
-	]
+    to_update = [
+        # Precompiled TPG parser
+        ( 'tpg/parser.py', ['tpg/parser.g'],
+            "cd tpg && make"
+        ),
+        # Documentation / Tutorial
+        ( 'doc/tpg.html', ['doc/*.tex', 'doc/hack/*.g'],
+            "cd doc/hack && hack.py && cd .. && htlatex tpg html,2 && web2png -t && rm tpg.dvi"
+        ),
+        ( 'doc/tpg.dvi', ['doc/*.tex', 'doc/hack/*.g'],
+            "cd doc/hack && hack.py && cd .. && latex tpg && latex tpg && latex tpg"
+        ),
+        ( 'doc/tpg.pdf', ['doc/*.tex', 'doc/hack/*.g'],
+            "cd doc/hack && hack.py && cd .. && pdflatex tpg && pdflatex tpg && pdflatex tpg"
+        ),
+        # Examples
+        ( 'examples/calc/calc.py', [ 'examples/calc/calc.g' ],
+            "cd examples/calc/ && tpg calc.g"
+        ),
+    ]
 
-	def target_outdated(target, deps):
-		try:
-			target_time = os.path.getmtime(target)
-		except os.error:
-			return 1
-		for dep in deps:
-			dep_time = os.path.getmtime(dep)
-			if dep_time > target_time:
-				return 1
-		return 0
+    def target_outdated(target, deps):
+        try:
+            target_time = os.path.getmtime(target)
+        except os.error:
+            return 1
+        for dep in deps:
+            dep_time = os.path.getmtime(dep)
+            if dep_time > target_time:
+                return 1
+        return 0
 
-	def target_update(target, deps, cmd):
-		deps = reduce(operator.add, map(glob, deps), [])
-		if target_outdated(target, deps):
-			os.system(cmd)
+    def target_update(target, deps, cmd):
+        deps = reduce(operator.add, map(glob, deps), [])
+        if target_outdated(target, deps):
+            os.system(cmd)
 
-	for target in to_update:
-		target_update(*target)
+    for target in to_update:
+        target_update(*target)
 
 # Release.py contains version, authors, license, url, keywords, etc.
 execfile(os.path.join('tpg','Release.py'))

@@ -6,8 +6,12 @@ You only need to import TPG and use these four objects:
 \begin{description}
 	\item [tpg.compile(grammar):]
 		This function takes a grammar in a string and produces
-		a parser in Python (also in a string).
-		You can call exec to actually build it. 
+		the Python object code of the parser.
+		You can call exec to actually build it.
+	\item [tpg.translate(grammar):]
+		This function takes a grammar in a string and produces
+		the Python source code of the parser.
+		You can call exec to actually build it.
 	\item [tpg.LexerError:]
 		This exception is raised when the lexer fails.
 	\item [tpg.ParserError:]

@@ -163,7 +163,8 @@ parser Calc:
 \section{Embeding the parser in a script}
 
 To embed a TPG parser in a Python program, you only need the \emph{tpg.compile} function.
-This function takes a grammar (in a string\footnote{It may be a good pratice to use only raw strings. This will ease the pain of writing regular expressions.}) and returns a string containing the Python code for the parser.
+This function takes a grammar (in a string\footnote{It may be a good pratice to use only raw strings. This will ease the pain of writing regular expressions.}) and returns the Python object code of the parser.
+If you need the Python source code of the parser you can call the \emph{tpg.translate} function.
 One way to use this parser is to \emph{exec} its definition.
 A practical way to build parsers is to \emph{exec} the result of \emph{tpg.compile} (figure~\ref{tut:build_scheme}).
 

@@ -27,19 +27,24 @@ All you need to use TPG is to import tpg
 and use these four objects:
 
 tpg.compile(grammar):
-	This function takes a grammar in a string and produces
-	a parser in Python (also in a string).
-	You can use exec to actually build it.
+    This function takes a grammar in a string and produces
+    the Python object code of the parser.
+    You can use exec to actually build it.
+
+tpg.translate(grammar):
+    This function takes a grammar in a string and produces
+    the Python source code of the parser.
+    You can use exec to actually build it.
 
 tpg.LexerError:
-	This exception is raised when the lexer fails
+    This exception is raised when the lexer fails
 
 tpg.ParserError:
-	This exception is raised when the parser fails
+    This exception is raised when the parser fails
 
 tpg.SemanticError:
-	This exception is raised by the grammar itself
-	when some semantic properties fail
+    This exception is raised by the grammar itself
+    when some semantic properties fail
 
 
 For further information about TPG, please visit
@@ -65,10 +70,10 @@ __license__ = Release.license
 
 # Modules
 #
-#	base.py   : basic parser and lexer
-#	parser.py : TPG grammar parser (generated from parser.g)
-#	codegen.py: python code generator
-#	Release.py: release data
+#   base.py   : basic parser and lexer
+#   parser.py : TPG grammar parser (generated from parser.g)
+#   codegen.py: python code generator
+#   Release.py: release data
 
-from parser import compile
+from parser import compile, translate
 from base import Error, LexerError, ParserError, SemanticError

@@ -31,41 +31,41 @@ import tpg
 class ArgError(Exception): pass
 
 def getargs(args):
-	def check(cond):
-		if not cond: raise ArgError
-	i, o, v = None, None, 0
-	while args:
-		arg = args.pop(0)
-		if arg == '-o':
-			check(o is None and args)
-			o = args.pop(0)
-			check(o.endswith('.py'))
-		elif re.match('-v+$', arg):
-			v += len(arg)-1
-		else:
-			check(i is None and arg.endswith('.g'))
-			i = arg
-	check(i is not None)
-	if o is None: o = i[:-2] + '.py'
-	return i, o, v
+    def check(cond):
+        if not cond: raise ArgError
+    i, o, v = None, None, 0
+    while args:
+        arg = args.pop(0)
+        if arg == '-o':
+            check(o is None and args)
+            o = args.pop(0)
+            check(o.endswith('.py'))
+        elif re.match('-v+$', arg):
+            v += len(arg)-1
+        else:
+            check(i is None and arg.endswith('.g'))
+            i = arg
+    check(i is not None)
+    if o is None: o = i[:-2] + '.py'
+    return i, o, v
 
 sys.stdout.write("TPG v%s (c) %s\n"%(tpg.__version__, tpg.__author__))
 try: (grammar_file, output_file, v) = getargs(sys.argv[1:])
 except ArgError: sys.stderr.write("Syntax: %s [-v|-vv] grammar_file.g [-o output_file.py]\n"%sys.argv[0])
 else:
-	try:
-		tpg.codegen.setVerbosity(v)
-		sys.stdout.write("TPG: translating %s to %s\n"%(grammar_file,output_file))
-		f = open(grammar_file, 'r')
-		parser = tpg.compile(f.read())
-		f.close()
-		g = open(output_file, 'w')
-		g.write(parser)
-		g.close()
-		sys.stdout.write("Translation OK\n")
-		sys.exit(0)
-	except IOError, e:
-		sys.stderr.write("IOError: %s\n"%e)
-	except tpg.Error, e:
-		sys.stderr.write(str(e))
+    try:
+        tpg.codegen.setVerbosity(v)
+        sys.stdout.write("TPG: translating %s to %s\n"%(grammar_file,output_file))
+        f = open(grammar_file, 'r')
+        parser = tpg.translate(f.read())
+        f.close()
+        g = open(output_file, 'w')
+        g.write(parser)
+        g.close()
+        sys.stdout.write("Translation OK\n")
+        sys.exit(0)
+    except IOError, e:
+        sys.stderr.write("IOError: %s\n"%e)
+    except tpg.Error, e:
+        sys.stderr.write(str(e))
 sys.exit(1)
