@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: TPG
-Version: 0.1.3
+Version: 0.1.4
 Summary: Toy Parser Generator is a recursive descendant parser generator for Python 2.2
 Home-page: http://christophe.delord.free.fr/tpg/
 Author: Christophe Delord
