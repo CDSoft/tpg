@@ -28,6 +28,8 @@ http://christophe.delord.free.fr/en/tpg
 """
 
 import os
+import sys
+import operator
 from glob import glob
 
 # BEFORE importing distutils, remove MANIFEST. distutils doesn't properly
@@ -35,6 +37,43 @@ from glob import glob
 if os.path.exists('MANIFEST'): os.remove('MANIFEST')
 
 from distutils.core import setup
+
+# Update the documentation when building a source dist
+if 'sdist' in sys.argv[1:]:
+
+	to_update = [
+		# Precompiled TPG parser
+		( 'tpg/parser.py', ['tpg/parser.g'],
+			"cd tpg && make"
+		),
+		# Documentation / Tutorial
+		( 'doc/tpg.pdf', ['doc/*.tex', 'doc/hack/*.g'],
+			"cd doc/hack && hack.py && cd .. && pdflatex tpg"
+		),
+		# Examples
+		( 'examples/calc/calc.py', [ 'examples/calc/calc.g' ],
+			"cd examples/calc/ && tpg calc.g"
+		),
+	]
+
+	def target_outdated(target, deps):
+		try:
+			target_time = os.path.getmtime(target)
+		except os.error:
+			return 1
+		for dep in deps:
+			dep_time = os.path.getmtime(dep)
+			if dep_time > target_time:
+				return 1
+		return 0
+
+	def target_update(target, deps, cmd):
+		deps = reduce(operator.add, map(glob, deps), [])
+		if target_outdated(target, deps):
+			os.system(cmd)
+
+	for target in to_update:
+		target_update(*target)
 
 # Release.py contains version, authors, license, url, keywords, etc.
 execfile(os.path.join('tpg','Release.py'))
@@ -47,13 +86,13 @@ setup(name             = name,
       author           = author,
       author_email     = email,
       url              = url,
+      maintainer       = author,
+      maintainer_email = email,
       license          = license,
       licence          = license, # Spelling error in distutils
       platforms        = platforms,
       keywords         = keywords,
-      packages         = ['tpg'], #, 'tpg.base', 'tpg.codegen', 'tpg.parser', 'tpg.Release'],
+      packages         = ['tpg'],
       scripts          = ['tpg/tpg'],
-      #data_files       = [('tpg/examples', glob('tpg/examples/*.[g|py]')),
-                          #],
       )
 

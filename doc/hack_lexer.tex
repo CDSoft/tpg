@@ -1,0 +1,11 @@
+\section{Token matching}
+
+Tokens are defined by their regular expressions (see \ref{lexer:token_def}).
+TPG builds a regular expression by assembling each regular expression in a \emph{or} structure.
+For example to recognize \emph{int}~\mbox{($[0-9]+$)} and \emph{word}~\mbox{($[a-zA-Z]+$)}, TPG builds this composite expression:
+$(?P<int>[0-9]+)~|~(?P<word>[a-zA-Z]+)$
+This expression is then compiled using the \emph{re} module.
+
+For each token we save its name, its text, its value (i.e. the result of its action applied to its text), the line number and the position of the start and the end of the token in the input string.
+
+There is a special token named \emph{EOF} used as the erroneous token when a lexical error appears near the end of the input.

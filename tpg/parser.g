@@ -61,7 +61,7 @@ parser TPGParser:
 		opts = Options<>
 		(	'set' ident/opt ( '=' string/val | val = 1 )
 			{{ if opt.startswith('no'): opt, val = opt[2:], None }}
-			{{ self.check(opt in [ 'magic' ]) }}
+			check {{opt in [ 'magic' ]}}
 			{{ opts.set(opt,val) }}
 		)*
 		;
@@ -85,7 +85,7 @@ parser TPGParser:
 			ident/o SOBJECT<Object<o>>/o
 		|	string/o SOBJECT<String<o>>/o
 		|	'<' OBJECTS/o '>'
-		|	code/c {{ self.check(c.count('\n')==0) }} o = Code<c>
+		|	code/c check {{c.count('\n')==0}} o = Code<c>
 		;
 
 	SOBJECT<o>/o ->
@@ -104,7 +104,11 @@ parser TPGParser:
 		)?
 		;
 
-	INDICE/i -> OBJECT/i ( ':' OBJECT/i2 i=Slice<i,i2> )? ;
+	INDICE/i ->
+		( OBJECT/i | i=None )
+		( ':' ( OBJECT/i2 | i2=None) i=Slice<i,i2> )?
+		check {{i is not None}}
+		;
 
 	RULE/Rule<s,e> -> SYMBOL/s '->' EXPR/e ';' ;
 
@@ -120,7 +124,13 @@ parser TPGParser:
 
 	TERM/t -> t = Sequence<> ( FACT/f t-f )* ;
 
-	FACT/f -> AST_OP/f | MARK_OP/f | code/c f=Code<c> | ATOM/f REP<f>/f ;
+	FACT/f ->
+			AST_OP/f
+		|	MARK_OP/f
+		|	code/c f=Code<c>
+		|	ATOM/f REP<f>/f
+		|	'check' OBJECT/cond f=Check<cond>
+		;
 
 	AST_OP/op ->
 		OBJECT/o1

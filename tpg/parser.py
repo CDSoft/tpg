@@ -62,6 +62,7 @@ class TPGParser(base.ToyParser,):
 			base._TokenDef(r"_tok_13", r"->"),
 			base._TokenDef(r"_tok_14", r"/"),
 			base._TokenDef(r"_tok_15", r"\|"),
+			base._TokenDef(r"check", r"check"),
 			base._TokenDef(r"_tok_16", r"-"),
 			base._TokenDef(r"_tok_17", r"!"),
 			base._TokenDef(r"_tok_18", r"\?"),
@@ -164,7 +165,7 @@ class TPGParser(base.ToyParser,):
 					self._cur_token = __p2
 					val = 1
 				if opt.startswith('no'): opt, val = opt[2:], None 
-				self.check(opt in [ 'magic' ]) 
+				self.check(opt in [ 'magic' ])
 				opts.set(opt,val) 
 				__p1 = self._cur_token
 			except self.TPGWrongMatch:
@@ -235,7 +236,7 @@ class TPGParser(base.ToyParser,):
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
 			c = self._eat('code')
-			self.check(c.count('\n')==0) 
+			self.check(c.count('\n')==0)
 			o = Code(c)
 		return o
 
@@ -292,15 +293,26 @@ class TPGParser(base.ToyParser,):
 		return objs
 
 	def INDICE(self,):
-		""" INDICE -> OBJECT (':' OBJECT)? """
-		i = self.OBJECT()
+		""" INDICE -> (OBJECT | ) (':' (OBJECT | ))? """
 		__p1 = self._cur_token
 		try:
-			self._eat('_tok_3') # :
-			i2 = self.OBJECT()
-			i = Slice(i,i2)
+			i = self.OBJECT()
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
+			i = None
+		__p2 = self._cur_token
+		try:
+			self._eat('_tok_3') # :
+			__p3 = self._cur_token
+			try:
+				i2 = self.OBJECT()
+			except self.TPGWrongMatch:
+				self._cur_token = __p3
+				i2 = None
+			i = Slice(i,i2)
+		except self.TPGWrongMatch:
+			self._cur_token = __p2
+		self.check(i is not None)
 		return i
 
 	def RULE(self,):
@@ -361,23 +373,29 @@ class TPGParser(base.ToyParser,):
 		return t
 
 	def FACT(self,):
-		""" FACT -> AST_OP | MARK_OP | code | ATOM REP """
+		""" FACT -> AST_OP | MARK_OP | code | ATOM REP | 'check' OBJECT """
 		__p1 = self._cur_token
 		try:
 			try:
 				try:
-					f = self.AST_OP()
+					try:
+						f = self.AST_OP()
+					except self.TPGWrongMatch:
+						self._cur_token = __p1
+						f = self.MARK_OP()
 				except self.TPGWrongMatch:
 					self._cur_token = __p1
-					f = self.MARK_OP()
+					c = self._eat('code')
+					f = Code(c)
 			except self.TPGWrongMatch:
 				self._cur_token = __p1
-				c = self._eat('code')
-				f = Code(c)
+				f = self.ATOM()
+				f = self.REP(f)
 		except self.TPGWrongMatch:
 			self._cur_token = __p1
-			f = self.ATOM()
-			f = self.REP(f)
+			self._eat('check')
+			cond = self.OBJECT()
+			f = Check(cond)
 		return f
 
 	def AST_OP(self,):

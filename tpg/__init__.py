@@ -50,11 +50,6 @@ Happy TPG'ing
 Christophe Delord.
 """
 
-# Define what gets imported with a 'from tpg import *'
-# One sould use 'import tpg' instead
-
-__all__ = []
-
 # Release data
 
 import Release

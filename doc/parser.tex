@@ -1,0 +1,386 @@
+\section{Declaration}
+
+A parser is declared with the \emph{parser} keyword.
+The declaration may have a list of base classes from which the parser will inherit.
+Then follows grammar rules and code sections.
+
+\section{Base classes of TPG parsers}
+\label{parser:inheritance}
+
+TPG parsers can inherit from other Python classes.
+
+\subsection{Default base class}
+
+TPG parsers always inherits from the \emph{tpg.base.ToyParser} class which defines the common behaviour of every parsers.
+
+\subsection{User defined base classes}
+
+The user can add more base classes to TPG parsers by adding a class list to the parser definition as in figure~\ref{parser:base_classes}.
+
+\begin{code}
+\caption{User defined base classes for TPG parsers} \label{parser:base_classes}
+\begin{verbatimtab}[4]
+parser MyParser(BaseClass1, BaseClass2):
+	...
+\end{verbatimtab}
+\end{code}
+
+\section{Grammar rules}
+\label{parser:grammar_rules}
+
+Rule declarations have two parts.
+The left side declares the symbol associated to the rule, its attributes and its return value.
+The right side describes the decomposition of the rule.
+Both parts of the declaration are separated with an arrow (\emph{$\to$})
+and the declaration ends with a \emph{;}.
+
+The symbol defined by the rule as well as the symbols that appear in the rule can have attributes and return values.
+The attribute list - if any - is given as an object list enclosed in left and right angles.
+The return value - if any - is extracted by the infix \emph{/} operator.
+See figure~\ref{parser:rule} for example.
+
+\begin{code}
+\caption{Rule declaration} \label{parser:rule}
+\begin{verbatimtab}[4]
+	SYMBOL <att1, att2, att3> / return_expression_of_SYMBOL ->
+
+		A <x, y> / ret_value_of_A
+
+		B <y, z> / ret_value_of_B
+
+		;
+\end{verbatimtab}
+\end{code}
+
+\section{Parsing terminal symbols}
+
+Each time a terminal symbol is encountered in a rule, the parser compares it to the current token in the token list. If it is different the parser backtracks.
+
+\section{Parsing non terminal symbols}
+\label{parser:nterm}
+
+\subsection{Starting the parser}
+
+You can start the parser from the axiom or from any other non terminal symbol.
+When the parser can not parse the whole token list a \emph{tpg.SyntaxError} is raised.
+The value returned by the parser is the return value of the parsed symbol.
+
+\subsubsection{From the axiom}
+
+The axiom is a special non terminal symbol named \emph{START}.
+Parsers are callable objects.
+When an instance of a parser is called, the \emph{START} rule is parsed.
+The first argument of the call is the string to parse.
+The other arguments of the call are given to the \emph{START} symbol.
+
+This allows to simply write \verb!x=calc("1+1")! to parse and compute an expression if \emph{calc} is an instance of an expression parser.
+
+\subsubsection{From another non terminal symbol}
+
+It's also possible to start parsing from any other non terminal symbol.
+TPG parsers have a method named \emph{parse}.
+The first argument is the name of the symbol to start from.
+The second argument is the string to parse.
+The other arguments are given to the specified symbol.
+
+For example to start parsing a \emph{Factor}
+you can write:
+\begin{verbatimtab}[4]
+	f=calc.parse('Factor', "2*3")
+\end{verbatimtab}
+
+\subsection{In a rule}
+
+To parse a non terminal symbol in a rule, TPG call the rule corresponding to the symbol.
+
+\section{Sequences}
+\label{parser:sequences}
+
+Sequences in grammar rules describe in which order symbols should appear in the input string.
+For example the sequence \emph{A~B} recognizes an \emph{A} followed by a \emph{B}.
+Sequences can be empty.
+
+For example to say that a \emph{sum} is a \emph{term} \emph{plus} another \emph{term} you can write:
+\begin{verbatimtab}[4]
+	Sum -> Term '+' Term ;
+\end{verbatimtab}
+
+\section{Alternatives}
+\label{parser:alternatives}
+
+Alternatives in grammar rules describe several possible decompositions of a symbol.
+The infix pipe operator (\emph{$\mid$}) is used to separate alternatives.
+\emph{$A~\mid~B$} recognizes either an \emph{A} or a \emph{B}.
+If both \emph{A} and \emph{B} can be matched only the first match is considered.
+So the order of alternatives is very important.
+If an alternative has an empty choice, it must be the last.
+
+For example to say that an \emph{atom} is an \emph{integer} or an \emph{expression in paranthesis}
+you can write:
+\begin{verbatimtab}[4]
+	Atom -> integer | '\(' Expr '\)' ;
+\end{verbatimtab}
+
+\section{Repetitions}
+\label{parser:repetitions}
+
+Repetitions in grammar rules describe how many times an expression should be matched.
+
+\begin{description}
+	\item [A?] recognizes zero or one \emph{A}.
+	\item [A*] recognizes zero or more \emph{A}.
+	\item [A+] recognizes one or more \emph{A}.
+	\item [A\{m,n\}] recognizes at least m and at most n \emph{A}.
+\end{description}
+
+Repetitions are greedy.
+Repetitions are translated into Python loops.
+Thus whatever the length of the repetitions, Python stack will not overflow. 
+
+\section{Precedence and grouping}
+
+The figure~\ref{parser:precedence} lists the different structures in increasing precedence order.
+To override the default precedence you can group expressions with parenthesis.
+
+\begin{tableau}
+\caption{Precedence in TPG expressions} \label{parser:precedence}
+\begin{tabular}{| l | l |}
+\hline
+	Structure			& Example \\
+\hline
+\hline
+	Alternative			& $A~\mid~B$ \\
+\hline
+	Sequence			& $A~B$ \\
+\hline
+	Repetitions			& $A?$, $A*$, $A+$ \\
+\hline
+	Symbol and grouping	& $A$ and $(~\ldots~)$ \\
+\hline
+\end{tabular}
+\end{tableau}
+
+\section{Actions}
+
+Grammar rules can contain actions and Python code.
+Actions are handled by TPG and Python code is copied verbatim into the generated code.
+
+\subsection{Abstract syntax trees}
+\label{parser:AST}
+
+An abstract syntax tree (AST) is an abstract representation of the structure of the input.
+A node of an AST is a Python object (there is no constraint about its class).
+AST nodes are completely defined by the user.
+
+The figure~\ref{parser:ASTinst} shows a node symbolizing a couple.
+
+\begin{code}
+\caption{AST example} \label{parser:ASTinst}
+\begin{verbatimtab}[4]
+{{
+	class Couple:
+		def __init__(self, a, b):
+			self.a = a
+			self.b = b
+}}
+
+parser Foo:
+
+	COUPLE -> '(' ITEM/a ',' ITEM/b ')' c = Couple<a,b> ;
+
+	COUPLE/Couple<a,b> -> '(' ITEM/a ',' ITEM/b ')' ;
+\end{verbatimtab}
+\end{code}
+
+\subsubsection{Creating an AST}
+
+AST can be created by the infix \emph{=} operator (see figure~\ref{parser:AST}).
+
+\subsubsection{Updating an AST}
+
+When parsing lists for example it is useful to save all the items of the list.
+The infix \emph{-} operator call the \emph{add} method of an AST (see figure~\ref{parser:ASTadd}).
+This method is defined by the user.
+TPG won't check that the class actually has an \emph{add} method.
+
+\begin{code}
+\caption{AST update example} \label{parser:ASTadd}
+\begin{verbatimtab}[4]
+{{
+	class List(list):
+		add = list.append
+}}
+
+parser ListParser:
+
+	LIST/l ->
+		'('
+			l = List<>
+			ITEM/a l-a
+			( ',' ITEM/a l-a )*
+		')'
+		;
+\end{verbatimtab}
+\end{code}
+
+\subsection{Text extraction}
+\label{parser:mark}
+
+TPG can extract a portion of the input string.
+The idea is to put marks while parsing and then extract the text between the two marks.
+This extracts the whole text between the marks, including the tokens defined as separators.
+
+\subsection{Object}
+\label{parser:object}
+
+TPG knows some basics about Python objects.
+An object in TPG is a Python object using a special syntax.
+The use of parenthesis has been rejected because it would have introduced ambiguities in the TPG grammar.
+\emph{Parenthesis have been replaced with left and right angles (\emph{$<$} and \emph{$>$}).}
+Appart from this particularity, TPG object syntax is a subset of the Python syntax.
+
+An object can be:
+\begin{itemize}
+	\item an identifier
+	\item a string
+	\item a tuple
+	\item a code object (in double curly brackets)
+	\item a text extraction (infix \emph{..} operator)
+	\item an acces to an attribute (infix \emph{.} operator)
+	\item a call to a method or a function
+	\item a slice operation
+\end{itemize}
+
+\subsubsection{Identifier}
+
+No mystery about identifiers except that TPG identifier definition includes true identifiers and integers.
+
+\begin{verbatimtab}[4]
+	I_m_an_Identifier_13
+	1975
+\end{verbatimtab}
+
+\subsubsection{String}
+
+A TPG string is a subset of Python strings.
+TPG doesn't accept triple quoted strings.
+If you absolutely need triple quoted strings you can encapsulate them in Python code objects.
+
+\begin{verbatimtab}[4]
+	"I'm a string"
+	'I\'m a string too"
+\end{verbatimtab}
+
+\subsubsection{Argument list and tuples}
+
+Argument list is a comma separated list of objects.
+\emph{Remember that arguments are enclosed in left and right angles.}
+
+\begin{verbatimtab}[4]
+	<object1, object2, object3>
+\end{verbatimtab}
+
+\subsubsection{Python code object}
+
+A Python code object is a piece of Python code in double curly brackets.
+Python code used in an object expression must have only one line.
+
+\begin{verbatimtab}[4]
+	{{ dict([ (x,x**2) for x in range(100) ]) # Python embeded in TPG }}
+\end{verbatimtab}
+
+\subsubsection{Text extraction}
+
+Text extraction is done by the infix \emph{..} operator.
+Marks can be put in the input string by the prefix \emph{!} operator.
+
+\begin{verbatimtab}[4]
+	!beginning
+	...
+	!end
+	...
+	my_string = beginning .. end
+\end{verbatimtab}
+
+\subsubsection{Acces to an attribute}
+
+Exactly as in Python.
+
+\begin{verbatimtab}[4]
+	my_object.my_attribute
+\end{verbatimtab}
+
+\subsubsection{Call to a method or a function}
+
+Exactly as in Python except from the use of left and right angle instead of parenthesis.
+
+\begin{verbatimtab}[4]
+	my_object.my_method<arg1, arg2>
+	my_function<arg1, arg2>
+	my_function_without_arg<>
+\end{verbatimtab}
+
+\subsubsection{Slice extraction}
+
+As in Python.
+
+\begin{verbatimtab}[4]
+	my_list[object]
+	my_list[object1:object2]
+	my_list[:object2]
+	my_list[object1:]
+	my_list[:]
+\end{verbatimtab}
+
+\subsection{Actions in Python code}
+
+TPG parsers also have some interesting methods that can be used in Python code.
+
+\subsubsection{Getting the line number of a token}
+
+The \emph{lineno} method returns the line number of the current token.
+If the first parameter is a mark (see \ref{parser:mark}) the method returns the line number of the token following the mark.
+
+\subsubsection{Backtracking}
+
+The user can force the parser to backtrack in rule actions.
+The parser classes have a \emph{WrongMatch} method for that purpose (see figure~\ref{parser:wrongmatch}).
+
+\begin{code}
+\caption{Backtracking with \emph{WrongMatch} example} \label{parser:wrongmatch}
+\begin{verbatimtab}[4]
+	# NATURAL matches integers greater than 0
+	NATURAL/n ->
+		number/n
+		{{ if n<1: self.WrongMatch() }}
+		;
+\end{verbatimtab}
+\end{code}
+
+Parsers have another useful method named \emph{check} (see figure~\ref{parser:check}).
+This method checks a condition.
+If this condition is false then \emph{WrongMatch} if called in order to backtrack.
+
+\begin{code}
+\caption{Backtracking with the \emph{check} method example} \label{parser:check}
+\begin{verbatimtab}[4]
+	# NATURAL matches integers greater than 0
+	NATURAL/n ->
+		number/n
+		{{ self.check(n>=1) }}
+		;
+\end{verbatimtab}
+\end{code}
+
+A shortcut for the \emph{check} method is the \emph{check} keyword followed by the condition to check (see figure~\ref{parser:checkkw}).
+
+\begin{code}
+\caption{Backtracking with the \emph{check} keyword example} \label{parser:checkkw}
+\begin{verbatimtab}[4]
+	# NATURAL matches integers greater than 0
+	NATURAL/n ->
+		number/n
+		check {{ n>=1 }}
+		;
+\end{verbatimtab}
+\end{code}

@@ -1,3 +1,22 @@
+2002-08-05  Christophe Delord <christophe.delord@free.fr>
+
+	* Version 2.1.1:
+		Delivered with a better documentation and tutorial
+
+	* tpg.pdf:
+		First version of the TPG documentation
+
+	* codegen.py:
+		Added 'import sys' to enable -v and -vv options
+		with the tpg script (thanks to John Krumpotick)
+		Completed Slice class for [x:], [:y] and [:]
+		Added Check class (just a shortcut for self.check)
+
+	* parser.g:
+		Uses the 'check' shortcut
+		Changed INDICE to parse [x:], [:y] and [:] slices
+		Changed FACT to parse the 'check' shortcut
+
 2002-07-12  Christophe Delord <christophe.delord@free.fr>
 
 	* Version 2.1:
@@ -123,7 +142,7 @@
 			Mark definition and text extraction
 		Bug fix:
 			Code is now delimited by {{ ... }} (otherwise symbol <<code>>
-			was recognised as symbol with <code> as attribute
+			was recognised as symbol with <code> as attribute)
 
 2001-12-29  Christophe Delord <christophe.delord@free.fr>
 

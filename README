@@ -2,5 +2,5 @@ Please see http://christophe.delord.free.fr/en/tpg/ for an uptodate documentatio
 
 To install TPG just run "python setup.py install"
 
-WARNING: If you have TPG 2.0.5 or previous installed to need
+WARNING: If you have TPG 2.0.5 or previous installed you need
 to remove it before upgrading by running python uninstall-TPG-X.Y.Z.py"

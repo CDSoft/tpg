@@ -1,0 +1,52 @@
+\section{Introduction}
+
+This chapter presents an extention of the calculator described in the tutorial (see~\ref{tpg:tutorial}).
+This calculator has more functions and a memory.
+
+\section{New functions}
+
+\subsection{Trigonometric and other functions}
+
+This calculator can compute some numerical functions (\emph{sin}, \emph{cos}, \emph{sqrt}, \ldots).
+The \emph{make\_op} function (see figure~\ref{tut:make_op}) has been extended to return these functions.
+Tokens must also be defined to scan function names.
+\emph{funct1} defines the name of unaries functions and \emph{funct2} defines the name of binaries functions.
+Finally the grammar rule of the atoms has been added a branch to parse functions.
+The \emph{Function} non terminal symbol parser unaries and binaries functions.
+
+\subsection{Memories}
+
+The calculator has memories.
+A memory cell is identified by a name.
+For example, if the user types \emph{$pi = 4*atan(1)$}, the memory cell named \emph{pi} will contain the value of \emph{$\pi$} and \emph{$cos(pi)$} will return \emph{$-1$}
+
+To display the content of the whole memory, the user can type \emph{vars}.
+
+The variables are saved in a dictionnary.
+In fact the parser itself is a dictionnary (the parser inherits from the \emph{dict} class).
+
+The \emph{START} symbol parses a variable creation or a single expression and the \emph{Atom} parses variable names (the \emph{Var} symbol parses a variable name and returns its value).
+
+\section{Source code}
+
+\subsection{TPG grammar}
+
+The calculator source code can be a grammar for TPG.
+I.e. the \emph{calc.g} file is translated into a \emph{calc.py} script by TPG.
+Just type in:
+\begin{verbatimtab}[4]
+	tpg calc.g
+\end{verbatimtab}
+
+Here is the complete source code (\emph{calc.g}):
+
+\verbatimtabinput[4]{../examples/calc/calc.g}
+
+\subsection{Python script}
+
+The calculator can be directly embeded in a Python script.
+The grammar is in a string and compiled using the \emph{tpg} module.
+
+Here is the complete source code (\emph{calc2.py}):
+
+\verbatimtabinput[4]{../examples/calc/calc2.py}

@@ -33,7 +33,7 @@ class _TokenDef:
 	def __init__(self, tok, regex=None, action=None, separator=0):
 		if regex is None: regex = tok
 		if self.ident_pat.match(regex): regex += r'\b'	# match 'if\b' instead of 'if'
-		if action is None: action = lambda x:x			# default action if identity
+		if action is None: action = lambda x:x			# default action is identity
 		elif not callable(action): action = lambda x,y=action:y	# action must be callable
 		self.tok = tok							# token name
 		self.regex = '(?P<%s>%s)'%(tok, regex)	# token regexp
@@ -97,7 +97,7 @@ class _Scanner:
 				raise LexicalError(last)
 			j = token.end()										# end of the current token
 			for (t,v) in token.groupdict().items():				# search the matched token
-				if v is not None and self.actions.has_key(t):
+				if v is not None and t in self.actions:
 					tok = t										# get its type
 					text = token.group()						# get matched text
 					val = self.actions[tok](text)				# compute its value

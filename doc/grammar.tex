@@ -1,0 +1,171 @@
+\section{TPG grammar structure}
+
+TPG grammars may contain three parts:
+
+\begin{description}
+	\item [Options]
+		are defined at the beginning of the grammar (see \ref{grammar:options}).
+	\item [Parsers]
+		are described in sections starting with the \emph{parser} keyword (see \ref{grammar:parser}).
+	\item [Python codes]
+		can appear in sections starting with the \emph{main} keyword or before the first parser (see \ref{grammar:code}).
+\end{description}
+
+See figure~\ref{grammar:struct} for a generic TPG grammar.
+
+\begin{code}
+\caption{TPG grammar structure} \label{grammar:struct}
+\begin{verbatimtab}[4]
+# Options
+set magic = "/usr/bin/env python"
+
+# Python code
+{{
+	class MyClass:
+		pass
+}}
+
+# Parser Foo
+parser Foo:
+
+	START -> X Y Z ;
+
+# More Python code
+main:
+{{
+	def myfunction:
+		pass
+}}
+\end{verbatimtab}
+\end{code}
+
+\section{Comments}
+
+Comments in TPG start with \emph{\#} and run until the end of the line.
+
+\begin{verbatimtab}[4]
+	# This is a comment
+\end{verbatimtab}
+
+\section{Options}
+\label{grammar:options}
+
+Some options can be set at the beginning of TPG grammars.
+The syntax for options is :
+
+\begin{description}
+	\item [set \emph{name}] sets the boolean \emph{name} option to \emph{true}.
+	\item [set \emph{name} = "\emph{value}"] sets the \emph{name} option to \emph{value}.
+	\item [set no\emph{name}] disables the \emph{name} option.
+\end{description}
+
+\subsection{Magic option}
+
+The magic option tells TPG which interpreter is called when the script is run.
+The first line of the generated code will start with \verb$#!$ and contains the command line to execute
+the appropriate interpreter (\verb$/usr/bin/env python$ for example).
+This has no effect on M\$ Windows.
+
+\begin{description}
+	\item [set magic = "/usr/bin/env python"] adds \verb$#!/usr/bin/env python$ to the first line.
+	\item [set nomagic] generates no magic line. This is the default behaviour.
+\end{description}
+
+\section{Python code}
+\label{grammar:code}
+
+Python code section are not handled by TPG.
+TPG won't complain about syntax errors in Python code sections, it is Python's job.
+They are copied verbatim to the generated Python parser.
+
+\subsection{Indentation}
+
+Python code can appear in several parts of a grammar.
+Since indentation has a special meaning in Python it is important to know how TPG handles spaces and tabulations at the beginning of the lines.
+In TPG indentation is important only in Python code sections (in \emph{main} parts, in \emph{parser} parts and in \emph{rules}).
+
+When TPG encounters some Python code it removes in all non blank lines the spaces and tabulations that are common to every lines. TPG considers spaces and tabulations as the same character so it is important to always use the same indentation style. Thus it is advised not to mix spaces and tabulations in indentation.
+Then this code will be reindented when generated according to its location (in a class, in a method or in global space).
+
+The figure~\ref{grammar:indent} shows how TPG handles indentation.
+
+\begin{tableau}
+\caption{Code indentation examples} \label{grammar:indent}
+\begin{tabular}{| p{5cm} | p{4cm} | p{4cm} |}
+\hline
+	Code in grammars & Generated code & Comment \\
+\hline
+\hline
+
+	\begin{verbatim*}
+{{
+    if 1==2:
+        print "???"
+    else:
+        print "OK"
+}}
+	\end{verbatim*}
+	&
+	\begin{verbatim*}
+
+if 1==2:
+    print "???"
+else:
+    print "OK"
+	\end{verbatim*}
+	&
+	\emph{Correct}: these lines have four spaces in common. These spaces are removed.
+	\\
+
+\hline
+
+	\begin{verbatim*}
+{{  if 1==2:
+        print "???"
+    else:
+        print "OK"
+}}
+	\end{verbatim*}
+	&
+	\begin{verbatim*}
+if 1==2:
+      print "???"
+  else:
+      print "OK"
+	\end{verbatim*}
+	&
+	\emph{WRONG}: it's a bad idea to start a multiline code section on the first line since the common indentation may be different from what you expect. No error will be raised by TPG but Python won't compile this code.
+	\\
+
+\hline
+
+	\begin{verbatim*}
+{{       print "OK" }}
+	\end{verbatim*}
+	&
+	\begin{verbatim*}
+print "OK"
+	\end{verbatim*}
+	&
+	\emph{Correct}: indentation does not matter in a one line Python code.
+	\\
+
+\hline
+
+\end{tabular}
+\end{tableau}
+
+\section{TPG parsers}
+\label{grammar:parser}
+
+A grammar can contain as many parsers as needed.
+A parser declaration starts with the \emph{parser} keyword and contains rules and Python code sections (local to the parser).
+
+\subsection{Rules}
+
+Each rule will be translated into a method of the parser.
+
+\subsection{Python code}
+
+Python code that is local to a parser will be copied in the generated class.
+This is usually used to add methods or attributes to the parser.

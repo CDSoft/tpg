@@ -24,6 +24,7 @@ http://christophe.delord.free.fr/en/tpg
 
 from __future__ import generators
 import re
+import sys
 
 warning = """
 #........[ TOY PARSER GENERATOR ].........................!
@@ -342,11 +343,17 @@ class Slice:
 		return "%s:%s"%(self.i, self.j)
 
 	def doc(self, prec):
-		return _p(prec,self.prec)%("%s:%s"%(self.i.doc(self.prec), self.j.doc(self.prec)))
+		if self.i is None: i = ""
+		else: i = self.i.doc(self.prec)
+		if self.j is None: j = ""
+		else: j = self.j.doc(self.prec)
+		return _p(prec,self.prec)%("%s:%s"%(i, j))
 	prec = 110
 
 	def genCode(self):
-		return "%s:%s"%(self.i.genCode(), self.j.genCode())
+		i = self.i and self.i.genCode() or ""
+		j = self.j and self.j.genCode() or ""
+		return "%s:%s"%(i, j)
 
 class Token:
 	""" Token container """
@@ -535,6 +542,23 @@ class AddAST:
 
 	def empty(self): return 1
 
+class Check:
+	""" Condition checker """
+
+	def __init__(self, cond):
+		self.cond = cond
+
+	def __str__(self): return "check %s"%self.cond
+
+	def collect(self, collector): self.cond.collect(collector)
+
+	def genCode(self, indent, vargen=None, p=None):
+		return "\t"*indent + "self.check(%s)"%self.cond.genCode()
+
+	def doc(self, prec): return ""
+
+	def empty(self): return 1
+
 class Rep:
 	""" Container for a repeated expression (*, +, ?, {m,n}) """
 
@@ -687,5 +711,4 @@ class Extraction:
 	def doc(self, prec): return ""
 
 	def empty(self): return 1
-
 

@@ -2,13 +2,13 @@
 
 name = 'TPG'
 
-version = '2.1'
+version = '2.1.1'
 
 date = '2002-07-12'
 
 description = "A Python parser generator"
 
-long_description = """
+long_description = """\
 Toy Parser Generator is a lexical and syntactic parser generator
 for Python. This generator was born from a simple statement: YACC
 is to complex to use in simple cases (calculators, configuration
