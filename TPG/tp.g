@@ -26,8 +26,8 @@ from __future__ import generators
 import re
 #</import>
 
-__date__ = "06 april 2002"
-__version__ = "0.1.8"
+__date__ = "27 april 2002"
+__version__ = "0.1.9"
 __author__ = "Christophe Delord <christophe.delord@free.fr>"
 
 __all__ = ["ToyParser", "TPParser", "Node"]
@@ -35,6 +35,9 @@ __all__ = ["ToyParser", "TPParser", "Node"]
 ###########################################################
 # History                                                 #
 # #######                                                 #
+#                                                         #
+# v 0.1.9 - 27/04/2002                                    #
+#         - Bug fix in installation procedure             #
 #                                                         #
 # v 0.1.8 - 06/04/2002                                    #
 #         - TPG is now packaged with Install Maker        #

@@ -23,11 +23,11 @@ set magic = /usr/bin/env python
 
 #<import>
 from __future__ import generators
-import re
+import pre
 #</import>
 
-__date__ = "27 march 2002"
-__version__ = "0.1.7"
+__date__ = "7 february 2002"
+__version__ = "0.1.5"
 __author__ = "Christophe Delord <christophe.delord@free.fr>"
 
 __all__ = ["ToyParser", "TPParser", "Node"]
@@ -35,18 +35,6 @@ __all__ = ["ToyParser", "TPParser", "Node"]
 ###########################################################
 # History                                                 #
 # #######                                                 #
-#                                                         #
-# v 0.1.7 - 27/03/2002                                    #
-#         - Some code rewriting                           #
-#         - Bug fix : when an error occurs, no empty file #
-#             is created                                  #
-#                                                         #
-# v 0.1.6 - 13/03/2002                                    #
-#         - Bug fixes                                     #
-#           * Remove backtracking in some regexp and use  #
-#             now re (sre) instead of pre (thanks to      #
-#             Fredrik Lundh) and speed improvement (thanks#
-#             to Nick Mathewson)                          #
 #                                                         #
 # v 0.1.5 - 07/02/2002                                    #
 #         - Some changes                                  #
@@ -86,6 +74,11 @@ __all__ = ["ToyParser", "TPParser", "Node"]
 # v 0.1 - Initial version                                 #
 #                                                         #
 ###########################################################
+
+# Bug in sre:
+#	when regexp = "<<.*?>>" and string is "<< a big string >>"
+#	=> RuntimeError: maximum recursion limit exceeded
+# this works fine with pre
 
 # TODO: TagParser n'accepte pas les lignes ne contenant que du commentaire dans un tag ( '[^#]...' )
 
@@ -137,7 +130,7 @@ class Node(list):
 		self.line = line
 		self.env = env
 		self += args
-		self.init(*args)
+		apply(self.init,args)
 	def init(self, *args):
 		""" Default initialiser """
 		pass
@@ -178,7 +171,7 @@ class ToyParser:
 	def __init__(self, *args):
 		""" Initialises the parser and calls the (redefined) initialiser """
 		self.tpg_regexps = {}
-		self.init(*args)
+		apply(self.init,args)
 
 	def init(self):
 		""" Default initialiser """
@@ -218,7 +211,7 @@ class ToyParser:
 		try:
 			r = self.tpg_regexps[regexp]	# Retrieve the corresponding regexp
 		except KeyError:
-			r = re.compile(regexp)			# or make it if necessary
+			r = pre.compile(regexp)			# or make it if necessary
 			self.tpg_regexps[regexp] = r
 		token = r.match(self.tpg_input, p0.pos)		# match the input ?
 		if token:
@@ -236,7 +229,7 @@ class ToyParser:
 	def Parse(self, symbol, input, *args):
 		""" Parse the string input starting from symbol """
 		self.setInput(input)
-		return getattr(self,symbol)(self.tpg_Pos(),*args)[1]
+		return apply(getattr(self,symbol), [self.tpg_Pos()]+list(args))[1]
 #</ToyParser>
 
 def flatten(L):
@@ -247,8 +240,8 @@ def flatten(L):
 		else:
 			yield i
 
-emptyLine = re.compile(r'\s*$')
-startSpaces = re.compile(r'\s*')
+emptyLine = pre.compile(r'\s*$')
+startSpaces = pre.compile(r'\s*')
 
 def unindent(lines):
 	""" Remove indentation in lines that is common to each line """
@@ -389,7 +382,7 @@ class Rule(Node):
 			axiom =	[	tab		+"def __call__(self, input, *args):",
 						tab	+"\t"	+'""" Call the axiom of the grammar (the START symbol) """',
 						tab	+"\t"	+"self.setInput(input)",
-						tab	+"\t"	+"return self.START(self.tpg_Pos(),*args)[1]",
+						tab	+"\t"	+"return apply(self.START, [self.tpg_Pos()]+list(args))[1]",
 						"",
 					]
 		else:
@@ -791,7 +784,7 @@ lex ccomment ->
 	)*
 .
 
-CODE/Code<c> -> '{{((?:}?[^}]+)*)}}'/<c> .
+CODE/Code<c> -> '{{((?:.|\n)*?)}}'/<c> .
 
 IDENT/Ident<id> -> '\w+'/id .
 
@@ -929,11 +922,10 @@ parser TagParser:
 
 	lex START/tags ->
 		tags = Tags<>
-		(	'\s*#\s*<([^>\n]*)>.*\n'/<name>
+		(	'\s*#\s*<\s*(.*?)\s*>.*\n'/<name>
 			code = Node<>
 			( '(\s*[^#].*)\n'/<l> code-l )*
-			'\s*#\s*<\s*/([^>\n]*)>.*\n'/<endname>
-			{{ name, endname = name.strip(), endname.strip() }}
+			'\s*#\s*<\s*/\s*(.*?)\s*>.*\n'/<endname>
 			{{ self.check(name==endname) }}
 			tags-<name,code>
 		|	'.*\n'
@@ -960,7 +952,7 @@ if __name__ == "__main__":
 			if arg == '-o':
 				check(o is None and len(args)>0 and args[0].endswith('.py'))
 				o, args = args[0], args[1:]
-			elif re.match('-v+$',arg):
+			elif pre.match('-v+$',arg):
 				v += len(arg)-1
 			else:
 				check(i is None and arg.endswith('.g'))
@@ -978,10 +970,9 @@ if __name__ == "__main__":
 	else:
 		print "TPG: translating %s to %s"%(grammar_file,output_file)
 		f = open(grammar_file, 'r')
-		parser = TPParser()(f.read())
-		f.close()
 		g = open(output_file, 'w')
-		g.write(parser)
+		g.write(TPParser()(f.read()))
+		f.close()
 		g.close()
 		print "Translation OK"
 
