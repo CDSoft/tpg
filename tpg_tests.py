@@ -90,6 +90,37 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     self.assertEquals(p('abcabc a b c'), ['a', 'b', 'cabc', 'a', 'b', 'c'])
                     self.assertEquals(p('abc abc a b c'), ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'])
 
+            class WordBounded2(PARSER):
+                __doc__ = r"""
+                    set lexer = %(LEXER)s
+
+                    set word_boundary = True
+
+                    separator spaces '\s+' ;
+
+                    token abc 'abc' ;
+                    token def 'def:' ;
+                    token ghi ':ghi' ;
+                    token other '\w+|:' ;
+
+                    START/lst ->            $ lst = []
+                        (   abc/t           $ lst.append(t)
+                        |   def/t           $ lst.append(t)
+                        |   ghi/t           $ lst.append(t)
+                        |   other
+                        )*
+                        ;
+                """%tpg.Py()
+                verbose = VERBOSE
+
+            def testWordBounded2(self):
+                p = self.WordBounded2()
+                self.assertEquals(p("abc :titi: :def: toto :ghi:"), ['abc', 'def:', ':ghi'])
+                self.assertEquals(p(":abc:def:ghi:"), ['abc', 'def:'])
+                self.assertEquals(p(":abc:ghi:def:"), ['abc', ':ghi', 'def:'])
+                self.assertEquals(p("::abc::def::ghi::"), ['abc', 'def:', ':ghi'])
+                self.assertEquals(p("::abc::ghi::def::"), ['abc', ':ghi', 'def:'])
+
             class IgnoreCase(PARSER):
                 __doc__ = r"""
                     set lexer = %(LEXER)s

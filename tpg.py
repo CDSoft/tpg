@@ -44,8 +44,8 @@ trees while parsing.
 from __future__ import generators
 
 __tpgname__ = 'TPG'
-__version__ = '3.0.1'
-__date__ = '2004-01-18'
+__version__ = '3.0.2'
+__date__ = '2004-03-15'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -131,7 +131,7 @@ class LexerOptions:
         compile_options : options given to re.compile to compile regular expressions
     """
 
-    word_re = re.compile(r"\w+")
+    word_re = re.compile(r"^\w+$")
 
     def __init__(self, wb, compile_options):
         if not wb:
