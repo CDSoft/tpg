@@ -11,7 +11,7 @@ def _rmdir(name):
 		os.removedirs(name)
 	except (OSError,IOError),e:
 		print e
-print '''Uninstallation of TPG version 2.0
+print '''Uninstallation of TPG version 2.0.1
 Author: Christophe Delord
 Email : christophe.delord@free.fr
 Web   : http://christophe.delord.free.fr/en/tpg/
@@ -30,4 +30,4 @@ _rmdir('%s/TPG/examples/notation'%base)
 _rmdir('%s/TPG/examples/calc'%base)
 _rmdir('%s/TPG/examples'%base)
 _rmdir('%s/TPG'%base)
-_rm('%s/uninstall-TPG-2.0.py'%base)
+_rm('%s/uninstall-TPG-2.0.1.py'%base)

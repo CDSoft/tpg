@@ -35,8 +35,12 @@ set magic = "/usr/bin/env python2.2"
 # History                                                 #
 # #######                                                 #
 #                                                         #
-# v 2.0 - 26/05/2002                                      #
-#       - First release of TPG 2                          #
+# v 2.0.1 - 05/06/2002                                    #
+#         - minor changes                                 #
+#         - bug fix (scanner without runtime didn't find  #
+#           _TokenDef class)                              #
+# v 2.0   - 26/05/2002                                    #
+#         - First release of TPG 2                        #
 #                                                         #
 ###########################################################
 
@@ -47,8 +51,8 @@ import re
 
 import tpg
 
-__date__ = "26 may 2002"
-__version__ = "2.0"
+__date__ = "05 june 2002"
+__version__ = "2.0.1"
 __author__ = "Christophe Delord <christophe.delord@free.fr>"
 
 def compile(grammar):
@@ -255,10 +259,10 @@ class Parser(list):
 		tab1 = tab+"\t"
 		tab2 = tab1+"\t"
 		return [
-			tab  +	"def __init__(self):",
-			tab1 +		"self._init_scanner(",
-			[ tab2 +		"(%s, %s),"%t for t in inline_tokens ],
-			[ tab2 +		"(%s, %s, %s, %s),"%t for t in tokens ],
+			tab  +	"def _init_scanner(self):",
+			tab1 +		"self._lexer = tpg._Scanner(",
+			[ tab2 +		"tpg._TokenDef(%s, %s),"%t for t in inline_tokens ],
+			[ tab2 +		"tpg._TokenDef(%s, %s, %s, %s),"%t for t in tokens ],
 			tab1 +		")",
 			"",
 		]
@@ -767,10 +771,8 @@ class SyntaxError(Exception):
 class ToyParser:
 	""" Base class for every TPG parsers """
 
-	def _init_scanner(self, *tokens):
-		""" Build the scanner """
-		self._lexer = _Scanner(*[_TokenDef(*t) for t in tokens])
-		self._cur_token = 0
+	def __init__(self):
+		self._init_scanner()
 
 	def _eat(self, token):
 		""" Eat one token """
@@ -794,7 +796,7 @@ class ToyParser:
 	def check(self, cond):
 		""" Check a condition while parsing """
 		if not cond:			# if condition is false
-			self.WrongMatch()	# backtrac
+			self.WrongMatch()	# backtrack
 
 	def __call__(self, input, *args):
 		""" Parse the axiom of the grammar (if any) """
@@ -906,7 +908,7 @@ parser TPGParser:
 	OBJECTS/objs ->
 		objs = Objects<>
 		(	OBJECT/obj objs-obj
-			( ',' OBJECTS/obj objs-obj )*
+			( ',' OBJECT/obj objs-obj )*
 		)?
 		;
 
@@ -1010,3 +1012,4 @@ if __name__ == "__main__":
 			sys.stderr.write("IOError: %s\n"%e)
 
 }}
+
