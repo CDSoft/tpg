@@ -1,7 +1,5 @@
-include examples/calc/calc.g
-include examples/calc/calc.py
-include examples/calc/calc2.py
-include examples/calc/notation.py
+include examples/calc.pyg
+include examples/notation.pyg
 
 include doc/*.tex
 include doc/*.dvi
@@ -9,12 +7,9 @@ include doc/*.pdf
 include doc/*.html
 include doc/*.css
 include doc/*.png
-include doc/hack/*.g
-include doc/hack/*.py
 
-include tpg/tpg
-include tpg/parser.g
-include tpg/Makefile
+include tpg
+include tpg.pyg
 
 include MANIFEST.in
 include THANKS

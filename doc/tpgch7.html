@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2003-05-19 22:40:00"> 
+<meta name="date" content="2003-11-11 18:03:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
@@ -18,28 +18,28 @@ href="tpgch6.html#tailtpgch6.html" >prev-tail</a>] [<a
 href="#tailtpgch7.html">tail</a>] [<a 
 href="tpgpa2.html#tpgch7.html" >up</a>] </p></div>
    <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;7</span><br><a 
-  id="x21-520007"></a>Parser</h2>
+  id="x20-450007"></a>Parser</h2>
    <h3 class="sectionHead"><span class="titlemark">7.1   </span> <a 
-  id="x21-530007.1"></a>Declaration</h3>
-<!--l. 3--><p class="noindent">A parser is declared with the <span 
-class="cmti-10">parser </span>keyword. The declaration may have a list of base classes from which
-the parser will inherit. Then follows grammar rules and code sections.
-<!--l. 7--><p class="noindent">
+  id="x20-460007.1"></a>Declaration</h3>
+<!--l. 3--><p class="noindent">A parser is declared as a <span 
+class="cmti-10">tpg.Parser </span>class. The doc string of the class contains the definition of the tokens
+and rules.
+<!--l. 6--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">7.2   </span> <a 
-  id="x21-540007.2"></a>Base classes of TPG parsers</h3>
-<!--l. 9--><p class="noindent">TPG parsers can inherit from other Python classes.
-<!--l. 11--><p class="noindent">
-   <h4 class="subsectionHead"><span class="titlemark">7.2.1   </span> <a 
-  id="x21-550007.2.1"></a>Default base class</h4>
-<!--l. 13--><p class="noindent">TPG parsers always inherits from the <span 
-class="cmti-10">tpg.base.ToyParser </span>class which defines the common behaviour of
-every parsers.
-<!--l. 15--><p class="noindent">
-   <h4 class="subsectionHead"><span class="titlemark">7.2.2   </span> <a 
-  id="x21-560007.2.2"></a>User defined base classes</h4>
-<!--l. 17--><p class="noindent">The user can add more base classes to TPG parsers by adding a class list to the parser definition as in
-figure&nbsp; <a 
-href="#x21-560011">7.1<!--tex4ht:ref: parser:base_classes --></a>.
+  id="x20-470007.2"></a>Grammar rules</h3>
+<!--l. 8--><p class="noindent">Rule declarations have two parts. The left side declares the symbol associated to the rule, its
+attributes and its return value. The right side describes the decomposition of the rule. Both
+parts of the declaration are separated with an arrow (<span 
+class="cmsy-10"><img 
+src="cmsy10-21.png" alt="--&gt;" class="10x-x-21" /></span>) and the declaration ends with a
+<span 
+class="cmti-10">;</span>.
+<!--l. 14--><p class="indent">   The symbol defined by the rule as well as the symbols that appear in the rule can have attributes and
+return values. The attribute list - if any - is given as an object list enclosed in left and right
+angles. The return value - if any - is extracted by the infix <span 
+class="cmti-10">/ </span>operator. See figure&nbsp; <a 
+href="#x20-470011">7.1<!--tex4ht:ref: parser:rule --></a> for
+example.
 <!--l. 19--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
@@ -47,72 +47,19 @@ href="#x21-560011">7.1<!--tex4ht:ref: parser:base_classes --></a>.
 
                                                                                  
 <a 
-  id="x21-560011"></a>
+  id="x20-470011"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
 cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-22-" ><colgroup id="TBL-22-1g"><col 
-id="TBL-22-1"></colgroup><tr 
+frame="border" id="TBL-19-" ><colgroup id="TBL-19-1g"><col 
+id="TBL-19-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-22-1-"><td  align="left" id="TBL-22-1-1"  
+ valign="baseline" id="TBL-19-1-"><td  align="left" id="TBL-19-1-1"  
 class="td11"><br> <table class="caption" 
 ><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.1: </td><td  
-class="content">User defined base classes for TPG parsers</td></tr></table><!--tex4ht:label?: x21-560011 -->
-<table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-parser&nbsp;MyParser(BaseClass1,&nbsp;BaseClass2):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;...
-</div>
-</td></tr></table>                                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-22-2-"><td  align="left" id="TBL-22-2-1"  
-class="td11">                                                                                                                               </td> </tr></table>
-</div>
-<!--l. 25--><p class="nopar">
-                                                                                 
-
-                                                                                 
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 25--><p class="nopar">
-   <h3 class="sectionHead"><span class="titlemark">7.3   </span> <a 
-  id="x21-570007.3"></a>Grammar rules</h3>
-<!--l. 29--><p class="noindent">Rule declarations have two parts. The left side declares the symbol associated to the rule, its
-attributes and its return value. The right side describes the decomposition of the rule. Both
-parts of the declaration are separated with an arrow (<span 
-class="cmsy-10"><img 
-src="cmsy10-21.png" alt="--&gt;" class="10x-x-21" /></span>) and the declaration ends with a
-<span 
-class="cmti-10">;</span>.
-<!--l. 35--><p class="indent">   The symbol defined by the rule as well as the symbols that appear in the rule can have attributes and
-return values. The attribute list - if any - is given as an object list enclosed in left and right
-angles. The return value - if any - is extracted by the infix <span 
-class="cmti-10">/ </span>operator. See figure&nbsp; <a 
-href="#x21-570012">7.2<!--tex4ht:ref: parser:rule --></a> for
-example.
-<!--l. 40--><p class="indent">   <hr class="figure"><div class="figure" 
-><table class="figure"><tr class="figure"><td class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
-  id="x21-570012"></a>
-                                                                                 
-
-                                                                                 
-   <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-23-" ><colgroup id="TBL-23-1g"><col 
-id="TBL-23-1"></colgroup><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-23-1-"><td  align="left" id="TBL-23-1-1"  
-class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.2: </td><td  
-class="content">Rule declaration</td></tr></table><!--tex4ht:label?: x21-570012 -->
+class="content">Rule declaration</td></tr></table><!--tex4ht:label?: x20-470011 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
@@ -127,75 +74,75 @@ class="verbatim"><div class="verbatim">
 </td></tr></table>                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-23-2-"><td  align="left" id="TBL-23-2-1"  
+ valign="baseline" id="TBL-19-2-"><td  align="left" id="TBL-19-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 51--><p class="nopar">
+<!--l. 30--><p class="nopar">
                                                                                  
 
                                                                                  
    </td></tr></table></div><hr class="endfigure">
-<!--l. 51--><p class="nopar">
-   <h3 class="sectionHead"><span class="titlemark">7.4   </span> <a 
-  id="x21-580007.4"></a>Parsing terminal symbols</h3>
-<!--l. 55--><p class="noindent">Each time a terminal symbol is encountered in a rule, the parser compares it to the current token in the
+<!--l. 30--><p class="nopar">
+   <h3 class="sectionHead"><span class="titlemark">7.3   </span> <a 
+  id="x20-480007.3"></a>Parsing terminal symbols</h3>
+<!--l. 34--><p class="noindent">Each time a terminal symbol is encountered in a rule, the parser compares it to the current token in the
 token list. If it is different the parser backtracks.
-<!--l. 57--><p class="noindent">
-   <h3 class="sectionHead"><span class="titlemark">7.5   </span> <a 
-  id="x21-590007.5"></a>Parsing non terminal symbols</h3>
-<!--l. 59--><p class="noindent">
-   <h4 class="subsectionHead"><span class="titlemark">7.5.1   </span> <a 
-  id="x21-600007.5.1"></a>Starting the parser</h4>
-<!--l. 61--><p class="noindent">You can start the parser from the axiom or from any other non terminal symbol. When the parser can
+<!--l. 36--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">7.4   </span> <a 
+  id="x20-490007.4"></a>Parsing non terminal symbols</h3>
+<!--l. 38--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">7.4.1   </span> <a 
+  id="x20-500007.4.1"></a>Starting the parser</h4>
+<!--l. 40--><p class="noindent">You can start the parser from the axiom or from any other non terminal symbol. When the parser can
 not parse the whole token list a <span 
-class="cmti-10">tpg.ParserError </span>is raised. The value returned by the parser is the return
-value of the parsed symbol.
-<!--l. 65--><p class="noindent">
+class="cmti-10">tpg.SyntacticError </span>is raised. The value returned by the parser is the
+return value of the parsed symbol.
+<!--l. 44--><p class="noindent">
    <h5 class="subsubsectionHead"><a 
-  id="x21-610007.5.1"></a>From the axiom</h5>
-<!--l. 67--><p class="noindent">The axiom is a special non terminal symbol named <span 
+  id="x20-510007.4.1"></a>From the axiom</h5>
+<!--l. 46--><p class="noindent">The axiom is a special non terminal symbol named <span 
 class="cmti-10">START</span>. Parsers are callable objects. When an
 instance of a parser is called, the <span 
 class="cmti-10">START </span>rule is parsed. The first argument of the call is the string to
 parse. The other arguments of the call are given to the <span 
 class="cmti-10">START </span>symbol.
-<!--l. 73--><p class="indent">   This allows to simply write <span class="obeylines-h"><span class="verb"><span 
+<!--l. 52--><p class="indent">   This allows to simply write <span class="obeylines-h"><span class="verb"><span 
 class="cmtt-10">x=calc(&#34;1+1&#34;)</span></span></span> to parse and compute an expression if <span 
 class="cmti-10">calc </span>is an instance
 of an expression parser.
-<!--l. 75--><p class="noindent">
+<!--l. 54--><p class="noindent">
    <h5 class="subsubsectionHead"><a 
-  id="x21-620007.5.1"></a>From another non terminal symbol</h5>
-<!--l. 77--><p class="noindent">It&#8217;s also possible to start parsing from any other non terminal symbol. TPG parsers have a method
+  id="x20-520007.4.1"></a>From another non terminal symbol</h5>
+<!--l. 56--><p class="noindent">It&#8217;s also possible to start parsing from any other non terminal symbol. TPG parsers have a method
 named <span 
 class="cmti-10">parse</span>. The first argument is the name of the symbol to start from. The second argument is the
 string to parse. The other arguments are given to the specified symbol.
-<!--l. 83--><p class="indent">   For example to start parsing a <span 
-class="cmti-10">Factor </span>you can write:
+<!--l. 62--><p class="indent">   For example to start parsing a <span 
+class="cmti-10">Term </span>you can write:
                                                                                  
 
                                                                                  
    <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;f=calc.parse('Factor',&nbsp;&#34;2*3&#34;)
+&nbsp;&nbsp;&nbsp;&nbsp;f=calc.parse('Term',&nbsp;&#34;2*3&#34;)
 </div>
    </td></tr></table>
-<!--l. 89--><p class="noindent">
-   <h4 class="subsectionHead"><span class="titlemark">7.5.2   </span> <a 
-  id="x21-630007.5.2"></a>In a rule</h4>
-<!--l. 91--><p class="noindent">To parse a non terminal symbol in a rule, TPG call the rule corresponding to the symbol.
-<!--l. 93--><p class="noindent">
-   <h3 class="sectionHead"><span class="titlemark">7.6   </span> <a 
-  id="x21-640007.6"></a>Sequences</h3>
-<!--l. 95--><p class="noindent">Sequences in grammar rules describe in which order symbols should appear in the input
+<!--l. 68--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">7.4.2   </span> <a 
+  id="x20-530007.4.2"></a>In a rule</h4>
+<!--l. 70--><p class="noindent">To parse a non terminal symbol in a rule, TPG call the rule corresponding to the symbol.
+<!--l. 72--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">7.5   </span> <a 
+  id="x20-540007.5"></a>Sequences</h3>
+<!--l. 74--><p class="noindent">Sequences in grammar rules describe in which order symbols should appear in the input
 string. For example the sequence <span 
 class="cmti-10">A</span><span 
 class="cmti-10">&nbsp;B </span>recognizes an <span 
 class="cmti-10">A </span>followed by a <span 
 class="cmti-10">B</span>. Sequences can be
 empty.
-<!--l. 99--><p class="indent">   For example to say that a <span 
+<!--l. 78--><p class="indent">   For example to say that a <span 
 class="cmti-10">sum </span>is a <span 
 class="cmti-10">term plus </span>another <span 
 class="cmti-10">term </span>you can write:
@@ -208,38 +155,10 @@ class="verbatim"><div class="verbatim">
 &nbsp;&nbsp;&nbsp;&nbsp;Sum&nbsp;-&gt;&nbsp;Term&nbsp;'+'&nbsp;Term&nbsp;;
 </div>
    </td></tr></table>
-<!--l. 104--><p class="noindent">
-   <h3 class="sectionHead"><span class="titlemark">7.7   </span> <a 
-  id="x21-650007.7"></a>Cut</h3>
-<!--l. 106--><p class="noindent">The cut idiom is drawn from the Prolog cut (<span 
-class="cmti-10">!</span>). When the <span 
-class="cmti-10">! </span>operator is encountered it is
-ignored. When TPG backtracks on a cut, a syntax error is raised so as to <span 
-class="cmti-10">cut </span>other possible
-alternatives.
-<!--l. 111--><p class="indent">   For example, the rule <span class="obeylines-h"><span class="verb"><span 
-class="cmtt-10">R</span><span 
-class="cmtt-10">&nbsp;-&gt;</span><span 
-class="cmtt-10">&nbsp;a</span><span 
-class="cmtt-10">&nbsp;!</span><span 
-class="cmtt-10">&nbsp;b</span><span 
-class="cmtt-10">&nbsp;c</span><span 
-class="cmtt-10">&nbsp;|</span><span 
-class="cmtt-10">&nbsp;d</span><span 
-class="cmtt-10">&nbsp;;</span></span></span> will raise a <span 
-class="cmti-10">ParserError </span>exception if it recognizes an <span 
-class="cmti-10">a</span>
-not followed by a <span 
-class="cmti-10">b </span>and a <span 
-class="cmti-10">c</span>, without trying to parse a <span 
-class="cmti-10">d</span>.
-<!--l. 115--><p class="indent">   The cut also helps TPG to report errors. In the previous example, TPG will report an error after <span 
-class="cmti-10">a</span>
-instead of backtracking to the topmost rule.
-<!--l. 119--><p class="noindent">
-   <h3 class="sectionHead"><span class="titlemark">7.8   </span> <a 
-  id="x21-660007.8"></a>Alternatives</h3>
-<!--l. 121--><p class="noindent">Alternatives in grammar rules describe several possible decompositions of a symbol. The infix pipe
+<!--l. 83--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">7.6   </span> <a 
+  id="x20-550007.6"></a>Alternatives</h3>
+<!--l. 85--><p class="noindent">Alternatives in grammar rules describe several possible decompositions of a symbol. The infix pipe
 operator (<span 
 class="cmsy-10">|</span>) is used to separate alternatives. <span 
 class="cmmi-10">A</span><span 
@@ -252,7 +171,7 @@ class="cmti-10">A </span>and <span
 class="cmti-10">B </span>can
 be matched only the first match is considered. So the order of alternatives is very important. If an
 alternative has an empty choice, it must be the last.
-<!--l. 128--><p class="indent">   For example to say that an <span 
+<!--l. 92--><p class="indent">   For example to say that an <span 
 class="cmti-10">atom </span>is an <span 
 class="cmti-10">integer </span>or an <span 
 class="cmti-10">expression in paranthesis </span>you can
@@ -266,10 +185,10 @@ class="verbatim"><div class="verbatim">
 &nbsp;&nbsp;&nbsp;&nbsp;Atom&nbsp;-&gt;&nbsp;integer&nbsp;|&nbsp;'\('&nbsp;Expr&nbsp;'\)'&nbsp;;
 </div>
    </td></tr></table>
-<!--l. 134--><p class="noindent">
-   <h3 class="sectionHead"><span class="titlemark">7.9   </span> <a 
-  id="x21-670007.9"></a>Repetitions</h3>
-<!--l. 136--><p class="noindent">Repetitions in grammar rules describe how many times an expression should be matched.
+<!--l. 98--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">7.7   </span> <a 
+  id="x20-560007.7"></a>Repetitions</h3>
+<!--l. 100--><p class="noindent">Repetitions in grammar rules describe how many times an expression should be matched.
      <dl class="description"><dt class="description">
 <span 
 class="cmbx-10">A?</span> </dt><dd 
@@ -293,44 +212,44 @@ class="cmbx-10">m,n</span><span
 class="cmbsy-10">}</span> </dt><dd 
 class="description">recognizes at least m and at most n <span 
 class="cmti-10">A</span>.</dd></dl>
-<!--l. 145--><p class="indent">   Repetitions are greedy. Repetitions are translated into Python loops. Thus whatever the length of the
-repetitions, Python stack will not overflow.
-<!--l. 149--><p class="noindent">
-   <h3 class="sectionHead"><span class="titlemark">7.10   </span> <a 
-  id="x21-680007.10"></a>Precedence and grouping</h3>
-<!--l. 151--><p class="noindent">The figure&nbsp; <a 
-href="#x21-680013">7.3<!--tex4ht:ref: parser:precedence --></a> lists the different structures in increasing precedence order. To override the default
+<!--l. 109--><p class="indent">   Repetitions are greedy. Repetitions are translated into Python loops. Thus whatever the length of the
+repetitions, the Python stack will not overflow.
+<!--l. 113--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">7.8   </span> <a 
+  id="x20-570007.8"></a>Precedence and grouping</h3>
+<!--l. 115--><p class="noindent">The figure&nbsp; <a 
+href="#x20-570012">7.2<!--tex4ht:ref: parser:precedence --></a> lists the different structures in increasing precedence order. To override the default
 precedence you can group expressions with parenthesis.
-<!--l. 154--><p class="indent">   <hr class="figure"><div class="figure" 
+<!--l. 118--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
                                                                                  
 
                                                                                  
 <a 
-  id="x21-680013"></a>
+  id="x20-570012"></a>
                                                                                  
 
                                                                                  
 <div class="center" 
 >
 <br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.3: </td><td  
-class="content">Precedence in TPG expressions</td></tr></table><!--tex4ht:label?: x21-680013 -->
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.2: </td><td  
+class="content">Precedence in TPG expressions</td></tr></table><!--tex4ht:label?: x20-570012 -->
 <div class="tabular"><table class="tabular" 
 cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-24-" ><colgroup id="TBL-24-1g"><col 
-id="TBL-24-1"></colgroup><colgroup id="TBL-24-2g"><col 
-id="TBL-24-2"></colgroup><tr 
+frame="border" id="TBL-20-" ><colgroup id="TBL-20-1g"><col 
+id="TBL-20-1"></colgroup><colgroup id="TBL-20-2g"><col 
+id="TBL-20-2"></colgroup><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-24-1-"><td  align="left" style="white-space:nowrap;" id="TBL-24-1-1"  
-class="td11">Structure                </td><td  align="left" style="white-space:nowrap;" id="TBL-24-1-2"  
+ valign="baseline" id="TBL-20-1-"><td  align="left" style="white-space:nowrap;" id="TBL-20-1-1"  
+class="td11">Structure                </td><td  align="left" style="white-space:nowrap;" id="TBL-20-1-2"  
 class="td11">Example      </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-24-2-"><td  align="left" style="white-space:nowrap;" id="TBL-24-2-1"  
-class="td11">Alternative             </td><td  align="left" style="white-space:nowrap;" id="TBL-24-2-2"  
+ valign="baseline" id="TBL-20-2-"><td  align="left" style="white-space:nowrap;" id="TBL-20-2-1"  
+class="td11">Alternative             </td><td  align="left" style="white-space:nowrap;" id="TBL-20-2-2"  
 class="td11"><span 
 class="cmmi-10">A</span><span 
 class="cmmi-10">&nbsp; </span><span 
@@ -338,23 +257,15 @@ class="cmsy-10">|</span> <span
 class="cmmi-10">&nbsp;B      </span></td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-24-3-"><td  align="left" style="white-space:nowrap;" id="TBL-24-3-1"  
-class="td11">Cut                       </td><td  align="left" style="white-space:nowrap;" id="TBL-24-3-2"  
-class="td11"><span 
-class="cmmi-10">A</span><span 
-class="cmmi-10">&nbsp;</span>!<span 
-class="cmmi-10">&nbsp;B       </span></td>
-</tr><tr 
-class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-24-4-"><td  align="left" style="white-space:nowrap;" id="TBL-24-4-1"  
-class="td11">Sequence                </td><td  align="left" style="white-space:nowrap;" id="TBL-24-4-2"  
+ valign="baseline" id="TBL-20-3-"><td  align="left" style="white-space:nowrap;" id="TBL-20-3-1"  
+class="td11">Sequence                </td><td  align="left" style="white-space:nowrap;" id="TBL-20-3-2"  
 class="td11"><span 
 class="cmmi-10">A</span><span 
 class="cmmi-10">&nbsp;B         </span></td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-24-5-"><td  align="left" style="white-space:nowrap;" id="TBL-24-5-1"  
-class="td11">Repetitions             </td><td  align="left" style="white-space:nowrap;" id="TBL-24-5-2"  
+ valign="baseline" id="TBL-20-4-"><td  align="left" style="white-space:nowrap;" id="TBL-20-4-1"  
+class="td11">Repetitions             </td><td  align="left" style="white-space:nowrap;" id="TBL-20-4-2"  
 class="td11"><span 
 class="cmmi-10">A</span>?, <span 
 class="cmmi-10">A</span><span 
@@ -362,8 +273,8 @@ class="cmsy-10">*</span>, <span
 class="cmmi-10">A</span>+  </td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-24-6-"><td  align="left" style="white-space:nowrap;" id="TBL-24-6-1"  
-class="td11">Symbol and grouping</td><td  align="left" style="white-space:nowrap;" id="TBL-24-6-2"  
+ valign="baseline" id="TBL-20-5-"><td  align="left" style="white-space:nowrap;" id="TBL-20-5-1"  
+class="td11">Symbol and grouping</td><td  align="left" style="white-space:nowrap;" id="TBL-20-5-2"  
 class="td11"><span 
 class="cmmi-10">A </span>and (<span 
 class="cmmi-10">&nbsp;</span><span 
@@ -371,214 +282,150 @@ class="cmmi-10">...</span><span
 class="cmmi-10">&nbsp;</span>)</td>
 </tr><tr 
 class="hline"><td><hr></td><td><hr></td></tr><tr  
- valign="baseline" id="TBL-24-7-"><td  align="left" style="white-space:nowrap;" id="TBL-24-7-1"  
+ valign="baseline" id="TBL-20-6-"><td  align="left" style="white-space:nowrap;" id="TBL-20-6-1"  
 class="td11">                            </td>
 </tr></table></div>
-<!--l. 171--><p class="nopar"> </div>
-<!--l. 172--><p class="nopar">
+<!--l. 133--><p class="nopar"> </div>
+<!--l. 134--><p class="nopar">
                                                                                  
 
                                                                                  
    </td></tr></table></div><hr class="endfigure">
-<!--l. 172--><p class="nopar">
-   <h3 class="sectionHead"><span class="titlemark">7.11   </span> <a 
-  id="x21-690007.11"></a>Actions</h3>
-<!--l. 176--><p class="noindent">Grammar rules can contain actions and Python code. Actions are handled by TPG and Python code is
-copied verbatim into the generated code.
-<!--l. 179--><p class="noindent">
-   <h4 class="subsectionHead"><span class="titlemark">7.11.1   </span> <a 
-  id="x21-700007.11.1"></a>Abstract syntax trees</h4>
-<!--l. 181--><p class="noindent">An abstract syntax tree (AST) is an abstract representation of the structure of the input. A node of an
+<!--l. 134--><p class="nopar">
+   <h3 class="sectionHead"><span class="titlemark">7.9   </span> <a 
+  id="x20-580007.9"></a>Actions</h3>
+<!--l. 138--><p class="noindent">Grammar rules can contain actions as Python code. Python code is copied verbatim into the generated
+code.
+<!--l. 141--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">7.9.1   </span> <a 
+  id="x20-590007.9.1"></a>Abstract syntax trees</h4>
+<!--l. 143--><p class="noindent">An abstract syntax tree (AST) is an abstract representation of the structure of the input. A node of an
 AST is a Python object (there is no constraint about its class). AST nodes are completely defined by the
 user.
-<!--l. 185--><p class="indent">   The figure&nbsp; <a 
-href="#x21-700014">7.4<!--tex4ht:ref: parser:ASTinst --></a> shows a node symbolizing a couple.
-<!--l. 187--><p class="indent">   <hr class="figure"><div class="figure" 
+<!--l. 147--><p class="indent">   The figure&nbsp; <a 
+href="#x20-590013">7.3<!--tex4ht:ref: parser:ASTinst --></a> shows a node symbolizing a couple.
+<!--l. 149--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
                                                                                  
 
                                                                                  
 <a 
-  id="x21-700014"></a>
+  id="x20-590013"></a>
                                                                                  
 
                                                                                  
    <div class="tabular"><table class="tabular" 
 cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-25-" ><colgroup id="TBL-25-1g"><col 
-id="TBL-25-1"></colgroup><tr 
+frame="border" id="TBL-21-" ><colgroup id="TBL-21-1g"><col 
+id="TBL-21-1"></colgroup><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-25-1-"><td  align="left" id="TBL-25-1-1"  
+ valign="baseline" id="TBL-21-1-"><td  align="left" id="TBL-21-1-1"  
+class="td11"><br> <table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.3: </td><td  
+class="content">AST example</td></tr></table><!--tex4ht:label?: x20-590013 -->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;<br />class&nbsp;Couple:
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;__init__(self,&nbsp;a,&nbsp;b):
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.a&nbsp;=&nbsp;a
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.b&nbsp;=&nbsp;b
+&nbsp;<br />
+&nbsp;<br />class&nbsp;Foo(tpg.Parser):
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;COUPLE&nbsp;-&gt;&nbsp;'('&nbsp;ITEM/a&nbsp;','&nbsp;ITEM/b&nbsp;')'&nbsp;$&nbsp;c&nbsp;=&nbsp;Couple(a,b)&nbsp;$&nbsp;;
+&nbsp;<br />
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;COUPLE/$Couple(a,b)$&nbsp;-&gt;&nbsp;'('&nbsp;ITEM/a&nbsp;','&nbsp;ITEM/b&nbsp;')'&nbsp;;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-21-2-"><td  align="left" id="TBL-21-2-1"  
+class="td11">                                                                                                                               </td> </tr></table>
+</div>
+<!--l. 165--><p class="nopar">
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 165--><p class="nopar">
+   <h5 class="subsubsectionHead"><a 
+  id="x20-600007.9.1"></a>Creating an AST</h5>
+<!--l. 169--><p class="noindent">AST are created in Python code delimited either by <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">$...$</span></span></span> or by <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">{{...}}</span></span></span> (see figure&nbsp; <a 
+href="#x20-590007.9.1">7.9.1<!--tex4ht:ref: parser:AST --></a>).
+<!--l. 171--><p class="noindent">
+   <h5 class="subsubsectionHead"><a 
+  id="x20-610007.9.1"></a>Updating an AST</h5>
+<!--l. 173--><p class="noindent">When parsing lists for example it is useful to save all the items of the list. In that case one can use a list
+and its append method (see figure&nbsp; <a 
+href="#x20-610014">7.4<!--tex4ht:ref: parser:ASTadd --></a>).
+<!--l. 176--><p class="indent">   <hr class="figure"><div class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  id="x20-610014"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-22-" ><colgroup id="TBL-22-1g"><col 
+id="TBL-22-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-22-1-"><td  align="left" id="TBL-22-1-1"  
 class="td11"><br> <table class="caption" 
 ><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.4: </td><td  
-class="content">AST example</td></tr></table><!--tex4ht:label?: x21-700014 -->
+class="content">AST update example</td></tr></table><!--tex4ht:label?: x20-610014 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-{{
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;class&nbsp;Couple:
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;__init__(self,&nbsp;a,&nbsp;b):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.a&nbsp;=&nbsp;a
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.b&nbsp;=&nbsp;b
-&nbsp;<br />}}
-&nbsp;<br />
-&nbsp;<br />parser&nbsp;Foo:
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;COUPLE&nbsp;-&gt;&nbsp;'('&nbsp;ITEM/a&nbsp;','&nbsp;ITEM/b&nbsp;')'&nbsp;c&nbsp;=&nbsp;Couple&lt;a,b&gt;&nbsp;;
-&nbsp;<br />
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;COUPLE/Couple&lt;a,b&gt;&nbsp;-&gt;&nbsp;'('&nbsp;ITEM/a&nbsp;','&nbsp;ITEM/b&nbsp;')'&nbsp;;
-</div>
-</td></tr></table>                                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-25-2-"><td  align="left" id="TBL-25-2-1"  
-class="td11">                                                                                                                               </td> </tr></table>
-</div>
-<!--l. 203--><p class="nopar">
-                                                                                 
-
-                                                                                 
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 203--><p class="nopar">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-710007.11.1"></a>Creating an AST</h5>
-<!--l. 207--><p class="noindent">AST can be created by the infix <span 
-class="cmti-10">= </span>operator (see figure&nbsp; <a 
-href="#x21-700007.11.1">7.11.1<!--tex4ht:ref: parser:AST --></a>).
-<!--l. 209--><p class="noindent">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-720007.11.1"></a>Updating an AST</h5>
-<!--l. 211--><p class="noindent">When parsing lists for example it is useful to save all the items of the list. The infix <span 
-class="cmti-10">- </span>operator call the
-<span 
-class="cmti-10">add </span>method of an AST (see figure&nbsp; <a 
-href="#x21-720015">7.5<!--tex4ht:ref: parser:ASTadd --></a>). This method is defined by the user. TPG won&#8217;t check that the
-class actually has an <span 
-class="cmti-10">add </span>method.
-<!--l. 216--><p class="indent">   <hr class="figure"><div class="figure" 
-><table class="figure"><tr class="figure"><td class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
-  id="x21-720015"></a>
-                                                                                 
-
-                                                                                 
-   <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-26-" ><colgroup id="TBL-26-1g"><col 
-id="TBL-26-1"></colgroup><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-26-1-"><td  align="left" id="TBL-26-1-1"  
-class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.5: </td><td  
-class="content">AST update example</td></tr></table><!--tex4ht:label?: x21-720015 -->
-<table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-{{
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;class&nbsp;List(list):
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add&nbsp;=&nbsp;list.append
-&nbsp;<br />}}
-&nbsp;<br />
-&nbsp;<br />parser&nbsp;ListParser:
-&nbsp;<br />
+&nbsp;<br />class&nbsp;ListParser(tpg.Parser):
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;r&#34;&#34;&#34;
 &nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;LIST/l&nbsp;-&gt;
 &nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'('
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l&nbsp;=&nbsp;List&lt;&gt;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ITEM/a&nbsp;l-a
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;','&nbsp;ITEM/a&nbsp;l-a&nbsp;)*
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;l&nbsp;=&nbsp;List&lt;&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ITEM/a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;l.append(a)
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;','&nbsp;ITEM/a&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;l.append(a)
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)*
 &nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')'
 &nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&#34;&#34;&#34;
 </div>
 </td></tr></table>                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-26-2-"><td  align="left" id="TBL-26-2-1"  
+ valign="baseline" id="TBL-22-2-"><td  align="left" id="TBL-22-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 234--><p class="nopar">
+<!--l. 192--><p class="nopar">
                                                                                  
 
                                                                                  
    </td></tr></table></div><hr class="endfigure">
-<!--l. 234--><p class="nopar">
-   <h4 class="subsectionHead"><span class="titlemark">7.11.2   </span> <a 
-  id="x21-730007.11.2"></a>Text extraction</h4>
-<!--l. 238--><p class="noindent">TPG can extract a portion of the input string. The idea is to put marks while parsing and then extract
+<!--l. 192--><p class="nopar">
+   <h4 class="subsectionHead"><span class="titlemark">7.9.2   </span> <a 
+  id="x20-620007.9.2"></a>Text extraction</h4>
+<!--l. 196--><p class="noindent">TPG can extract a portion of the input string. The idea is to put marks while parsing and then extract
 the text between the two marks. This extracts the whole text between the marks, including the tokens
 defined as separators.
-<!--l. 242--><p class="noindent">
-   <h4 class="subsectionHead"><span class="titlemark">7.11.3   </span> <a 
-  id="x21-740007.11.3"></a>Object</h4>
-<!--l. 244--><p class="noindent">TPG knows some basics about Python objects. An object in TPG is a Python object using a
-special syntax. The use of parenthesis has been rejected because it would have introduced
-ambiguities in the TPG grammar. <span 
-class="cmti-10">Parenthesis have been replaced with left and right angles</span>
-<span 
-class="cmti-10">(</span><span 
-class="cmmi-10">&lt; </span><span 
-class="cmti-10">and </span><span 
-class="cmmi-10">&gt;</span><span 
-class="cmti-10">). </span>Appart from this particularity, TPG object syntax is a subset of the Python
-syntax.
-<!--l. 250--><p class="indent">   An object can be:
-     <ul class="itemize1">
-     <li class="itemize">an identifier
-     </li>
-     <li class="itemize">a string
-     </li>
-     <li class="itemize">a tuple
-     </li>
-     <li class="itemize">a code object (in double curly brackets)
-     </li>
-     <li class="itemize">a text extraction (infix <span 
-class="cmti-10">.. </span>operator)
-     </li>
-     <li class="itemize">an acces to an attribute (infix <span 
-class="cmti-10">. </span>operator)
-     </li>
-     <li class="itemize">a call to a method or a function
-     </li>
-     <li class="itemize">a slice operation</li></ul>
-<!--l. 260--><p class="nopar">
-<!--l. 262--><p class="noindent">
+<!--l. 200--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">7.9.3   </span> <a 
+  id="x20-630007.9.3"></a>Object</h4>
+<!--l. 202--><p class="noindent">TPG 3 doesn&#8217;t handle Python object as TPG 2. Only identifiers, integers and strings are known. Other
+objects must be written in Python code delimited either by <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">$...$</span></span></span> or by <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">{{...}}</span></span></span>.
+<!--l. 206--><p class="noindent">
    <h5 class="subsubsectionHead"><a 
-  id="x21-750007.11.3"></a>Identifier</h5>
-<!--l. 264--><p class="noindent">No mystery about identifiers except that TPG identifier definition includes true identifiers and
-integers.
-                                                                                 
-
-                                                                                 
-   <table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;I_m_an_Identifier_13
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;1975
-</div>
-   </td></tr></table>
-<!--l. 271--><p class="noindent">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-760007.11.3"></a>String</h5>
-<!--l. 273--><p class="noindent">A TPG string is a subset of Python strings. TPG doesn&#8217;t accept triple quoted strings. If you absolutely
-need triple quoted strings you can encapsulate them in Python code objects.
-                                                                                 
-
-                                                                                 
-   <table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;&#34;I'm&nbsp;a&nbsp;string&#34;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;'I\'m&nbsp;a&nbsp;string&nbsp;too&#34;
-</div>
-   </td></tr></table>
-<!--l. 282--><p class="noindent">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-770007.11.3"></a>Argument lists and tuples</h5>
-<!--l. 284--><p class="noindent">Argument list is a comma separated list of objects. <span 
+  id="x20-640007.9.3"></a>Argument lists and tuples</h5>
+<!--l. 208--><p class="noindent">Argument list is a comma separated list of objects. <span 
 class="cmti-10">Remember that arguments are enclosed in left and</span>
 <span 
 class="cmti-10">right angles.</span>
@@ -591,7 +438,7 @@ class="verbatim"><div class="verbatim">
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;object1,&nbsp;object2,&nbsp;object3&gt;
 </div>
    </td></tr></table>
-<!--l. 291--><p class="indent">   Argument lists and tuples have the same syntax except from the possibility to have default
+<!--l. 215--><p class="indent">   Argument lists and tuples have the same syntax except from the possibility to have default
 arguments, argument lists and argument dictionnaries as arguments as in Python.
                                                                                  
 
@@ -602,111 +449,255 @@ class="verbatim"><div class="verbatim">
 &nbsp;&nbsp;&nbsp;&nbsp;RULE&lt;arg1,&nbsp;arg2=18,&nbsp;arg3=None,&nbsp;*other_args,&nbsp;**keywords&gt;&nbsp;-&gt;&nbsp;;
 </div>
    </td></tr></table>
-<!--l. 298--><p class="noindent">
+<!--l. 222--><p class="noindent">
    <h5 class="subsubsectionHead"><a 
-  id="x21-780007.11.3"></a>Python code object</h5>
-<!--l. 300--><p class="noindent">A Python code object is a piece of Python code in double curly brackets. Python code used in an object
-expression must have only one line.
+  id="x20-650007.9.3"></a>Python code object</h5>
+<!--l. 224--><p class="noindent">A Python code object is a piece of Python code in double curly brackets or in dollar signs. Python code
+used in an object expression must have only one line.
                                                                                  
 
                                                                                  
    <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;{{&nbsp;dict([&nbsp;(x,x**2)&nbsp;for&nbsp;x&nbsp;in&nbsp;range(100)&nbsp;])&nbsp;#&nbsp;Python&nbsp;embeded&nbsp;in&nbsp;TPG&nbsp;}}
+&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;dict([&nbsp;(x,x**2)&nbsp;for&nbsp;x&nbsp;in&nbsp;range(100)&nbsp;])&nbsp;$&nbsp;#&nbsp;Python&nbsp;embeded&nbsp;in&nbsp;TPG
 </div>
    </td></tr></table>
-<!--l. 307--><p class="noindent">
+<!--l. 231--><p class="noindent">
    <h5 class="subsubsectionHead"><a 
-  id="x21-790007.11.3"></a>Text extraction</h5>
-<!--l. 309--><p class="noindent">Text extraction is done by the infix <span 
-class="cmti-10">.. </span>operator. Marks can be put in the input string by the prefix <span 
-class="cmti-10">@</span>
-operator.
+  id="x20-660007.9.3"></a>Text extraction</h5>
+<!--l. 233--><p class="noindent">Text extraction is done by the <span 
+class="cmti-10">extract </span>method. Marks can be put in the input string by the <span 
+class="cmti-10">mark </span>method
+or the prefix  operator.
                                                                                  
 
                                                                                  
    <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;@beginning
+&nbsp;&nbsp;&nbsp;&nbsp;@beginning&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;equivalent&nbsp;to&nbsp;$&nbsp;beginning&nbsp;=&nbsp;self.mark()
 &nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;...
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;@end
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;@end&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;equivalent&nbsp;to&nbsp;$&nbsp;end&nbsp;=&nbsp;self.mark()
 &nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;...
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_string&nbsp;=&nbsp;beginning&nbsp;..&nbsp;end
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;my_string&nbsp;=&nbsp;self.extract(beginning,&nbsp;end)
 </div>
    </td></tr></table>
-<!--l. 320--><p class="noindent">
+<!--l. 244--><p class="noindent">
    <h5 class="subsubsectionHead"><a 
-  id="x21-800007.11.3"></a>Acces to an attribute</h5>
-<!--l. 322--><p class="noindent">Exactly as in Python.
-                                                                                 
-
-                                                                                 
-   <table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;my_object.my_attribute
-</div>
-   </td></tr></table>
-<!--l. 328--><p class="noindent">
+  id="x20-670007.9.3"></a>Getting the line and row number of a token</h5>
+<!--l. 246--><p class="noindent">The <span 
+class="cmti-10">line </span>and <span 
+class="cmti-10">row </span>methods return the line and row number of the current token. If the first
+parameter is a mark (see&nbsp; <a 
+href="#x20-620007.9.2">7.9.2<!--tex4ht:ref: parser:mark --></a>) the method returns the line number of the token following the
+mark.
+<!--l. 249--><p class="noindent">
    <h5 class="subsubsectionHead"><a 
-  id="x21-810007.11.3"></a>Call to a method or a function</h5>
-<!--l. 330--><p class="noindent">Exactly as in Python except from the use of left and right angle instead of parenthesis.
-                                                                                 
-
-                                                                                 
-   <table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;my_object.my_method&lt;arg1,&nbsp;arg2&gt;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_function&lt;arg1,&nbsp;arg2&gt;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_function_without_arg&lt;&gt;
-</div>
-   </td></tr></table>
-<!--l. 338--><p class="noindent">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-820007.11.3"></a>Slice extraction</h5>
-<!--l. 340--><p class="noindent">As in Python.
-                                                                                 
-
-                                                                                 
-   <table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;my_list[object]
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_list[object1:object2]
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_list[:object2]
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_list[object1:]
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;my_list[:]
-</div>
-   </td></tr></table>
-<!--l. 350--><p class="noindent">
-   <h4 class="subsectionHead"><span class="titlemark">7.11.4   </span> <a 
-  id="x21-830007.11.4"></a>Actions in Python code</h4>
-<!--l. 352--><p class="noindent">TPG parsers also have some interesting methods that can be used in Python code.
-<!--l. 354--><p class="noindent">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-840007.11.4"></a>Getting the line number of a token</h5>
-<!--l. 356--><p class="noindent">The <span 
-class="cmti-10">lineno </span>method returns the line number of the current token. If the first parameter is a mark (see&nbsp;
-<a 
-href="#x21-730007.11.2">7.11.2<!--tex4ht:ref: parser:mark --></a>) the method returns the line number of the token following the mark.
-<!--l. 359--><p class="noindent">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-850007.11.4"></a>Backtracking</h5>
-<!--l. 361--><p class="noindent">The user can force the parser to backtrack in rule actions. The parser classes have a <span 
-class="cmti-10">WrongMatch</span>
-method for that purpose (see figure&nbsp; <a 
-href="#x21-850016">7.6<!--tex4ht:ref: parser:wrongmatch --></a>).
-<!--l. 364--><p class="indent">   <hr class="figure"><div class="figure" 
+  id="x20-680007.9.3"></a>Backtracking</h5>
+<!--l. 251--><p class="noindent">The user can force the parser to backtrack in rule actions. The module has a <span 
+class="cmti-10">WrongToken </span>exception for
+that purpose (see figure&nbsp; <a 
+href="#x20-680015">7.5<!--tex4ht:ref: parser:wrongtoken --></a>).
+<!--l. 254--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
 >
                                                                                  
 
                                                                                  
 <a 
-  id="x21-850016"></a>
+  id="x20-680015"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-23-" ><colgroup id="TBL-23-1g"><col 
+id="TBL-23-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-23-1-"><td  align="left" id="TBL-23-1-1"  
+class="td11"><br> <table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.5: </td><td  
+class="content">Backtracking with <span 
+class="cmti-10">WrongToken </span>example</td></tr></table><!--tex4ht:label?: x20-680015 -->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;NATURAL&nbsp;matches&nbsp;integers&nbsp;greater&nbsp;than&nbsp;0
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;NATURAL/n&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;if&nbsp;n&lt;1:&nbsp;raise&nbsp;tpg.WrongToken&nbsp;$
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-23-2-"><td  align="left" id="TBL-23-2-1"  
+class="td11">                                                                                                                               </td> </tr></table>
+</div>
+<!--l. 263--><p class="nopar">
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 263--><p class="nopar">
+<!--l. 265--><p class="indent">   Parsers have another useful method named <span 
+class="cmti-10">check </span>(see figure&nbsp; <a 
+href="#x20-680026">7.6<!--tex4ht:ref: parser:check --></a>). This method checks a condition. If
+this condition is false then <span 
+class="cmti-10">WrongToken </span>if called in order to backtrack.
+<!--l. 269--><p class="indent">   <hr class="figure"><div class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  id="x20-680026"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-24-" ><colgroup id="TBL-24-1g"><col 
+id="TBL-24-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-24-1-"><td  align="left" id="TBL-24-1-1"  
+class="td11"><br> <table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.6: </td><td  
+class="content">Backtracking with the <span 
+class="cmti-10">check </span>method example</td></tr></table><!--tex4ht:label?: x20-680026 -->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;NATURAL&nbsp;matches&nbsp;integers&nbsp;greater&nbsp;than&nbsp;0
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;NATURAL/n&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;self.check(n&gt;=1)&nbsp;$
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-24-2-"><td  align="left" id="TBL-24-2-1"  
+class="td11">                                                                                                                               </td> </tr></table>
+</div>
+<!--l. 278--><p class="nopar">
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 278--><p class="nopar">
+<!--l. 280--><p class="indent">   A shortcut for the <span 
+class="cmti-10">check </span>method is the <span 
+class="cmti-10">check </span>keyword followed by the condition to check (see figure&nbsp;
+<a 
+href="#x20-680037">7.7<!--tex4ht:ref: parser:checkkw --></a>).
+<!--l. 282--><p class="indent">   <hr class="figure"><div class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  id="x20-680037"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-25-" ><colgroup id="TBL-25-1g"><col 
+id="TBL-25-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-25-1-"><td  align="left" id="TBL-25-1-1"  
+class="td11"><br> <table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.7: </td><td  
+class="content">Backtracking with the <span 
+class="cmti-10">check </span>keyword example</td></tr></table><!--tex4ht:label?: x20-680037 -->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;NATURAL&nbsp;matches&nbsp;integers&nbsp;greater&nbsp;than&nbsp;0
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;NATURAL/n&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check&nbsp;$&nbsp;n&gt;=1&nbsp;$
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-25-2-"><td  align="left" id="TBL-25-2-1"  
+class="td11">                                                                                                                               </td> </tr></table>
+</div>
+<!--l. 291--><p class="nopar">
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 291--><p class="nopar">
+   <h5 class="subsubsectionHead"><a 
+  id="x20-690007.9.3"></a>Error reporting</h5>
+<!--l. 295--><p class="noindent">The user can force the parser to stop and raise an exception. The parser classes have a <span 
+class="cmti-10">error </span>method for
+that purpose (see figure&nbsp; <a 
+href="#x20-690018">7.8<!--tex4ht:ref: parser:error_method --></a>). This method raises a <span 
+class="cmti-10">SemanticError</span>.
+<!--l. 299--><p class="indent">   <hr class="figure"><div class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  id="x20-690018"></a>
+                                                                                 
+
+                                                                                 
+   <div class="tabular"><table class="tabular" 
+cellspacing="0pt" cellpadding="0" rules="groups" 
+frame="border" id="TBL-26-" ><colgroup id="TBL-26-1g"><col 
+id="TBL-26-1"></colgroup><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-26-1-"><td  align="left" id="TBL-26-1-1"  
+class="td11"><br> <table class="caption" 
+><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.8: </td><td  
+class="content">Error reporting the <span 
+class="cmti-10">error </span>method example</td></tr></table><!--tex4ht:label?: x20-690018 -->
+<table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;FRACT&nbsp;parses&nbsp;fractions
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;FRACT/&lt;n,d&gt;&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n&nbsp;'/'&nbsp;number/d
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;if&nbsp;d==0:&nbsp;self.error(&#34;Division&nbsp;by&nbsp;zero&#34;)&nbsp;$
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+</div>
+</td></tr></table>                                                                                 </td>
+</tr><tr 
+class="hline"><td><hr></td></tr><tr  
+ valign="baseline" id="TBL-26-2-"><td  align="left" id="TBL-26-2-1"  
+class="td11">                                                                                                                               </td> </tr></table>
+</div>
+<!--l. 308--><p class="nopar">
+                                                                                 
+
+                                                                                 
+   </td></tr></table></div><hr class="endfigure">
+<!--l. 308--><p class="nopar">
+<!--l. 310--><p class="indent">   A shortcut for the <span 
+class="cmti-10">error </span>method is the <span 
+class="cmti-10">error </span>keyword followed by the object to give to the
+<span 
+class="cmti-10">SemanticError </span>exception (see figure&nbsp; <a 
+href="#x20-690029">7.9<!--tex4ht:ref: parser:error_kw --></a>).
+<!--l. 312--><p class="indent">   <hr class="figure"><div class="figure" 
+><table class="figure"><tr class="figure"><td class="figure" 
+>
+                                                                                 
+
+                                                                                 
+<a 
+  id="x20-690029"></a>
                                                                                  
 
                                                                                  
@@ -717,200 +708,9 @@ id="TBL-27-1"></colgroup><tr
 class="hline"><td><hr></td></tr><tr  
  valign="baseline" id="TBL-27-1-"><td  align="left" id="TBL-27-1-1"  
 class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.6: </td><td  
-class="content">Backtracking with <span 
-class="cmti-10">WrongMatch </span>example</td></tr></table><!--tex4ht:label?: x21-850016 -->
-<table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;NATURAL&nbsp;matches&nbsp;integers&nbsp;greater&nbsp;than&nbsp;0
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;NATURAL/n&nbsp;-&gt;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{&nbsp;if&nbsp;n&lt;1:&nbsp;self.WrongMatch()&nbsp;}}
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
-</div>
-</td></tr></table>                                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-27-2-"><td  align="left" id="TBL-27-2-1"  
-class="td11">                                                                                                                               </td> </tr></table>
-</div>
-<!--l. 373--><p class="nopar">
-                                                                                 
-
-                                                                                 
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 373--><p class="nopar">
-<!--l. 375--><p class="indent">   Parsers have another useful method named <span 
-class="cmti-10">check </span>(see figure&nbsp; <a 
-href="#x21-850027">7.7<!--tex4ht:ref: parser:check --></a>). This method checks a condition. If
-this condition is false then <span 
-class="cmti-10">WrongMatch </span>if called in order to backtrack.
-<!--l. 379--><p class="indent">   <hr class="figure"><div class="figure" 
-><table class="figure"><tr class="figure"><td class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
-  id="x21-850027"></a>
-                                                                                 
-
-                                                                                 
-   <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-28-" ><colgroup id="TBL-28-1g"><col 
-id="TBL-28-1"></colgroup><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-28-1-"><td  align="left" id="TBL-28-1-1"  
-class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.7: </td><td  
-class="content">Backtracking with the <span 
-class="cmti-10">check </span>method example</td></tr></table><!--tex4ht:label?: x21-850027 -->
-<table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;NATURAL&nbsp;matches&nbsp;integers&nbsp;greater&nbsp;than&nbsp;0
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;NATURAL/n&nbsp;-&gt;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{&nbsp;self.check(n&gt;=1)&nbsp;}}
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
-</div>
-</td></tr></table>                                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-28-2-"><td  align="left" id="TBL-28-2-1"  
-class="td11">                                                                                                                               </td> </tr></table>
-</div>
-<!--l. 388--><p class="nopar">
-                                                                                 
-
-                                                                                 
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 388--><p class="nopar">
-<!--l. 390--><p class="indent">   A shortcut for the <span 
-class="cmti-10">check </span>method is the <span 
-class="cmti-10">check </span>keyword followed by the condition to check (see figure&nbsp;
-<a 
-href="#x21-850038">7.8<!--tex4ht:ref: parser:checkkw --></a>).
-<!--l. 392--><p class="indent">   <hr class="figure"><div class="figure" 
-><table class="figure"><tr class="figure"><td class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
-  id="x21-850038"></a>
-                                                                                 
-
-                                                                                 
-   <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-29-" ><colgroup id="TBL-29-1g"><col 
-id="TBL-29-1"></colgroup><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-29-1-"><td  align="left" id="TBL-29-1-1"  
-class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.8: </td><td  
-class="content">Backtracking with the <span 
-class="cmti-10">check </span>keyword example</td></tr></table><!--tex4ht:label?: x21-850038 -->
-<table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;NATURAL&nbsp;matches&nbsp;integers&nbsp;greater&nbsp;than&nbsp;0
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;NATURAL/n&nbsp;-&gt;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check&nbsp;{{&nbsp;n&gt;=1&nbsp;}}
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
-</div>
-</td></tr></table>                                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-29-2-"><td  align="left" id="TBL-29-2-1"  
-class="td11">                                                                                                                               </td> </tr></table>
-</div>
-<!--l. 401--><p class="nopar">
-                                                                                 
-
-                                                                                 
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 401--><p class="nopar">
-   <h5 class="subsubsectionHead"><a 
-  id="x21-860007.11.4"></a>Error reporting</h5>
-<!--l. 405--><p class="noindent">The user can force the parser to stop and raise an exception. The parser classes have a <span 
-class="cmti-10">error </span>method for
-that purpose (see figure&nbsp; <a 
-href="#x21-860019">7.9<!--tex4ht:ref: parser:error_method --></a>). This method raises a <span 
-class="cmti-10">SemanticError</span>.
-<!--l. 409--><p class="indent">   <hr class="figure"><div class="figure" 
-><table class="figure"><tr class="figure"><td class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
-  id="x21-860019"></a>
-                                                                                 
-
-                                                                                 
-   <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-30-" ><colgroup id="TBL-30-1g"><col 
-id="TBL-30-1"></colgroup><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-30-1-"><td  align="left" id="TBL-30-1-1"  
-class="td11"><br> <table class="caption" 
 ><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.9: </td><td  
 class="content">Error reporting the <span 
-class="cmti-10">error </span>method example</td></tr></table><!--tex4ht:label?: x21-860019 -->
-<table width="100%" 
-class="verbatim"><tr class="verbatim"><td 
-class="verbatim"><div class="verbatim">
-&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;FRACT&nbsp;parses&nbsp;fractions
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;FRACT/&lt;n,d&gt;&nbsp;-&gt;
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number/n&nbsp;'/'&nbsp;number/d
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{&nbsp;if&nbsp;d==0:&nbsp;self.error(&#34;Division&nbsp;by&nbsp;zero&#34;)&nbsp;}}
-&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
-</div>
-</td></tr></table>                                                                                 </td>
-</tr><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-30-2-"><td  align="left" id="TBL-30-2-1"  
-class="td11">                                                                                                                               </td> </tr></table>
-</div>
-<!--l. 418--><p class="nopar">
-                                                                                 
-
-                                                                                 
-   </td></tr></table></div><hr class="endfigure">
-<!--l. 418--><p class="nopar">
-<!--l. 420--><p class="indent">   A shortcut for the <span 
-class="cmti-10">error </span>method is the <span 
-class="cmti-10">error </span>keyword followed by the object to give to the
-<span 
-class="cmti-10">SemanticError </span>exception (see figure&nbsp; <a 
-href="#x21-8600210">7.10<!--tex4ht:ref: parser:error_kw --></a>).
-<!--l. 422--><p class="indent">   <hr class="figure"><div class="figure" 
-><table class="figure"><tr class="figure"><td class="figure" 
->
-                                                                                 
-
-                                                                                 
-<a 
-  id="x21-8600210"></a>
-                                                                                 
-
-                                                                                 
-   <div class="tabular"><table class="tabular" 
-cellspacing="0pt" cellpadding="0" rules="groups" 
-frame="border" id="TBL-31-" ><colgroup id="TBL-31-1g"><col 
-id="TBL-31-1"></colgroup><tr 
-class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-31-1-"><td  align="left" id="TBL-31-1-1"  
-class="td11"><br> <table class="caption" 
-><tr valign="baseline" class="caption"><td class="id">Figure&nbsp;7.10: </td><td  
-class="content">Error reporting the <span 
-class="cmti-10">error </span>keyword example</td></tr></table><!--tex4ht:label?: x21-8600210 -->
+class="cmti-10">error </span>keyword example</td></tr></table><!--tex4ht:label?: x20-690029 -->
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
@@ -923,15 +723,15 @@ class="verbatim"><div class="verbatim">
 </td></tr></table>                                                                                 </td>
 </tr><tr 
 class="hline"><td><hr></td></tr><tr  
- valign="baseline" id="TBL-31-2-"><td  align="left" id="TBL-31-2-1"  
+ valign="baseline" id="TBL-27-2-"><td  align="left" id="TBL-27-2-1"  
 class="td11">                                                                                                                               </td> </tr></table>
 </div>
-<!--l. 431--><p class="nopar">
+<!--l. 321--><p class="nopar">
                                                                                  
 
                                                                                  
    </td></tr></table></div><hr class="endfigure">
-<!--l. 431--><p class="nopar">
+<!--l. 321--><p class="nopar">
                                                                                  
 
                                                                                  

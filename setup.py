@@ -43,22 +43,18 @@ if 'sdist' in sys.argv[1:]:
 
     to_update = [
         # Precompiled TPG parser
-        ( 'tpg/parser.py', ['tpg/parser.g'],
-            "cd tpg && make"
+        ( 'tpg.py', ['tpg.pyg'],
+            "tpg tpg.pyg"
         ),
         # Documentation / Tutorial
-        ( 'doc/tpg.html', ['doc/*.tex', 'doc/hack/*.g'],
-            "cd doc/hack && hack.py && cd .. && htlatex tpg html,2 && web2png -t && rm tpg.dvi"
+        ( 'doc/tpg.html', ['doc/*.tex'],
+            "cd doc && htlatex tpg html,2 && web2png -t && rm tpg.dvi"
         ),
-        ( 'doc/tpg.dvi', ['doc/*.tex', 'doc/hack/*.g'],
-            "cd doc/hack && hack.py && cd .. && latex tpg && latex tpg && latex tpg"
+        ( 'doc/tpg.pdf', ['doc/*.tex'],
+            "cd doc && pdflatex tpg && pdflatex tpg && pdflatex tpg"
         ),
-        ( 'doc/tpg.pdf', ['doc/*.tex', 'doc/hack/*.g'],
-            "cd doc/hack && hack.py && cd .. && pdflatex tpg && pdflatex tpg && pdflatex tpg"
-        ),
-        # Examples
-        ( 'examples/calc/calc.py', [ 'examples/calc/calc.g' ],
-            "cd examples/calc/ && tpg calc.g"
+        ( 'doc/tpg.dvi', ['doc/*.tex'],
+            "cd doc && latex tpg && latex tpg && latex tpg"
         ),
     ]
 
@@ -81,24 +77,24 @@ if 'sdist' in sys.argv[1:]:
     for target in to_update:
         target_update(*target)
 
-# Release.py contains version, authors, license, url, keywords, etc.
-execfile(os.path.join('tpg','Release.py'))
+# tpg.py contains version, authors, license, url, keywords, etc.
+import tpg
 
 # Call the setup() routine which does most of the work
-setup(name             = name,
-      version          = version,
-      description      = description,
-      long_description = long_description,
-      author           = author,
-      author_email     = email,
-      url              = url,
-      maintainer       = author,
-      maintainer_email = email,
-      license          = license,
-      licence          = license, # Spelling error in distutils
-      platforms        = platforms,
-      keywords         = keywords,
-      packages         = ['tpg'],
-      scripts          = ['tpg/tpg'],
-      )
+setup(name             = tpg.__name__,
+      version          = tpg.__version__,
+      description      = tpg.__description__,
+      long_description = tpg.__long_description__,
+      author           = tpg.__author__,
+      author_email     = tpg.__email__,
+      url              = tpg.__url__,
+      maintainer       = tpg.__author__,
+      maintainer_email = tpg.__email__,
+      license          = tpg.__license__,
+      licence          = tpg.__license__, # Spelling error in distutils
+      platforms        = ['Linux', 'Unix', 'Mac OSX', 'Windows XP/2000/NT', 'Windows 95/98/ME'],
+      keywords         = ['Parsing', 'Parser', 'Generator', 'Python'],
+      py_modules       = ['tpg'],
+      scripts          = ['tpg'],
+)
 

@@ -43,29 +43,55 @@ def getargs(args):
         elif re.match('-v+$', arg):
             v += len(arg)-1
         else:
-            check(i is None and arg.endswith('.g'))
+            check(i is None and arg.endswith('.pyg'))
             i = arg
     check(i is not None)
-    if o is None: o = i[:-2] + '.py'
+    if o is None: o = i[:-4] + '.py'
     return i, o, v
 
-sys.stdout.write("TPG v%s (c) %s\n"%(tpg.__version__, tpg.__author__))
+print "TPG v%s (c) %s"%(tpg.__version__, tpg.__author__)
 try: (grammar_file, output_file, v) = getargs(sys.argv[1:])
-except ArgError: sys.stderr.write("Syntax: %s [-v|-vv] grammar_file.g [-o output_file.py]\n"%sys.argv[0])
+except ArgError: print >>sys.stderr, "Syntax: %s [-v|-vv] grammar_file.pyg [-o output_file.py]"%sys.argv[0]
 else:
     try:
-        tpg.codegen.setVerbosity(v)
-        sys.stdout.write("TPG: translating %s to %s\n"%(grammar_file,output_file))
-        f = open(grammar_file, 'r')
-        parser = tpg.translate(f.read())
+
+        print "TPG: translating %s to %s"%(grammar_file,output_file)
+        f = file(grammar_file, 'r')
+        source = f.read()
         f.close()
-        g = open(output_file, 'w')
-        g.write(parser)
+
+        TPG = tpg.TPGParser()
+
+        parser_re = re.compile(r"""
+            [ \t]* class [ \t]+ (?P<class_name>\w+) (?P<base_name> \( .* \b tpg\.Parser \b .* \) ) \s* : \s* \n
+            (?P<indent>     [ \t]*
+            )
+            (?P<grammar>    r"{3} (?: "{0,2} [^"]+ )* "{3}
+            |               r'{3} (?: '{0,2} [^']+ )* '{3}
+            )
+            """, re.VERBOSE)
+
+        for class_name, base_name, indent, grammar in parser_re.findall(source):
+            code = []
+            if v >= 1: print "Parser %s"%class_name
+            for attribute, attribute_source, attribute_code in TPG(grammar[4:-3]):
+                if v>=2:
+                    if attribute_code.__doc__ is not None:
+                        print "    %s"%(attribute_code.__doc__.strip())
+                indented_code = "".join([indent+line+"\n" for line in attribute_source.splitlines()])
+                code.append(indented_code)
+            code = "__grammar__ = %s\n\n%s"%(grammar, "\n".join(code))
+            source = source.replace(grammar, code)
+        
+        g = file(output_file, 'w')
+        g.write(source)
         g.close()
-        sys.stdout.write("Translation OK\n")
+        
+        print "Translation OK"
         sys.exit(0)
+        
     except IOError, e:
-        sys.stderr.write("IOError: %s\n"%e)
+        print >>sys.stderr, "IOError: %s"%e
     except tpg.Error, e:
-        sys.stderr.write(str(e))
+        print >>sys.stderr, e
 sys.exit(1)

@@ -1,6 +1,40 @@
+2003-11-11  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 3.0.0:
+        This is a complete rewrite of TPG 2 in order to simplify
+        the parser and the code generator. The syntax is also
+        incompatible with TPG 2.
+
+    * New features:
+        - The grammar of parsers is the doc string of the class.
+        - Syntax of expressions improved and simplified.
+        - The word_boundary option tells TPG to use or not
+        automatic word boundaries (\b) around identifier like
+        tokens (thanks to Zeph Grunschlag for the remark).
+        - The compilation options of regular expressions can be
+        changed for each parser (thanks to Mark Andrew for the
+        remark).
+        - New lexers have been added (mainly to bypass the limitation
+        of the sre package to 100 named groups).
+        - Adds debugging facilities (thanks to Mark Andrew again).
+
+    * Bug fixes:
+        - I wrote some unit tests and discovered (and fixed) many
+        small bugs.
+
+    * tpg.pyg:
+        This is the source containing the TPG grammar and generator.
+
+    * tpg.py:
+        This is the "compiled" version of tpg.pyg
+
+*********************************************************************
+* Incompatible changes from version 3.0.0
+*********************************************************************
+
 2003-05-25  Christophe Delord <christophe.delord@free.fr>
 
-    * Version 2.1.6:
+    * Version 2.1.6-dev:
         The first code of the .g file is placed before
         any other code (for __future__ statements).
         Thanks to Rodrigo B. de Oliveira for the comment.

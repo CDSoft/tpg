@@ -1,73 +1,1248 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>11 Structure of the package</title> 
+<head><title>11 Infix/Prefix/Postfix notation converter</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <meta name="originator" content="TeX4ht (http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2003-05-19 22:40:00"> 
+<meta name="date" content="2003-11-11 18:03:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
    <div class="crosslinks"><p class="noindent">[<a 
-href="tpgch12.html" >next</a>] [<a 
+href="tpgch10.html" >prev</a>] [<a 
+href="tpgch10.html#tailtpgch10.html" >prev-tail</a>] [<a 
 href="#tailtpgch11.html">tail</a>] [<a 
-href="tpgpa4.html#tpgch11.html" >up</a>] </p></div>
+href="tpgpa3.html#tpgch11.html" >up</a>] </p></div>
    <h2 class="chapterHead"><span class="titlemark">Chapter&nbsp;11</span><br><a 
-  id="x28-11300011"></a>Structure of the package</h2>
+  id="x25-8700011"></a>Infix/Prefix/Postfix notation converter</h2>
    <h3 class="sectionHead"><span class="titlemark">11.1   </span> <a 
-  id="x28-11400011.1"></a>General structure of the package</h3>
-<!--l. 3--><p class="noindent">TPG is delivered in a Python package named <span 
-class="cmti-10">tpg</span>. It is composed of:
+  id="x25-8800011.1"></a>Introduction</h3>
+<!--l. 3--><p class="noindent">In the previous example, the parser computes the value of the expression on the fly, while parsing. It is
+also possible to build an abstract syntax tree to store an abstract representation of the input. This may
+be usefull when several passes are necessary.
+<!--l. 7--><p class="indent">   This example shows how to parse an expression (infix, prefix or postfix) and convert it in
+infix, prefix and postfix notation. The expression is saved in a tree. Each node of the tree
+correspond to an operator in the expression. Each leave is a number. Then to write the expression
+in infix, prefix or postfix notation, we just need to walk throught the tree in a particular
+order.
+<!--l. 11--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">11.2   </span> <a 
+  id="x25-8900011.2"></a>Abstract syntax trees</h3>
+<!--l. 13--><p class="noindent">The AST of this converter has two types of node:
      <dl class="description"><dt class="description">
 <span 
-class="cmbx-10">_</span><span 
-class="cmbx-10">_init</span><span 
-class="cmbx-10">_</span><span 
-class="cmbx-10">_.py</span> </dt><dd 
-class="description">turns <span 
-class="cmti-10">tpg </span>directory into a package. It defines some data about the current release
-     (version, author, ...) and it imports in its local namespace the five useful objects <span 
-class="cmti-10">compile</span>,
-     <span 
-class="cmti-10">translate</span>, <span 
-class="cmti-10">LexerError</span>, <span 
-class="cmti-10">ParserError </span>and <span 
-class="cmti-10">SemanticError</span>.
+class="cmbx-10">class Op</span> </dt><dd 
+class="description">is used to store operators (<span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">+</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">-</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">*</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">/</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
+class="cmtt-10">^</span></span></span>). It has two sons associated to the sub expressions.
      </dd><dt class="description">
 <span 
-class="cmbx-10">base.py</span> </dt><dd 
-class="description">defines the base class of the generated parsers and other classes used by these parsers.
-     It&#8217;s a kind of runtime for the parsers.
-     </dd><dt class="description">
+class="cmbx-10">class Atom</span> </dt><dd 
+class="description">is an atomic expression (a number or a symbolic name).</dd></dl>
+<!--l. 21--><p class="indent">   Both classes are instanciated by the <span 
+class="cmti-10">_</span><span 
+class="cmti-10">_init</span><span 
+class="cmti-10">_</span><span 
+class="cmti-10">_ </span>method. The <span 
+class="cmti-10">infix</span>, <span 
+class="cmti-10">prefix </span>and <span 
+class="cmti-10">postfix </span>methods return
+strings containing the representation of the node in <span 
+class="cmti-10">infix</span>, <span 
+class="cmti-10">prefix </span>and <span 
+class="cmti-10">postfix </span>notation.
+<!--l. 23--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">11.3   </span> <a 
+  id="x25-9000011.3"></a>Grammar</h3>
+<!--l. 25--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">11.3.1   </span> <a 
+  id="x25-9100011.3.1"></a>Infix expressions</h4>
+<!--l. 27--><p class="noindent">The grammar for infix expressions is similar to the grammar used in the previous example.
+                                                                                 
+
+                                                                                 
+   <table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+EXPR/e&nbsp;-&gt;&nbsp;TERM/e&nbsp;(&nbsp;'[+-]'/op&nbsp;TERM/t&nbsp;$e=Op(op,e,t,1)$&nbsp;)*&nbsp;;
+&nbsp;<br />TERM/t&nbsp;-&gt;&nbsp;FACT/t&nbsp;(&nbsp;'[*/]'/op&nbsp;FACT/f&nbsp;$t=Op(op,t,f,2)$&nbsp;)*&nbsp;;
+&nbsp;<br />FACT/f&nbsp;-&gt;&nbsp;ATOM/f&nbsp;(&nbsp;'\^'/op&nbsp;FACT/e&nbsp;$f=Op(op,f,e,3)$&nbsp;)?&nbsp;;
+&nbsp;<br />
+&nbsp;<br />ATOM/a&nbsp;-&gt;&nbsp;ident/s&nbsp;$a=Atom(s)$&nbsp;|&nbsp;'\('&nbsp;EXPR/a&nbsp;'\)'&nbsp;;
+</div>
+   </td></tr></table>
+<!--l. 37--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">11.3.2   </span> <a 
+  id="x25-9200011.3.2"></a>Prefix expressions</h4>
+<!--l. 39--><p class="noindent">The grammar for prefix expressions is very simple. A compound prefix expression is an operator followed
+by two subexpressions.
+                                                                                 
+
+                                                                                 
+   <table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+EXPR_PRE/e&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;ident/s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;e=Atom(s)
+&nbsp;<br />|&nbsp;&nbsp;&nbsp;'\('&nbsp;EXPR_PRE/e&nbsp;'\)'
+&nbsp;<br />|&nbsp;&nbsp;&nbsp;OP/&lt;op,prec&gt;&nbsp;EXPR_PRE/a&nbsp;EXPR_PRE/b&nbsp;&nbsp;$&nbsp;e=Op(op,a,b,prec)
+&nbsp;<br />;
+&nbsp;<br />
+&nbsp;<br />OP/&lt;op,prec&gt;&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;'[+-]'/op&nbsp;&nbsp;&nbsp;$&nbsp;prec=1
+&nbsp;<br />|&nbsp;&nbsp;&nbsp;'[*/]'/op&nbsp;&nbsp;&nbsp;$&nbsp;prec=2
+&nbsp;<br />|&nbsp;&nbsp;&nbsp;'\^'/op&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;prec=3
+&nbsp;<br />;
+</div>
+   </td></tr></table>
+<!--l. 56--><p class="noindent">
+   <h4 class="subsectionHead"><span class="titlemark">11.3.3   </span> <a 
+  id="x25-9300011.3.3"></a>Postfix expressions</h4>
+<!--l. 58--><p class="noindent">At first sight postfix and infix grammars may be very similar. Only the position of the operators changes.
+So a compound postfix expression is a first expression followed by a second and an operator. This rule is
+left recursive. As TPG is a descendant recursive parser, such rules are forbidden to avoid infinite
+recursion. To remove the left recursion a classical solution is to rewrite the grammar like
+this:
+                                                                                 
+
+                                                                                 
+   <table width="100%" 
+class="verbatim"><tr class="verbatim"><td 
+class="verbatim"><div class="verbatim">
+EXPR_POST/e&nbsp;-&gt;&nbsp;ATOM_POST/a&nbsp;SEXPR_POST&lt;a&gt;/e&nbsp;;
+&nbsp;<br />
+&nbsp;<br />ATOM_POST/a&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;ident/s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;a=Atom(s)
+&nbsp;<br />|&nbsp;&nbsp;&nbsp;'\('&nbsp;EXPR_POST/a&nbsp;'\)'
+&nbsp;<br />;
+&nbsp;<br />
+&nbsp;<br />SEXPR_POST&lt;e&gt;/e&nbsp;-&gt;
+&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;EXPR_POST/e2&nbsp;OP/&lt;op,prec&gt;&nbsp;SEXPR_POST&lt;$Op(op,e,e2,prec)$&gt;/e
+&nbsp;<br />|&nbsp;&nbsp;&nbsp;;
+</div>
+   </td></tr></table>
+<!--l. 78--><p class="indent">   The parser first searches for an atomic expression and then builds the AST by passing partial
+expressions by the attributes of the <span 
+class="cmti-10">SEXPR</span><span 
+class="cmti-10">_POST </span>symbol.
+<!--l. 80--><p class="noindent">
+   <h3 class="sectionHead"><span class="titlemark">11.4   </span> <a 
+  id="x25-9400011.4"></a>Source code</h3>
+<!--l. 82--><p class="noindent">Here is the complete source code (<span 
+class="cmti-10">notation.py</span>):
+   <div class="verbatimtabinput">
 <span 
-class="cmbx-10">codegen.py</span> </dt><dd 
-class="description">contains the classes used by the parser to represent the AST corresponding to the
-     parsed grammar. Theses classes have the necessary methods for code generation.
-     </dd><dt class="description">
+class="cmtt-10">#!/usr/bin/env</span><span 
+class="cmtt-10">&nbsp;python</span>
 <span 
-class="cmbx-10">parser.g</span> </dt><dd 
-class="description">contains the grammar that recognizes TPG grammars. It defines the syntax of TPG
-     grammars and builds the AST of the grammar.
-     </dd><dt class="description">
+class="cmtt-10">&nbsp;</span><br />
 <span 
-class="cmbx-10">parser.py</span> </dt><dd 
-class="description">is automatically generated by TPG itself from <span 
-class="cmti-10">parser.g</span>.
-     </dd><dt class="description">
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">#</span><span 
+class="cmtt-10">&nbsp;Infix/prefix/postfix</span><span 
+class="cmtt-10">&nbsp;expression</span><span 
+class="cmtt-10">&nbsp;conversion</span>
 <span 
-class="cmbx-10">Release.py</span> </dt><dd 
-class="description">contains release data (version, author, ...).
-     </dd><dt class="description">
+class="cmtt-10">&nbsp;</span><br />
 <span 
-class="cmbx-10">tpg</span> </dt><dd 
-class="description">is a wrapper script for TPG. It reads a grammar and produces a Python script.</dd></dl>
-<div class="crosslinks"><p class="noindent">[<a 
-href="tpgch12.html" >next</a>] [<a 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">import</span><span 
+class="cmtt-10">&nbsp;tpg</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">class</span><span 
+class="cmtt-10">&nbsp;Op:</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;&#34;&#34;&#34;</span><span 
+class="cmtt-10">&nbsp;Binary</span><span 
+class="cmtt-10">&nbsp;operator</span><span 
+class="cmtt-10">&nbsp;&#34;&#34;&#34;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;__init__(self,</span><span 
+class="cmtt-10">&nbsp;op,</span><span 
+class="cmtt-10">&nbsp;a,</span><span 
+class="cmtt-10">&nbsp;b,</span><span 
+class="cmtt-10">&nbsp;prec):</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;self.op</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;op</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;#</span><span 
+class="cmtt-10">&nbsp;operator</span><span 
+class="cmtt-10">&nbsp;(&#34;+&#34;,</span><span 
+class="cmtt-10">&nbsp;&#34;-&#34;,</span><span 
+class="cmtt-10">&nbsp;&#34;*&#34;,</span><span 
+class="cmtt-10">&nbsp;&#34;/&#34;,</span><span 
+class="cmtt-10">&nbsp;&#34;^&#34;)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;self.prec</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;prec</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;#</span><span 
+class="cmtt-10">&nbsp;precedence</span><span 
+class="cmtt-10">&nbsp;of</span><span 
+class="cmtt-10">&nbsp;the</span><span 
+class="cmtt-10">&nbsp;operator</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;self.a,</span><span 
+class="cmtt-10">&nbsp;self.b</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;a,</span><span 
+class="cmtt-10">&nbsp;b</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;#</span><span 
+class="cmtt-10">&nbsp;operands</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;infix(self):</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;a</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;self.a.infix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;if</span><span 
+class="cmtt-10">&nbsp;self.a.prec</span><span 
+class="cmtt-10">&nbsp;&lt;</span><span 
+class="cmtt-10">&nbsp;self.prec:</span><span 
+class="cmtt-10">&nbsp;a</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;&#34;(%s)&#34;%a</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;b</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;self.b.infix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;if</span><span 
+class="cmtt-10">&nbsp;self.b.prec</span><span 
+class="cmtt-10">&nbsp;&lt;=</span><span 
+class="cmtt-10">&nbsp;self.prec:</span><span 
+class="cmtt-10">&nbsp;b</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;&#34;(%s)&#34;%b</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;return</span><span 
+class="cmtt-10">&nbsp;&#34;%s</span><span 
+class="cmtt-10">&nbsp;%s</span><span 
+class="cmtt-10">&nbsp;%s&#34;%(a,</span><span 
+class="cmtt-10">&nbsp;self.op,</span><span 
+class="cmtt-10">&nbsp;b)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;prefix(self):</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;a</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;self.a.prefix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;b</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;self.b.prefix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;return</span><span 
+class="cmtt-10">&nbsp;&#34;%s</span><span 
+class="cmtt-10">&nbsp;%s</span><span 
+class="cmtt-10">&nbsp;%s&#34;%(self.op,</span><span 
+class="cmtt-10">&nbsp;a,</span><span 
+class="cmtt-10">&nbsp;b)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;postfix(self):</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;a</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;self.a.postfix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;b</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;self.b.postfix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;return</span><span 
+class="cmtt-10">&nbsp;&#34;%s</span><span 
+class="cmtt-10">&nbsp;%s</span><span 
+class="cmtt-10">&nbsp;%s&#34;%(a,</span><span 
+class="cmtt-10">&nbsp;b,</span><span 
+class="cmtt-10">&nbsp;self.op)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+                                                                                 
+
+                                                                                 
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">class</span><span 
+class="cmtt-10">&nbsp;Atom:</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;&#34;&#34;&#34;</span><span 
+class="cmtt-10">&nbsp;Atomic</span><span 
+class="cmtt-10">&nbsp;expression</span><span 
+class="cmtt-10">&nbsp;&#34;&#34;&#34;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;__init__(self,</span><span 
+class="cmtt-10">&nbsp;s):</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;self.a</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;s</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;self.prec</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;99</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;infix(self):</span><span 
+class="cmtt-10">&nbsp;return</span><span 
+class="cmtt-10">&nbsp;self.a</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;prefix(self):</span><span 
+class="cmtt-10">&nbsp;return</span><span 
+class="cmtt-10">&nbsp;self.a</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;def</span><span 
+class="cmtt-10">&nbsp;postfix(self):</span><span 
+class="cmtt-10">&nbsp;return</span><span 
+class="cmtt-10">&nbsp;self.a</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">#</span><span 
+class="cmtt-10">&nbsp;Grammar</span><span 
+class="cmtt-10">&nbsp;for</span><span 
+class="cmtt-10">&nbsp;arithmetic</span><span 
+class="cmtt-10">&nbsp;expressions</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">class</span><span 
+class="cmtt-10">&nbsp;ExpressionParser(tpg.Parser):</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;r&#34;&#34;&#34;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;separator</span><span 
+class="cmtt-10">&nbsp;space</span><span 
+class="cmtt-10">&nbsp;'\s+';</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;token</span><span 
+class="cmtt-10">&nbsp;ident</span><span 
+class="cmtt-10">&nbsp;'\w+';</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;START/&lt;e,t&gt;</span><span 
+class="cmtt-10">&nbsp;-&gt;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;EXPR/e</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'\n'</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;t</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;'infix'</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;EXPR_PRE/e</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'\n'</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;t</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;'prefix'</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;EXPR_POST/e</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'\n'</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;t</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;'postfix'</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;#</span><span 
+class="cmtt-10">&nbsp;Infix</span><span 
+class="cmtt-10">&nbsp;expressions</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;EXPR/e</span><span 
+class="cmtt-10">&nbsp;-&gt;</span><span 
+class="cmtt-10">&nbsp;TERM/e</span><span 
+class="cmtt-10">&nbsp;(</span><span 
+class="cmtt-10">&nbsp;'[+-]'/op</span><span 
+class="cmtt-10">&nbsp;TERM/t</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;e=Op(op,e,t,1)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;)*</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;TERM/t</span><span 
+class="cmtt-10">&nbsp;-&gt;</span><span 
+class="cmtt-10">&nbsp;FACT/t</span><span 
+class="cmtt-10">&nbsp;(</span><span 
+class="cmtt-10">&nbsp;'[*/]'/op</span><span 
+class="cmtt-10">&nbsp;FACT/f</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;t=Op(op,t,f,2)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;)*</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;FACT/f</span><span 
+class="cmtt-10">&nbsp;-&gt;</span><span 
+class="cmtt-10">&nbsp;ATOM/f</span><span 
+class="cmtt-10">&nbsp;(</span><span 
+class="cmtt-10">&nbsp;'\^'/op</span><span 
+class="cmtt-10">&nbsp;FACT/e</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;f=Op(op,f,e,3)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;)?</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;ATOM/a</span><span 
+class="cmtt-10">&nbsp;-&gt;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;ident/s</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;a=Atom(s)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'\('</span><span 
+class="cmtt-10">&nbsp;EXPR/a</span><span 
+class="cmtt-10">&nbsp;'\)'</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;#</span><span 
+class="cmtt-10">&nbsp;Prefix</span><span 
+class="cmtt-10">&nbsp;expressions</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;EXPR_PRE/e</span><span 
+class="cmtt-10">&nbsp;-&gt;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;ident/s</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;e=Atom(s)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'\('</span><span 
+class="cmtt-10">&nbsp;EXPR_PRE/e</span><span 
+class="cmtt-10">&nbsp;'\)'</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;OP/&lt;op,prec&gt;</span><span 
+class="cmtt-10">&nbsp;EXPR_PRE/a</span><span 
+class="cmtt-10">&nbsp;EXPR_PRE/b</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;e=Op(op,a,b,prec)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;#</span><span 
+class="cmtt-10">&nbsp;Postfix</span><span 
+class="cmtt-10">&nbsp;expressions</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;EXPR_POST/e</span><span 
+class="cmtt-10">&nbsp;-&gt;</span><span 
+class="cmtt-10">&nbsp;ATOM_POST/a</span><span 
+class="cmtt-10">&nbsp;SEXPR_POST&lt;a&gt;/e</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;ATOM_POST/a</span><span 
+class="cmtt-10">&nbsp;-&gt;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;ident/s</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;a=Atom(s)</span>
+                                                                                 
+
+                                                                                 
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'\('</span><span 
+class="cmtt-10">&nbsp;EXPR_POST/a</span><span 
+class="cmtt-10">&nbsp;'\)'</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;SEXPR_POST&lt;e&gt;/e</span><span 
+class="cmtt-10">&nbsp;-&gt;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;EXPR_POST/e2</span><span 
+class="cmtt-10">&nbsp;OP/&lt;op,prec&gt;</span><span 
+class="cmtt-10">&nbsp;SEXPR_POST&lt;$Op(op,e,e2,prec)$&gt;/e</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;OP/&lt;op,prec&gt;</span><span 
+class="cmtt-10">&nbsp;-&gt;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'[+-]'/op</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;prec=1</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'[*/]'/op</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;prec=2</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;|</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;'\^'/op</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;$</span><span 
+class="cmtt-10">&nbsp;prec=3</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;&#34;&#34;&#34;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br />
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">parser</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;ExpressionParser()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">while</span><span 
+class="cmtt-10">&nbsp;1:</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;e</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;raw_input(&#34;:&#34;)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;if</span><span 
+class="cmtt-10">&nbsp;e</span><span 
+class="cmtt-10">&nbsp;==</span><span 
+class="cmtt-10">&nbsp;&#34;&#34;:</span><span 
+class="cmtt-10">&nbsp;break</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;try:</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;expr,</span><span 
+class="cmtt-10">&nbsp;t</span><span 
+class="cmtt-10">&nbsp;=</span><span 
+class="cmtt-10">&nbsp;parser(e+&#34;\n&#34;)</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;except</span><span 
+class="cmtt-10">&nbsp;tpg.Error,</span><span 
+class="cmtt-10">&nbsp;e:</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;print</span><span 
+class="cmtt-10">&nbsp;e</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;else:</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;print</span><span 
+class="cmtt-10">&nbsp;e,</span><span 
+class="cmtt-10">&nbsp;&#34;is</span><span 
+class="cmtt-10">&nbsp;a&#34;,</span><span 
+class="cmtt-10">&nbsp;t,</span><span 
+class="cmtt-10">&nbsp;&#34;expression&#34;</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;print</span><span 
+class="cmtt-10">&nbsp;&#34;\tinfix</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;:&#34;,</span><span 
+class="cmtt-10">&nbsp;expr.infix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;print</span><span 
+class="cmtt-10">&nbsp;&#34;\tprefix</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;:&#34;,</span><span 
+class="cmtt-10">&nbsp;expr.prefix()</span>
+<span 
+class="cmtt-10">&nbsp;</span><br /><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;</span><span 
+class="cmtt-10">&nbsp;print</span><span 
+class="cmtt-10">&nbsp;&#34;\tpostfix</span><span 
+class="cmtt-10">&nbsp;:&#34;,</span><span 
+class="cmtt-10">&nbsp;expr.postfix()</span>
+   </div>
+   <div class="crosslinks"><p class="noindent">[<a 
+href="tpgch10.html" >prev</a>] [<a 
+href="tpgch10.html#tailtpgch10.html" >prev-tail</a>] [<a 
 href="tpgch11.html" >front</a>] [<a 
-href="tpgpa4.html#tpgch11.html" >up</a>] </p></div>
-<!--l. 121--><p class="indent">   <a 
+href="tpgpa3.html#tpgch11.html" >up</a>] </p></div>
+<!--l. 119--><p class="indent">   <a 
   id="tailtpgch11.html"></a>   
 </body></html> 

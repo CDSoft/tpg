@@ -21,7 +21,7 @@ A token is defined by:
 	\item [an action] which can translate the matched text into a Python object. It can be a function of one argument or a non callable object. It it is not callable, it will be returned for each token otherwise it will be applied to the text of the token and the result will be returned. This action is optional. By default the token text is returned.
 \end{description}
 
-Token definitions end with a \emph{;} .
+Token definitions must end with a \emph{;} when no action is specified. The dots after the token name are optional.
 
 See figure~\ref{lexer:tokens} for examples.
 
@@ -31,13 +31,14 @@ See figure~\ref{lexer:tokens} for examples.
 	#     name     reg. exp        action
 	token integer: '\d+'           int;
 	token ident  : '[a-zA-Z]\w*'   ;
+    token bool   : 'True|False'    $ lambda b: b=='True'
 
 	separator spaces  : '\s+';     # white spaces
 	separator comments: '#.*';     # comments
 \end{verbatimtab}
 \end{code}
 
-The order of the declaration of the tokens is important. The first token that is matched is returned. The regular expression has a special treatment. If it describes a keyword, TPG also looks for a word boundary after the keyword. If you try to match the keywords \emph{if} and \emph{ifxyz} TPG will internally search \verb$if\b$ and \verb$ifxyz\b$. This way, \emph{if} won't match \emph{ifxyz} and won't interfere with general identifiers (\verb$\w+$ for example).
+The order of the declaration of the tokens is important. The first token that is matched is returned. The regular expression has a special treatment. If it describes a keyword, TPG also looks for a word boundary after the keyword. If you try to match the keywords \emph{if} and \emph{ifxyz} TPG will internally search \verb$if\b$ and \verb$ifxyz\b$. This way, \emph{if} won't match \emph{ifxyz} and won't interfere with general identifiers (\verb$\w+$ for example). This behaviour can be disabled since the verision 3 of TPG (see~\ref{grammar:word_boundary_option}).
 
 There are two kinds of tokens. Tokens defined by the \emph{token} keyword are parsed by the parser and tokens defined by the \emph{separator} keyword are considered as separators (white spaces or comments for example) and are wiped out by the lexer.
 
@@ -67,10 +68,12 @@ Inline tokens have a higher precedence than predefined tokens to avoid conflicts
 
 TPG works in two stages.
 The lexer first splits the input string into a list of tokens and then the parser parses this list.
+The default lexer is lazy in TPG 3. Tokens are generated while parsing.
+This way TPG 3 need less memory when parsing huge files.
 
 \subsection{Splitting the input string}
 
-The lexer split the input string according to the token definitions (see~\ref{lexer:token_def}). When the input string can not be matched a \emph{tpg.LexerError} exception is raised.
+The lexer split the input string according to the token definitions (see~\ref{lexer:token_def}). When the input string can not be matched a \emph{tpg.LexicalError} exception is raised.
 
 The lexer may loop indefinitely if a token can match an empty string since empty strings are everywhere.
 
@@ -96,52 +99,52 @@ Inline tokens have a similar syntax. You just write the regular expression (in a
 \end{verbatimtab}
 \end{code}
 
-\section{Special tokens}                                    \label{lexer:special_tokens}
-
-Their are some special tokens that have been requested by some users but these tokens can not be easily
-described by TPG using classical token definition (see~\ref{lexer:token_def}).
-
-\subsection{Indent and deindent tokens}                     \label{lexer:indent_deindent}
-
-TPG is written in Python so is should be easy to handle INDENT and DEINDENT tokens as in Python language.
-These tokens are introduced in the source to be parsed by a preprocessor, before the lexer is activated.
-Spaces in the beginning the lines are replaced by indent and deindent tokens when needed.
-These special tokens are characters which ASCII codes are 16 and 17.
-These characters may not be used in regular text files.
-
-\subsubsection{Indent definition}
-
-The \emph{indent} option (see~\ref{grammar:options}) has been added to define the indentation.
-It has two values.
-The first one is a regular expression describing the indentation, usually spaces and tabulations.
-The second one is a regular expression describing the lines not to be taken into account, usually comments.
-This second parameter describes the beginning of the line, i.e. \emph{"\#"} will match lines starting
-with a \emph{\#}.
-
-\begin{code}
-\caption{Indent and deindent definition example}            \label{lexer:indent_definition}
-\begin{verbatimtab}[4]
-    set indent = "\s", "#"
-\end{verbatimtab}
-\end{code}
-
-\subsubsection{Indent and deindent usage}                   \label{lexer:indent_usage}
-
-When the \emph{indent} option is active, \emph{indent} and \emph{deindent} tokens are defined.
-They can be used as any other token.
-
-\begin{code}
-\caption{Indent and deindent example}            \label{lexer:indent_example}
-\begin{verbatimtab}[4]
-parser IndentParser:
-
-    set indent = "\s", "#"
-
-    BLOCK ->
-        (   INSTR
-        |   indent
-                BLOCK
-            deindent
-        )*;
-\end{verbatimtab}
-\end{code}
+%\section{Special tokens}                                    \label{lexer:special_tokens}
+%
+%Their are some special tokens that have been requested by some users but these tokens can not be easily
+%described by TPG using classical token definition (see~\ref{lexer:token_def}).
+%
+%\subsection{Indent and deindent tokens}                     \label{lexer:indent_deindent}
+%
+%TPG is written in Python so is should be easy to handle INDENT and DEDENT tokens as in Python language.
+%These tokens are introduced in the source to be parsed by a preprocessor, before the lexer is activated.
+%Spaces in the beginning the lines are replaced by indent and deindent tokens when needed.
+%These special tokens are characters which ASCII codes are 16 and 17.
+%These characters may not be used in regular text files.
+%
+%\subsubsection{Indent definition}
+%
+%The \emph{indent} option (see~\ref{grammar:options}) has been added to define the indentation.
+%It has two values.
+%The first one is a regular expression describing the indentation, usually spaces and tabulations.
+%The second one is a regular expression describing the lines not to be taken into account, usually comments.
+%This second parameter describes the beginning of the line, i.e. \emph{"\#"} will match lines starting
+%with a \emph{\#}.
+%
+%\begin{code}
+%\caption{Indent and deindent definition example}            \label{lexer:indent_definition}
+%\begin{verbatimtab}[4]
+%    set indent = "\s", "#"
+%\end{verbatimtab}
+%\end{code}
+%
+%\subsubsection{Indent and deindent usage}                   \label{lexer:indent_usage}
+%
+%When the \emph{indent} option is active, \emph{indent} and \emph{deindent} tokens are defined.
+%They can be used as any other token.
+%
+%\begin{code}
+%\caption{Indent and deindent example}            \label{lexer:indent_example}
+%\begin{verbatimtab}[4]
+%parser IndentParser:
+%
+%    set indent = "\s", "#"
+%
+%    BLOCK ->
+%        (   INSTR
+%        |   indent
+%                BLOCK
+%            deindent
+%        )*;
+%\end{verbatimtab}
+%\end{code}
