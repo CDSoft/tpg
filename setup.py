@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(	name="TPG",
-		version="0.1.4",
+		version="0.1.5",
 		description="Toy Parser Generator is a recursive descendant parser generator for Python 2.2",
 		author="Christophe Delord",
 		author_email="christophe.delord@free.fr",
