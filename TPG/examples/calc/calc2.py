@@ -1,11 +1,10 @@
-set runtime
-set magic = "/usr/bin/env python2.2"
+#!/usr/bin/env python2.2
 
-{{
+import tpg
 from string import atoi, atof, atol
 from math import sqrt, cos, sin, tan, acos, asin, atan
-}}
 
+exec(tpg.compile(r"""
 parser Calc(dict):
 
 {{
@@ -77,22 +76,19 @@ Function/y ->
 		funct1/f '\(' Expr/x '\)' y = f<x>
 	|	funct2/f '\(' Expr/x1 ',' Expr/x2 '\)' y = f<x,y>
 	;
+"""))
 
-main:
-
-{{
-	calc = Calc()
-	while 1:
-		l = raw_input("\n:")
-		if l:
-			try:
-				print calc(l)
-			except (SyntaxError, LexicalError), e:
-				print e
-			except ZeroDivisionError:
-				print "Zero Division Error"
-			except OverflowError:
-				print "Overflow Error"
-		else:
-			break
-}}
+calc = Calc()
+while 1:
+	l = raw_input("\n:")
+	if l:
+		try:
+			print calc(l)
+		except (SyntaxError, LexicalError), e:
+			print e
+		except ZeroDivisionError:
+			print "Zero Division Error"
+		except OverflowError:
+			print "Overflow Error"
+	else:
+		break

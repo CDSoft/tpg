@@ -1,7 +1,7 @@
-set runtime
 set magic = "/usr/bin/env python2.2"
 
 {{
+import tpg
 from string import atoi, atof, atol
 from math import sqrt, cos, sin, tan, acos, asin, atan
 }}
@@ -87,7 +87,7 @@ main:
 		if l:
 			try:
 				print calc(l)
-			except (SyntaxError, LexicalError), e:
+			except (tpg.SyntaxError, tpg.LexicalError), e:
 				print e
 			except ZeroDivisionError:
 				print "Zero Division Error"

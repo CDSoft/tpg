@@ -1,58 +1,54 @@
-#!/usr/bin/python
+#!/usr/bin/python2.2
 
 # conversion d'expressions infixes/préfixes/postfixes
 
-from TPG import *
+import tpg
 
-exprs = """ # Grammaire des expressions arithmétiques
+exprs = r""" # Grammaire des expressions arithmétiques
 
 parser Expression:
 
+separator space: '\s+';
+token ident: '\w+';
+
 START/<e,t> ->
-	EXPR_INFIXE/e	{{ t='infixe' }}
-|	EXPR_PREFIXE/e	{{ t='prefixe' }}
-|	EXPR_POSTFIXE/e	{{ t='postfixe' }}
-|	e=None			{{ t='inconnue' }}
-.
-
-EXPR_INFIXE/e -> EXPR/e '$' .
-EXPR_PREFIXE/e -> EXPR_PRE/e '$' .
-EXPR_POSTFIXE/e -> EXPR_POST/e '$' .
-
-lex skip -> '\s+' .
+	EXPR/e		t='infixe'		'\n'
+|	EXPR_PRE/e	t='prefixe'		'\n'
+|	EXPR_POST/e	t='postfixe'	'\n'
+;
 
 # Expressions infixes
 
-EXPR/e -> TERM/e ( ( '\+'/op | '\-'/op ) TERM/t e=Op<op,1,e,t> )* .
-TERM/t -> FACT/t ( ( '\*'/op | '\/'/op ) FACT/f t=Op<op,2,t,f> )* .
-FACT/f -> ( '\~'/op | '\#'/op ) FACT/e f=Op<op,3,e> | POW/f .
+EXPR/e -> TERM/e ( ( '\+'/op | '\-'/op ) TERM/t e=Op<op,1,e,t> )* ;
+TERM/t -> FACT/t ( ( '\*'/op | '\/'/op ) FACT/f t=Op<op,2,t,f> )* ;
+FACT/f -> ( '\~'/op | '\#'/op ) FACT/e f=Op<op,3,e> | POW/f ;
 
-POW/f -> ATOM/f ( '\^'/op FACT/e f=Op<op,4,f,e> )? .
+POW/f -> ATOM/f ( '\^'/op FACT/e f=Op<op,4,f,e> )? ;
 
-ATOM/a -> '\w+'/s a=Atom<s> | '\(' EXPR/a '\)' .
+ATOM/a -> ident/s a=Atom<s> | '\(' EXPR/a '\)' ;
 
 # Expressions préfixes
 
 EXPR_PRE/e ->
-	'\w+'/s e=Atom<s>
+	ident/s e=Atom<s>
 |	'\(' EXPR_PRE/e '\)'
 |	OP1/<op,prec> EXPR_PRE/a e=Op<op,prec,a>
 |	OP2/<op,prec> EXPR_PRE/a EXPR_PRE/b e=Op<op,prec,a,b>
-.
+;
 
 # Expressions postfixes
 
-EXPR_POST/e -> ATOM_POST/a SEXPR_POST<a>/e .
+EXPR_POST/e -> ATOM_POST/a SEXPR_POST<a>/e ;
 
 ATOM_POST/a ->
-	'\w+'/s a=Atom<s>
+	ident/s a=Atom<s>
 |	'\(' EXPR_POST/a '\)'
-.
+;
 
 SEXPR_POST<e>/e ->
 	OP1/<op,prec> SEXPR_POST<Op<op,prec,e>>/e
 |	EXPR_POST/e2 OP2/<op,prec> SEXPR_POST<Op<op,prec,e,e2>>/e
-|	.
+|	;
 
 OP2/<op,prec> ->
 	'\+'/op prec=1
@@ -60,17 +56,17 @@ OP2/<op,prec> ->
 |	'\*'/op prec=2
 |	'\/'/op prec=2
 |	'\^'/op prec=4
-.
+;
 
 OP1/<op,prec> ->
 	'\#'/op prec=3
 |	'\~'/op prec=3
-.
+;
 
 """
 
-class Op(Node):
-	def init(self, op, prec, *args):
+class Op:
+	def __init__(self, op, prec, *args):
 		self.op = op
 		self.prec = prec
 		self.ops = args
@@ -106,8 +102,8 @@ class Op(Node):
 			return "%s %s %s"%(a,b,self.op)
 		return "???"
 
-class Atom(Node):
-	def init(self, s):
+class Atom:
+	def __init__(self, s):
 		self.a = s
 		self.prec = 99
 	def infixe(self): return self.a
@@ -116,14 +112,13 @@ class Atom(Node):
 
 if __name__ == "__main__":
 
-	exec(TPParser()(exprs))
+	exec(tpg.compile(exprs))
 	parser = Expression()
 	while 1:
 		e = raw_input(":")
 		if e == "": break
-		expr, t = parser(e)
+		expr, t = parser(e+"\n")
 		print "Expression", t
-		if expr is not None:
-			print "\tinfixe   :", expr.infixe()
-			print "\tprefixe  :", expr.prefixe()
-			print "\tpostfixe :", expr.postfixe()
+		print "\tinfixe   :", expr.infixe()
+		print "\tprefixe  :", expr.prefixe()
+		print "\tpostfixe :", expr.postfixe()
