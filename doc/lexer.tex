@@ -6,7 +6,7 @@ This document assumes the reader is familiar with regular expressions.
 
 You can use the syntax of regular expressions as expected by the \emph{re} module except from the grouping syntax since it is used by TPG to decide which token is recognized.
 
-\section{Token definition}									\label{lexer:token_def}
+\section{Token definition}                                  \label{lexer:token_def}
 
 \subsection{Predefined tokens}
 
@@ -15,10 +15,10 @@ Tokens can be explicitely defined by the \emph{token} and \emph{separator} keywo
 A token is defined by:
 
 \begin{description}
-	\item [a name] which identifies the token.
-		This name is used by the parser.
-	\item [a regular expression] which describes what to match to recognize the token.
-	\item [an action] which can translate the matched text into a Python object. It can be a function of one argument or a non callable object. It it is not callable, it will be returned for each token otherwise it will be applied to the text of the token and the result will be returned. This action is optional. By default the token text is returned.
+    \item [a name] which identifies the token.
+        This name is used by the parser.
+    \item [a regular expression] which describes what to match to recognize the token.
+    \item [an action] which can translate the matched text into a Python object. It can be a function of one argument or a non callable object. It it is not callable, it will be returned for each token otherwise it will be applied to the text of the token and the result will be returned. This action is optional. By default the token text is returned.
 \end{description}
 
 Token definitions must end with a \emph{;} when no action is specified. The dots after the token name are optional.
@@ -26,15 +26,15 @@ Token definitions must end with a \emph{;} when no action is specified. The dots
 See figure~\ref{lexer:tokens} for examples.
 
 \begin{code}
-\caption{Token definition examples}							\label{lexer:tokens}
+\caption{Token definition examples}                         \label{lexer:tokens}
 \begin{verbatimtab}[4]
-	#     name     reg. exp        action
-	token integer: '\d+'           int;
-	token ident  : '[a-zA-Z]\w*'   ;
+    #     name     reg. exp        action
+    token integer: '\d+'           int;
+    token ident  : '[a-zA-Z]\w*'   ;
     token bool   : 'True|False'    $ lambda b: b=='True'
 
-	separator spaces  : '\s+';     # white spaces
-	separator comments: '#.*';     # comments
+    separator spaces  : '\s+';     # white spaces
+    separator comments: '#.*';     # comments
 \end{verbatimtab}
 \end{code}
 
@@ -52,19 +52,19 @@ They always return the token in a string.
 See figure~\ref{lexer:inline_tokens} for examples.
 
 \begin{code}
-\caption{Inline token definition examples}					\label{lexer:inline_tokens}
+\caption{Inline token definition examples}                  \label{lexer:inline_tokens}
 \begin{verbatimtab}[4]
-	IfThenElse ->
-		'if' Cond
-		'then' Statement
-		'else' Statement
-		;
+    IfThenElse ->
+        'if' Cond
+        'then' Statement
+        'else' Statement
+        ;
 \end{verbatimtab}
 \end{code}
 
 Inline tokens have a higher precedence than predefined tokens to avoid conflicts (an inlined \emph{if} won't be matched as a predefined \emph{identifier}).
 
-\section{Token matching}									\label{lexer:token_matching}
+\section{Token matching}                                    \label{lexer:token_matching}
 
 TPG works in two stages.
 The lexer first splits the input string into a list of tokens and then the parser parses this list.
@@ -84,18 +84,18 @@ Predefined tokens have the same syntax than non terminal symbols.
 The token text (or the result of the function associated to the token) can be saved by the infix \emph{/} operator (see figure~\ref{lexer:token_ret_val}).
 
 \begin{code}
-\caption{Token usage examples}								\label{lexer:token_ret_val}
+\caption{Token usage examples}                              \label{lexer:token_ret_val}
 \begin{verbatimtab}[4]
-	S -> ident/i;
+    S -> ident/i;
 \end{verbatimtab}
 \end{code}
 
 Inline tokens have a similar syntax. You just write the regular expression (in a string). Its text can also be save (see figure~\ref{lexer:inline_token_ret_val}).
 
 \begin{code}
-\caption{Token usage examples}								\label{lexer:inline_token_ret_val}
+\caption{Token usage examples}                              \label{lexer:inline_token_ret_val}
 \begin{verbatimtab}[4]
-	S -> '(' '\w+'/i ')';
+    S -> '(' '\w+'/i ')';
 \end{verbatimtab}
 \end{code}
 

@@ -44,8 +44,8 @@ trees while parsing.
 from __future__ import generators
 
 __tpgname__ = 'TPG'
-__version__ = '3.0.2'
-__date__ = '2004-03-15'
+__version__ = '3.0.3'
+__date__ = '2004-04-30'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -679,7 +679,7 @@ class ContextSensitiveLexer(LexerOptions):
             self.line, self.row = 1, 1
             self.cur_token = SOFToken()
         else:
-            self.pos = token.stop
+            self.pos = token.stop           ## TODO : stop ou start ??? (si start, eat_separators est inutile)
             self.line, self.row = token.line, token.row
             self.cur_token = token
         self.eat_separators()
@@ -1203,8 +1203,9 @@ class TPGParser(tpg.Parser):
 
     OR_EXPR/$self.balance(or_expr)$ ->
         AND_EXPR/a                  $ or_expr = [a]
-        (   '\|' AND_EXPR/a         $ or_expr.append(a)
-        )*                          
+        (   check $ not or_expr[-1].empty() $
+            '\|' AND_EXPR/a         $ or_expr.append(a)
+        )*
         ;
 
     AND_EXPR/$and_expr$ ->
@@ -1408,6 +1409,7 @@ class TPGParser(tpg.Parser):
         while True:
             _p1 = self.lexer.token()
             try:
+                self.check(not or_expr[-1].empty())
                 self.eat('_tok_8') # '\|'
                 a = self.AND_EXPR()
                 or_expr.append(a)
@@ -1673,7 +1675,15 @@ class TPGParser(tpg.Parser):
                       ]
             return "+".join([ "tpg.re.%s"%opt for opt in options if opt ]) or 0
 
-    class Code:
+    class Empty:
+        def empty(self):
+            return True
+
+    class NotEmpty:
+        def empty(self):
+            return False
+
+    class Code(NotEmpty):
         def __init__(self, code):
             if code.startswith('$'):
                 if code.endswith('$'):
@@ -1764,7 +1774,7 @@ class TPGParser(tpg.Parser):
                 self.head.gen_ret(tab),
             ]
 
-    class Symbol:
+    class Symbol(NotEmpty):
         def __init__(self, name, args, ret):
             self.name = name
             self.args = args
@@ -1794,7 +1804,7 @@ class TPGParser(tpg.Parser):
         def gen_doc(self, parent):
             return self.name
 
-    class InlineToken:
+    class InlineToken(NotEmpty):
         def __init__(self, expr, ret):
             self.expr = expr
             self.ret = ret
@@ -1844,6 +1854,11 @@ class TPGParser(tpg.Parser):
             return "**%s"%self.name
 
     class And(list):
+        def empty(self):
+            for a in self:
+                if not a.empty():
+                    return False
+            return True
         def get_inline_tokens(self):
             for a in self:
                 for token in a.get_inline_tokens():
@@ -1864,7 +1879,7 @@ class TPGParser(tpg.Parser):
                     docs.append(doc)
             return " ".join(docs)
 
-    class Or:
+    class Or(NotEmpty):
         def __init__(self, a, b):
             self.a = a
             self.b = b
@@ -1899,7 +1914,7 @@ class TPGParser(tpg.Parser):
             m = len(xs)//2
             return self.Or(self.balance(xs[:m]), self.balance(xs[m:]))
 
-    class Rep:
+    class Rep(NotEmpty):
         def __init__(self, a, min, max):
             self.a = a
             self.min = min
@@ -1987,7 +2002,7 @@ class TPGParser(tpg.Parser):
                     rep = "{%s,%s}"%(min, max)
             return "%s%s"%(doc, rep)
 
-    class Check:
+    class Check(NotEmpty):
         def __init__(self, cond):
             self.cond = cond
         def get_inline_tokens(self):
@@ -2000,7 +2015,7 @@ class TPGParser(tpg.Parser):
         def gen_code(self, indent, counters, pos):
             return indent + "self.check(%s)"%self.cond.gen_code()
 
-    class Error:
+    class Error(NotEmpty):
         def __init__(self, msg):
             self.msg = msg
         def get_inline_tokens(self):
@@ -2013,7 +2028,7 @@ class TPGParser(tpg.Parser):
         def gen_code(self, indent, counters, pos):
             return indent + "self.error(%s)"%self.msg.gen_code()
 
-    class Mark:
+    class Mark(NotEmpty):
         def __init__(self, mark):
             self.mark = mark
         def get_inline_tokens(self):

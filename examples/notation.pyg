@@ -34,12 +34,30 @@ class Atom:
     def prefix(self): return self.a
     def postfix(self): return self.a
 
+class Func:
+    """ Function expression """
+    def __init__(self, name, *args):
+        self.name = name
+        self.args = args
+        self.prec = 99
+    def infix(self):
+        args = [a.infix() for a in self.args]
+        return "%s(%s)"%(self.name, ",".join(args))
+    def prefix(self):
+        args = [a.prefix() for a in self.args]
+        return "%s %s"%(self.name, " ".join(args))
+    def postfix(self):
+        args = [a.postfix() for a in self.args]
+        return "%s %s"%(" ".join(args), self.name)
+
 # Grammar for arithmetic expressions
 
 class ExpressionParser(tpg.Parser):
     r"""
 
     separator space '\s+';
+    token func1 '\b(sin|cos|tan)\b' ;
+    token func2 '\b(min|max)\b' ;
     token ident '\w+';
 
     START/<e,t> ->
@@ -61,8 +79,10 @@ class ExpressionParser(tpg.Parser):
     ;
 
     ATOM/a ->
-            ident/s                     $ a=Atom(s)
+            ident/s                             $ a=Atom(s)
        |    '\(' EXPR/a '\)'
+       |    func1/f '\(' EXPR/x '\)'            $ a=Func(f,x)
+       |    func2/f '\(' EXPR/x ',' EXPR/y '\)' $ a=Func(f,x,y)
     ;
 
     # Prefix expressions
@@ -71,6 +91,8 @@ class ExpressionParser(tpg.Parser):
         ident/s                                 $ e=Atom(s)
     |   '\(' EXPR_PRE/e '\)'
     |   OP/<op,prec> EXPR_PRE/a EXPR_PRE/b      $ e=Op(op,a,b,prec)
+    |   func1/f EXPR/x                          $ e=Func(f,x)
+    |   func1/f EXPR/x EXPR/y                   $ e=Func(f,x,y)
     ;
 
     # Postfix expressions
@@ -83,7 +105,11 @@ class ExpressionParser(tpg.Parser):
     ;
 
     SEXPR_POST<e>/e ->
-        EXPR_POST/e2 OP/<op,prec> SEXPR_POST<$Op(op,e,e2,prec)$>/e
+        EXPR_POST/e2
+        (   OP/<op,prec> SEXPR_POST<$Op(op,e,e2,prec)$>/e
+        |   func2/f SEXPR_POST<$Func(f, e, e2)$>/e
+        )
+    |   func1/f SEXPR_POST<$Func(f, e)$>/e
     |   ;
 
     OP/<op,prec> ->

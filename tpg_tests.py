@@ -706,6 +706,99 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 self.assertEquals(p("2"), "a string")
                 self.assertEquals(p("3"), 3)
 
+        class EmptyChoiceTestCase(unittest.TestCase):
+
+            def OK(self):
+                class Parser(PARSER):
+                    __doc__ = r"""
+                        set lexer = %(LEXER)s
+
+                        A ->
+                            (   x       # not empty
+                            |   x y     # not empty
+                            )
+                            ;
+
+                        B ->
+                            (   x       # not empty
+                            |   x y     # not empty
+                            |           # empty
+                            )
+                            ;
+
+                        C ->
+                            (   x       # not empty
+                            |   x y     # not empty
+                            |   ( )     # empty
+                            )
+                            ;
+                    """%tpg.Py()
+
+            def NOK1(self):
+                class Parser(PARSER):
+                    __doc__ = r"""
+                        set lexer = %(LEXER)s
+
+                        A ->
+                            (           # empty !!!
+                            |   x       # not empty
+                            |   x y     # not empty
+                            )
+                            ;
+
+                    """%tpg.Py()
+
+            def NOK2(self):
+                class Parser(PARSER):
+                    __doc__ = r"""
+                        set lexer = %(LEXER)s
+
+                        B ->
+                            (   ( ( ) ) # empty !!!
+                            |   x       # not empty
+                            |   x y     # not empty
+                            )
+                            ;
+
+                    """%tpg.Py()
+
+            def NOK3(self):
+                class Parser(PARSER):
+                    __doc__ = r"""
+                        set lexer = %(LEXER)s
+
+                        C ->
+                            (   x       # not empty
+                            |           # empty !!!
+                            |   x y     # not empty
+                            )
+                            ;
+
+                    """%tpg.Py()
+
+            def NOK4(self):
+                class Parser(PARSER):
+                    __doc__ = r"""
+                        set lexer = %(LEXER)s
+
+                        D ->
+                            (   x       # not empty
+                            |   ( )     # empty !!!
+                            |   x y     # not empty
+                            )
+                            ;
+
+                    """%tpg.Py()
+
+            def testEmptyLast(self):
+                self.assertEquals(self.OK(), None)
+
+            def testEmptyNonLast(self):
+                self.assertRaises(tpg.SyntacticError, self.NOK1)
+                self.assertRaises(tpg.SyntacticError, self.NOK2)
+                self.assertRaises(tpg.SyntacticError, self.NOK3)
+                self.assertRaises(tpg.SyntacticError, self.NOK4)
+
         try:
             unittest.main()
         except SystemExit, failed:
