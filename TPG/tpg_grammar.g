@@ -2,6 +2,25 @@ set noruntime		# the runtime is in the grammar
 set magic = "/usr/bin/env python"
 
 {{
+
+# Toy Parser Generator: A Python parser generator
+# Copyright (C) 2002 Christophe Delord
+# 
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
 #<copyright>
 #........[ TOY PARSER GENERATOR ].........................!
 #                                                        ! !
@@ -35,6 +54,10 @@ set magic = "/usr/bin/env python"
 # History                                                 #
 # #######                                                 #
 #                                                         #
+# v 2.0.4 - 05/07/2002                                    #
+#         - Bug fix in NB rule                            #
+#         - Bug fix in object and arg list code generation#
+#         - Now licensed with the LGPL                    #
 # v 2.0.3 - 24/06/2002                                    #
 #         - Bug fix in runtime generation                 #
 # v 2.0.2 - 23/06/2002                                    #
@@ -57,8 +80,8 @@ import re
 
 import tpg
 
-__date__ = "23 june 2002"
-__version__ = "2.0.2"
+__date__ = "05 july 2002"
+__version__ = "2.0.4"
 __author__ = "Christophe Delord <christophe.delord@free.fr>"
 
 def compile(grammar):
@@ -306,6 +329,19 @@ class String:
 
 class Objects(list):
 	""" Object list container (tuples, arguments, ...) """
+
+	def add(self, obj):
+		self.append(obj)
+
+	def __str__(self): return "<%s>"%(','.join(map(str,self)))
+
+	def genCode(self): return "(%s)"%(''.join(['%s, '%o.genCode() for o in self]))
+
+	def doc(self, prec): return _p(prec,self.prec)%("<%s>"%(','.join([o.doc(self.prec) for o in self])))
+	prec = 100
+
+class Args(list):
+	""" Argument list container (tuples, arguments, ...) """
 
 	def add(self, obj):
 		self.append(obj)
@@ -918,7 +954,7 @@ parser TPGParser:
 		OPTIONS/opts
 		parsers = Parsers<opts>
 		( code/c parsers-Code<c> )*
-		(	'parser' ident/id ( '\(' OBJECTS/ids '\)' | ids = Objects<> ) ':'
+		(	'parser' ident/id ( '\(' ARGS/ids '\)' | ids = Args<> ) ':'
 			p = Parser<id, ids>
 			(	code/c p-Code<c>
 			|	TOKEN/t p-t
@@ -945,6 +981,13 @@ parser TPGParser:
 		';'
 		;
 
+	ARGS/objs ->
+		objs = Args<>
+		(	OBJECT/obj objs-obj
+			( ',' OBJECT/obj objs-obj )*
+		)?
+		;
+
 	OBJECT/o ->
 			ident/o SOBJECT<Object<o>>/o
 		|	string/o SOBJECT<String<o>>/o
@@ -955,7 +998,7 @@ parser TPGParser:
 	SOBJECT<o>/o ->
 		(	'\.\.' OBJECT/o2 o=Extraction<o,o2>
 		|	'\.' ident/o2 SOBJECT<Composition<o,Object<o2>>>/o
-		|	'<' OBJECTS/as '>' SOBJECT<Application<o,as>>/o
+		|	'<' ARGS/as '>' SOBJECT<Application<o,as>>/o
 		|	'\[' INDICE/i '\]' SOBJECT<Indexation<o,i>>/o
 		|	#
 		)
@@ -974,7 +1017,7 @@ parser TPGParser:
 
 	SYMBOL/Symbol<id,as,ret> ->
 		ident/id
-		( '<' OBJECTS/as '>' | as = Objects<> )
+		( '<' ARGS/as '>' | as = Args<> )
 		(	'/' OBJECT/ret
 		|	ret = None
 		)
@@ -1010,7 +1053,7 @@ parser TPGParser:
 		)?
 		;
 
-	NB<n>/n -> ( ident/n eval<n> )? ;
+	NB<n>/n -> ( ident/n n=eval<n> )? ;
 
 	INLINE_TOKEN/InlineToken<expr, ret> ->
 		string/expr

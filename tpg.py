@@ -1,5 +1,24 @@
 #!/usr/bin/env python
 
+
+# Toy Parser Generator: A Python parser generator
+# Copyright (C) 2002 Christophe Delord
+# 
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
 #<copyright>
 #........[ TOY PARSER GENERATOR ].........................!
 #                                                        ! !
@@ -33,6 +52,10 @@
 # History                                                 #
 # #######                                                 #
 #                                                         #
+# v 2.0.4 - 05/07/2002                                    #
+#         - Bug fix in NB rule                            #
+#         - Bug fix in object and arg list code generation#
+#         - Now licensed with the LGPL                    #
 # v 2.0.3 - 24/06/2002                                    #
 #         - Bug fix in runtime generation                 #
 # v 2.0.2 - 23/06/2002                                    #
@@ -55,8 +78,8 @@ import re
 
 import tpg
 
-__date__ = "23 june 2002"
-__version__ = "2.0.2"
+__date__ = "05 july 2002"
+__version__ = "2.0.4"
 __author__ = "Christophe Delord <christophe.delord@free.fr>"
 
 def compile(grammar):
@@ -304,6 +327,19 @@ class String:
 
 class Objects(list):
 	""" Object list container (tuples, arguments, ...) """
+
+	def add(self, obj):
+		self.append(obj)
+
+	def __str__(self): return "<%s>"%(','.join(map(str,self)))
+
+	def genCode(self): return "(%s)"%(''.join(['%s, '%o.genCode() for o in self]))
+
+	def doc(self, prec): return _p(prec,self.prec)%("<%s>"%(','.join([o.doc(self.prec) for o in self])))
+	prec = 100
+
+class Args(list):
+	""" Argument list container (tuples, arguments, ...) """
 
 	def add(self, obj):
 		self.append(obj)
@@ -910,13 +946,13 @@ class TPGParser(tpg.ToyParser,):
 			tpg._TokenDef(r"token", r"token"),
 			tpg._TokenDef(r"separator", r"separator"),
 			tpg._TokenDef(r"_tok_5", r";"),
-			tpg._TokenDef(r"_tok_6", r"<"),
-			tpg._TokenDef(r"_tok_7", r">"),
-			tpg._TokenDef(r"_tok_8", r"\.\."),
-			tpg._TokenDef(r"_tok_9", r"\."),
-			tpg._TokenDef(r"_tok_10", r"\["),
-			tpg._TokenDef(r"_tok_11", r"\]"),
-			tpg._TokenDef(r"_tok_12", r","),
+			tpg._TokenDef(r"_tok_6", r","),
+			tpg._TokenDef(r"_tok_7", r"<"),
+			tpg._TokenDef(r"_tok_8", r">"),
+			tpg._TokenDef(r"_tok_9", r"\.\."),
+			tpg._TokenDef(r"_tok_10", r"\."),
+			tpg._TokenDef(r"_tok_11", r"\["),
+			tpg._TokenDef(r"_tok_12", r"\]"),
 			tpg._TokenDef(r"_tok_13", r"->"),
 			tpg._TokenDef(r"_tok_14", r"/"),
 			tpg._TokenDef(r"_tok_15", r"\|"),
@@ -939,7 +975,7 @@ class TPGParser(tpg.ToyParser,):
 		return parsers.genCode()
 
 	def PARSERS(self,):
-		""" PARSERS -> OPTIONS  (code )* ('parser' ident ('\(' OBJECTS '\)' | ) ':'  (code  | TOKEN  | RULE )*  | 'main' ':' (code )*)* """
+		""" PARSERS -> OPTIONS (code)* ('parser' ident ('\(' ARGS '\)' | ) ':' (code | TOKEN | RULE)* | 'main' ':' (code)*)* """
 		opts = self.OPTIONS()
 		parsers = Parsers(opts)
 		__p1 = self._cur_token
@@ -954,53 +990,51 @@ class TPGParser(tpg.ToyParser,):
 		__p2 = self._cur_token
 		while 1:
 			try:
-				__p3 = self._cur_token
 				try:
 					self._eat('parser')
 					id = self._eat('ident')
-					__p4 = self._cur_token
+					__p3 = self._cur_token
 					try:
 						self._eat('_tok_1') # \(
-						ids = self.OBJECTS()
+						ids = self.ARGS()
 						self._eat('_tok_2') # \)
 					except tpg.TPGWrongMatch:
-						self._cur_token = __p4
-						ids = Objects()
+						self._cur_token = __p3
+						ids = Args()
 					self._eat('_tok_3') # :
 					p = Parser(id,ids)
-					__p5 = self._cur_token
+					__p4 = self._cur_token
 					while 1:
 						try:
-							__p6 = self._cur_token
 							try:
 								try:
 									c = self._eat('code')
 									p.add(Code(c))
 								except tpg.TPGWrongMatch:
-									self._cur_token = __p6
+									self._cur_token = __p4
 									t = self.TOKEN()
 									p.add(t)
 							except tpg.TPGWrongMatch:
-								self._cur_token = __p6
+								self._cur_token = __p4
 								c = self.RULE()
 								p.add(c)
-							__p5 = self._cur_token
+							__p4 = self._cur_token
 						except tpg.TPGWrongMatch:
-							self._cur_token = __p5
+							self._cur_token = __p4
 							break
 					parsers.add(p)
 				except tpg.TPGWrongMatch:
-					self._cur_token = __p3
+					self._cur_token = __p2
 					self._eat('main')
 					self._eat('_tok_3') # :
-					__p7 = self._cur_token
+					__p5 = self._cur_token
 					while 1:
 						try:
 							c = self._eat('code')
 							parsers.add(Code(c))
-							__p7 = self._cur_token
+							__p5 = self._cur_token
 						except tpg.TPGWrongMatch:
-							self._cur_token = __p7
+							self._cur_token = __p5
 							break
 				__p2 = self._cur_token
 			except tpg.TPGWrongMatch:
@@ -1009,7 +1043,7 @@ class TPGParser(tpg.ToyParser,):
 		return parsers
 
 	def OPTIONS(self,):
-		""" OPTIONS ->  ('set' ident ('=' string | )  )* """
+		""" OPTIONS -> ('set' ident ('=' string | ))* """
 		opts = Options()
 		__p1 = self._cur_token
 		while 1:
@@ -1032,7 +1066,7 @@ class TPGParser(tpg.ToyParser,):
 		return opts
 
 	def TOKEN(self,):
-		""" TOKEN -> ('token'  | 'separator' ) ident ':' string (OBJECT | ) ';' """
+		""" TOKEN -> ('token' | 'separator') ident ':' string (OBJECT | ) ';' """
 		__p1 = self._cur_token
 		try:
 			self._eat('token')
@@ -1053,8 +1087,29 @@ class TPGParser(tpg.ToyParser,):
 		self._eat('_tok_5') # ;
 		return Token(t,e,f,s)
 
+	def ARGS(self,):
+		""" ARGS -> (OBJECT (',' OBJECT)*)? """
+		objs = Args()
+		__p1 = self._cur_token
+		try:
+			obj = self.OBJECT()
+			objs.add(obj)
+			__p2 = self._cur_token
+			while 1:
+				try:
+					self._eat('_tok_6') # ,
+					obj = self.OBJECT()
+					objs.add(obj)
+					__p2 = self._cur_token
+				except tpg.TPGWrongMatch:
+					self._cur_token = __p2
+					break
+		except tpg.TPGWrongMatch:
+			self._cur_token = __p1
+		return objs
+
 	def OBJECT(self,):
-		""" OBJECT -> ident SOBJECT | string SOBJECT | '<' OBJECTS '>' | code   """
+		""" OBJECT -> ident SOBJECT | string SOBJECT | '<' OBJECTS '>' | code """
 		__p1 = self._cur_token
 		try:
 			try:
@@ -1067,9 +1122,9 @@ class TPGParser(tpg.ToyParser,):
 					o = self.SOBJECT(String(o))
 			except tpg.TPGWrongMatch:
 				self._cur_token = __p1
-				self._eat('_tok_6') # <
+				self._eat('_tok_7') # <
 				o = self.OBJECTS()
-				self._eat('_tok_7') # >
+				self._eat('_tok_8') # >
 		except tpg.TPGWrongMatch:
 			self._cur_token = __p1
 			c = self._eat('code')
@@ -1078,38 +1133,38 @@ class TPGParser(tpg.ToyParser,):
 		return o
 
 	def SOBJECT(self,o):
-		""" SOBJECT -> ('\.\.' OBJECT  | '\.' ident SOBJECT | '<' OBJECTS '>' SOBJECT | '\[' INDICE '\]' SOBJECT | ) """
+		""" SOBJECT -> ('\.\.' OBJECT | '\.' ident SOBJECT | '<' ARGS '>' SOBJECT | '\[' INDICE '\]' SOBJECT | ) """
 		__p1 = self._cur_token
 		try:
 			try:
 				try:
 					try:
-						self._eat('_tok_8') # \.\.
+						self._eat('_tok_9') # \.\.
 						o2 = self.OBJECT()
 						o = Extraction(o,o2)
 					except tpg.TPGWrongMatch:
 						self._cur_token = __p1
-						self._eat('_tok_9') # \.
+						self._eat('_tok_10') # \.
 						o2 = self._eat('ident')
 						o = self.SOBJECT(Composition(o,Object(o2)))
 				except tpg.TPGWrongMatch:
 					self._cur_token = __p1
-					self._eat('_tok_6') # <
-					as = self.OBJECTS()
-					self._eat('_tok_7') # >
+					self._eat('_tok_7') # <
+					as = self.ARGS()
+					self._eat('_tok_8') # >
 					o = self.SOBJECT(Application(o,as))
 			except tpg.TPGWrongMatch:
 				self._cur_token = __p1
-				self._eat('_tok_10') # \[
+				self._eat('_tok_11') # \[
 				i = self.INDICE()
-				self._eat('_tok_11') # \]
+				self._eat('_tok_12') # \]
 				o = self.SOBJECT(Indexation(o,i))
 		except tpg.TPGWrongMatch:
 			self._cur_token = __p1
 		return o
 
 	def OBJECTS(self,):
-		""" OBJECTS ->  (OBJECT  (',' OBJECT )*)? """
+		""" OBJECTS -> (OBJECT (',' OBJECT)*)? """
 		objs = Objects()
 		__p1 = self._cur_token
 		try:
@@ -1118,7 +1173,7 @@ class TPGParser(tpg.ToyParser,):
 			__p2 = self._cur_token
 			while 1:
 				try:
-					self._eat('_tok_12') # ,
+					self._eat('_tok_6') # ,
 					obj = self.OBJECT()
 					objs.add(obj)
 					__p2 = self._cur_token
@@ -1130,7 +1185,7 @@ class TPGParser(tpg.ToyParser,):
 		return objs
 
 	def INDICE(self,):
-		""" INDICE -> OBJECT (':' OBJECT )? """
+		""" INDICE -> OBJECT (':' OBJECT)? """
 		i = self.OBJECT()
 		__p1 = self._cur_token
 		try:
@@ -1150,16 +1205,16 @@ class TPGParser(tpg.ToyParser,):
 		return Rule(s,e)
 
 	def SYMBOL(self,):
-		""" SYMBOL -> ident ('<' OBJECTS '>' | ) ('/' OBJECT | ) """
+		""" SYMBOL -> ident ('<' ARGS '>' | ) ('/' OBJECT | ) """
 		id = self._eat('ident')
 		__p1 = self._cur_token
 		try:
-			self._eat('_tok_6') # <
-			as = self.OBJECTS()
-			self._eat('_tok_7') # >
+			self._eat('_tok_7') # <
+			as = self.ARGS()
+			self._eat('_tok_8') # >
 		except tpg.TPGWrongMatch:
 			self._cur_token = __p1
-			as = Objects()
+			as = Args()
 		__p2 = self._cur_token
 		try:
 			self._eat('_tok_14') # /
@@ -1170,7 +1225,7 @@ class TPGParser(tpg.ToyParser,):
 		return Symbol(id,as,ret)
 
 	def EXPR(self,):
-		""" EXPR -> TERM ('\|' TERM )* """
+		""" EXPR -> TERM ('\|' TERM)* """
 		e = self.TERM()
 		__p1 = self._cur_token
 		while 1:
@@ -1185,7 +1240,7 @@ class TPGParser(tpg.ToyParser,):
 		return e
 
 	def TERM(self,):
-		""" TERM ->  (FACT )* """
+		""" TERM -> (FACT)* """
 		t = Sequence()
 		__p1 = self._cur_token
 		while 1:
@@ -1199,7 +1254,7 @@ class TPGParser(tpg.ToyParser,):
 		return t
 
 	def FACT(self,):
-		""" FACT -> AST_OP | MARK_OP | code  | ATOM REP """
+		""" FACT -> AST_OP | MARK_OP | code | ATOM REP """
 		__p1 = self._cur_token
 		try:
 			try:
@@ -1219,7 +1274,7 @@ class TPGParser(tpg.ToyParser,):
 		return f
 
 	def AST_OP(self,):
-		""" AST_OP -> OBJECT ('=' OBJECT  | '-' OBJECT ) """
+		""" AST_OP -> OBJECT ('=' OBJECT | '-' OBJECT) """
 		o1 = self.OBJECT()
 		__p1 = self._cur_token
 		try:
@@ -1234,7 +1289,7 @@ class TPGParser(tpg.ToyParser,):
 		return op
 
 	def MARK_OP(self,):
-		""" MARK_OP -> '!' OBJECT  """
+		""" MARK_OP -> '!' OBJECT """
 		self._eat('_tok_17') # !
 		o = self.OBJECT()
 		op = Mark(o)
@@ -1257,33 +1312,32 @@ class TPGParser(tpg.ToyParser,):
 		return a
 
 	def REP(self,a):
-		""" REP -> ('\?'  | '\*'  | '\+'  | obra NB (',' NB | ) cbra )? """
+		""" REP -> ('\?' | '\*' | '\+' | obra NB (',' NB | ) cbra)? """
 		__p1 = self._cur_token
 		try:
-			__p2 = self._cur_token
 			try:
 				try:
 					try:
 						self._eat('_tok_18') # \?
 						a = Rep(self,0,1,a)
 					except tpg.TPGWrongMatch:
-						self._cur_token = __p2
+						self._cur_token = __p1
 						self._eat('_tok_19') # \*
 						a = Rep(self,0,None,a)
 				except tpg.TPGWrongMatch:
-					self._cur_token = __p2
+					self._cur_token = __p1
 					self._eat('_tok_20') # \+
 					a = Rep(self,1,None,a)
 			except tpg.TPGWrongMatch:
-				self._cur_token = __p2
+				self._cur_token = __p1
 				self._eat('obra')
 				m = self.NB(0)
-				__p3 = self._cur_token
+				__p2 = self._cur_token
 				try:
-					self._eat('_tok_12') # ,
+					self._eat('_tok_6') # ,
 					M = self.NB(None)
 				except tpg.TPGWrongMatch:
-					self._cur_token = __p3
+					self._cur_token = __p2
 					M = m
 				self._eat('cbra')
 				a = Rep(self,m,M,a)
@@ -1292,11 +1346,11 @@ class TPGParser(tpg.ToyParser,):
 		return a
 
 	def NB(self,n):
-		""" NB -> (ident eval)? """
+		""" NB -> (ident)? """
 		__p1 = self._cur_token
 		try:
 			n = self._eat('ident')
-			self.eval(n)
+			n = eval(n)
 		except tpg.TPGWrongMatch:
 			self._cur_token = __p1
 		return n

@@ -16,7 +16,7 @@ def _chmod(mod,dst):
 		os.chmod(dst,mod)
 	except (OSError,IOError),e:
 		print e
-print '''Installation of TPG version 2.0.3
+print '''Installation of TPG version 2.0.4
 Author: Christophe Delord
 Email : christophe.delord@free.fr
 Web   : http://christophe.delord.free.fr/en/tpg/
@@ -35,4 +35,3 @@ _cp('TPG/examples/calc/calc3.g','%s/TPG/examples/calc/calc3.g'%base)
 _cp('TPG/examples/calc/calc3.py','%s/TPG/examples/calc/calc3.py'%base)
 _mkdir('%s/TPG/examples/notation'%base)
 _cp('TPG/examples/notation/notation.py','%s/TPG/examples/notation/notation.py'%base)
-_cp('uninstall-TPG-2.0.3.py','%s/uninstall-TPG-2.0.3.py'%base)
