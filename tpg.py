@@ -44,8 +44,8 @@ trees while parsing.
 from __future__ import generators
 
 __tpgname__ = 'TPG'
-__version__ = '3.0.5'
-__date__ = '2005-03-01'
+__version__ = '3.0.6'
+__date__ = '2005-07-08'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -686,8 +686,8 @@ class ContextSensitiveLexer(LexerOptions):
             self.line, self.row = 1, 1
             self.cur_token = SOFToken()
         else:
-            self.pos = token.stop           ## TODO : stop ou start ??? (si start, eat_separators est inutile)
-            self.line, self.row = token.line, token.row
+            self.pos = token.stop
+            self.line, self.row = token.end_line, token.end_row
             self.cur_token = token
         self.eat_separators()
         self.cur_token.next_start = self.pos

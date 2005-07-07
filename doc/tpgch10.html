@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2005-03-01 21:58:00"> 
+<meta name="date" content="2005-07-08 23:00:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
@@ -16,44 +16,43 @@ href="tpgch11.html" >next</a>] [<a
 href="#tailtpgch10.html">tail</a>] [<a 
 href="tpgpa3.html#tpgch10.html" >up</a>] </p></div>
    <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;10</span><br><a 
- id="x24-8300010"></a>Complete interactive calculator</h2>
+ id="x25-8300010"></a>Complete interactive calculator</h2>
    <h3 class="sectionHead"><span class="titlemark">10.1   </span> <a 
- id="x24-8400010.1"></a>Introduction</h3>
+ id="x25-8400010.1"></a>Introduction</h3>
 <!--l. 3--><p class="noindent">This chapter presents an extention of the calculator described in the tutorial (see&#x00A0;<a 
 href="tpgch3.html#x12-160003">3<!--tex4ht:ref: tpg:tutorial --></a>). This calculator has
 more functions and a memory.
 <!--l. 6--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">10.2   </span> <a 
- id="x24-8500010.2"></a>New functions</h3>
+ id="x25-8500010.2"></a>New functions</h3>
 <!--l. 8--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">10.2.1   </span> <a 
- id="x24-8600010.2.1"></a>Trigonometric and other functions</h4>
+ id="x25-8600010.2.1"></a>Trigonometric and other functions</h4>
 <!--l. 10--><p class="noindent">This calculator can compute some numerical functions (<span 
 class="cmti-10">sin</span>, <span 
 class="cmti-10">cos</span>, <span 
 class="cmti-10">sqrt</span>, ...). The <span 
 class="cmti-10">make</span><span 
 class="cmti-10">_op </span>function
-(see figure&#x00A0;<a 
-href="tpgch3.html#x12-190014">3.4<!--tex4ht:ref: tut:make_op --></a>) has been extended to return these functions. Tokens must also be defined
+(see &#xFB01;gure&#x00A0;<a 
+href="tpgch3.html#x12-190014">3.4<!--tex4ht:ref: tut:make_op --></a>) has been extended to return these functions. Tokens must also be de&#xFB01;ned
 to scan function names. <span 
-class="cmti-10">funct1 </span>defines the name of unaries functions and <span 
-class="cmti-10">funct2 </span>defines
+class="cmti-10">funct1 </span>de&#xFB01;nes the name of unaries functions and <span 
+class="cmti-10">funct2 </span>de&#xFB01;nes
 the name of binaries functions. Finally the grammar rule of the atoms has been added a
 branch to parse functions. The <span 
 class="cmti-10">Function </span>non terminal symbol parser unaries and binaries
 functions.
 <!--l. 17--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">10.2.2   </span> <a 
- id="x24-8700010.2.2"></a>Memories</h4>
-<!--l. 19--><p class="noindent">The calculator has memories. A memory cell is identified by a name. For example, if the user types
+ id="x25-8700010.2.2"></a>Memories</h4>
+<!--l. 19--><p class="noindent">The calculator has memories. A memory cell is identi&#xFB01;ed by a name. For example, if the user types
 <span 
 class="cmmi-10">pi </span>= 4 <span 
 class="cmsy-10">* </span><span 
 class="cmmi-10">atan</span>(1), the memory cell named <span 
 class="cmti-10">pi </span>will contain the value of <span 
-class="cmmi-10"><img 
-src="cmmi10-19.png" alt="p" class="10x-x-19" /> </span>and <span 
+class="cmmi-10">&#x03C0; </span>and <span 
 class="cmmi-10">cos</span>(<span 
 class="cmmi-10">pi</span>) will return
 <span 
@@ -70,7 +69,7 @@ names (the <span
 class="cmti-10">Var </span>symbol parses a variable name and returns its value).
 <!--l. 30--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">10.3   </span> <a 
- id="x24-8800010.3"></a>Source code</h3>
+ id="x25-8800010.3"></a>Source code</h3>
 <!--l. 32--><p class="noindent">Here is the complete source code (<span 
 class="cmti-10">calc.pyg</span>):
    <div class="verbatimtabinput">
@@ -120,7 +119,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'+'</span><span 
+class="cmtt-10">&#x00A0;&#8217;+&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
@@ -134,7 +133,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'-'</span><span 
+class="cmtt-10">&#x00A0;&#8217;-&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
@@ -148,7 +147,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'*'</span><span 
+class="cmtt-10">&#x00A0;&#8217;*&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
@@ -162,7 +161,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'/'</span><span 
+class="cmtt-10">&#x00A0;&#8217;/&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
@@ -176,7 +175,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'%'</span><span 
+class="cmtt-10">&#x00A0;&#8217;%&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
@@ -190,7 +189,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'^'</span><span 
+class="cmtt-10">&#x00A0;&#8217;&#x02C6;&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
@@ -205,7 +204,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'**'</span><span 
+class="cmtt-10">&#x00A0;&#8217;**&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
 class="cmtt-10">&#x00A0;lambda</span><span 
@@ -219,7 +218,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'cos'</span><span 
+class="cmtt-10">&#x00A0;&#8217;cos&#8217;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
 class="cmtt-10">&#x00A0;math.cos,</span>
 <span 
@@ -231,7 +230,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'sin'</span><span 
+class="cmtt-10">&#x00A0;&#8217;sin&#8217;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
 class="cmtt-10">&#x00A0;math.sin,</span>
 <span 
@@ -243,7 +242,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'tan'</span><span 
+class="cmtt-10">&#x00A0;&#8217;tan&#8217;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
 class="cmtt-10">&#x00A0;math.tan,</span>
 <span 
@@ -255,7 +254,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'acos':</span><span 
+class="cmtt-10">&#x00A0;&#8217;acos&#8217;:</span><span 
 class="cmtt-10">&#x00A0;math.acos,</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
@@ -266,7 +265,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'asin':</span><span 
+class="cmtt-10">&#x00A0;&#8217;asin&#8217;:</span><span 
 class="cmtt-10">&#x00A0;math.asin,</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
@@ -277,7 +276,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'atan':</span><span 
+class="cmtt-10">&#x00A0;&#8217;atan&#8217;:</span><span 
 class="cmtt-10">&#x00A0;math.atan,</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
@@ -288,7 +287,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'sqr'</span><span 
+class="cmtt-10">&#x00A0;&#8217;sqr&#8217;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
 class="cmtt-10">&#x00A0;lambda</span><span 
 class="cmtt-10">&#x00A0;x:x*x,</span>
@@ -301,7 +300,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'sqrt':</span><span 
+class="cmtt-10">&#x00A0;&#8217;sqrt&#8217;:</span><span 
 class="cmtt-10">&#x00A0;math.sqrt,</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
@@ -312,7 +311,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'abs'</span><span 
+class="cmtt-10">&#x00A0;&#8217;abs&#8217;</span><span 
 class="cmtt-10">&#x00A0;:</span><span 
 class="cmtt-10">&#x00A0;abs,</span>
 <span 
@@ -324,7 +323,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'norm':</span><span 
+class="cmtt-10">&#x00A0;&#8217;norm&#8217;:</span><span 
 class="cmtt-10">&#x00A0;lambda</span><span 
 class="cmtt-10">&#x00A0;x,y:math.sqrt(x*x+y*y),</span>
 <span 
@@ -357,7 +356,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;separator</span><span 
 class="cmtt-10">&#x00A0;space</span><span 
-class="cmtt-10">&#x00A0;'\s+'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\s+&#8217;</span><span 
 class="cmtt-10">&#x00A0;;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br />
@@ -375,7 +374,7 @@ class="cmtt-10">&#x00A0;pow_op</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\^|\*\*'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\&#x02C6;|\*\*&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -438,7 +437,7 @@ class="cmtt-10">&#x00A0;add_op</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'[+-]'</span><span 
+class="cmtt-10">&#x00A0;&#8217;[+-]&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -504,7 +503,7 @@ class="cmtt-10">&#x00A0;mul_op</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'[*/%]'</span><span 
+class="cmtt-10">&#x00A0;&#8217;[*/%]&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -569,7 +568,7 @@ class="cmtt-10">&#x00A0;funct1</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'(cos|sin|tan|acos|asin|atan|sqr|sqrt|abs)\b'</span><span 
+class="cmtt-10">&#x00A0;&#8217;(cos|sin|tan|acos|asin|atan|sqr|sqrt|abs)\b&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -596,7 +595,7 @@ class="cmtt-10">&#x00A0;funct2</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'(norm)\b'</span><span 
+class="cmtt-10">&#x00A0;&#8217;(norm)\b&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -660,7 +659,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+'</span><span 
+class="cmtt-10">&#x00A0;&#8217;(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -679,7 +678,7 @@ class="cmtt-10">&#x00A0;token</span><span
 class="cmtt-10">&#x00A0;integer</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\d+'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\d+&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -747,7 +746,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'[a-zA-Z_]\w*'</span><span 
+class="cmtt-10">&#x00A0;&#8217;[a-zA-Z_]\w*&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -820,7 +819,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'vars'</span><span 
+class="cmtt-10">&#x00A0;&#8217;vars&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -857,7 +856,7 @@ class="cmtt-10">&#x00A0;|</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;VarId/v</span><span 
-class="cmtt-10">&#x00A0;'='</span><span 
+class="cmtt-10">&#x00A0;&#8217;=&#8217;</span><span 
 class="cmtt-10">&#x00A0;Expr/e</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1265,9 +1264,9 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;|</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;Expr/a</span><span 
-class="cmtt-10">&#x00A0;'\)'</span>
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1309,9 +1308,9 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;funct1/f</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;Expr/x</span><span 
-class="cmtt-10">&#x00A0;'\)'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1347,11 +1346,11 @@ class="cmtt-10">&#x00A0;|</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;funct2/f</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;Expr/x1</span><span 
-class="cmtt-10">&#x00A0;','</span><span 
+class="cmtt-10">&#x00A0;&#8217;,&#8217;</span><span 
 class="cmtt-10">&#x00A0;Expr/x2</span><span 
-class="cmtt-10">&#x00A0;'\)'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;$</span><span 
 class="cmtt-10">&#x00A0;y</span><span 

@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
   "http://www.w3.org/TR/html4/loose.dtd">  
 <html > 
-<head><title>11 Infix/Prefix/Postfix notation converter</title> 
+<head><title>11 In&#xFB01;x/Pre&#xFB01;x/Post&#xFB01;x notation converter</title> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
 <meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2005-03-01 21:58:00"> 
+<meta name="date" content="2005-07-08 23:00:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
@@ -17,20 +17,20 @@ href="tpgch10.html#tailtpgch10.html" >prev-tail</a>] [<a
 href="#tailtpgch11.html">tail</a>] [<a 
 href="tpgpa3.html#tpgch11.html" >up</a>] </p></div>
    <h2 class="chapterHead"><span class="titlemark">Chapter&#x00A0;11</span><br><a 
- id="x25-8900011"></a>Infix/Prefix/Postfix notation converter</h2>
+ id="x26-8900011"></a>In&#xFB01;x/Pre&#xFB01;x/Post&#xFB01;x notation converter</h2>
    <h3 class="sectionHead"><span class="titlemark">11.1   </span> <a 
- id="x25-9000011.1"></a>Introduction</h3>
-<!--l. 3--><p class="noindent">In the previous example, the parser computes the value of the expression on the fly, while parsing. It is
+ id="x26-9000011.1"></a>Introduction</h3>
+<!--l. 3--><p class="noindent">In the previous example, the parser computes the value of the expression on the &#xFB02;y, while parsing. It is
 also possible to build an abstract syntax tree to store an abstract representation of the input. This may
 be usefull when several passes are necessary.
-<!--l. 7--><p class="indent">   This example shows how to parse an expression (infix, prefix or postfix) and convert it in
-infix, prefix and postfix notation. The expression is saved in a tree. Each node of the tree
+<!--l. 7--><p class="indent">   This example shows how to parse an expression (in&#xFB01;x, pre&#xFB01;x or post&#xFB01;x) and convert it in
+in&#xFB01;x, pre&#xFB01;x and post&#xFB01;x notation. The expression is saved in a tree. Each node of the tree
 correspond to an operator in the expression. Each leave is a number. Then to write the expression
-in infix, prefix or postfix notation, we just need to walk throught the tree in a particular
+in in&#xFB01;x, pre&#xFB01;x or post&#xFB01;x notation, we just need to walk throught the tree in a particular
 order.
 <!--l. 11--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">11.2   </span> <a 
- id="x25-9100011.2"></a>Abstract syntax trees</h3>
+ id="x26-9100011.2"></a>Abstract syntax trees</h3>
 <!--l. 13--><p class="noindent">The AST of this converter has two types of node:
      <dl class="description"><dt class="description">
 <span 
@@ -40,7 +40,7 @@ class="cmtt-10">+</span></span></span>, <span class="obeylines-h"><span class="v
 class="cmtt-10">-</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
 class="cmtt-10">*</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
 class="cmtt-10">/</span></span></span>, <span class="obeylines-h"><span class="verb"><span 
-class="cmtt-10">^</span></span></span>). It has two sons associated to the sub expressions.
+class="cmtt-10">&#x02C6;</span></span></span>). It has two sons associated to the sub expressions.
      </dd><dt class="description">
 <span 
 class="cmbx-10">class Atom</span> </dt><dd 
@@ -54,41 +54,41 @@ class="cmti-10">_</span><span
 class="cmti-10">_init</span><span 
 class="cmti-10">_</span><span 
 class="cmti-10">_ </span>method. The <span 
-class="cmti-10">infix</span>, <span 
-class="cmti-10">prefix </span>and <span 
-class="cmti-10">postfix </span>methods return
+class="cmti-10">in&#xFB01;x</span>, <span 
+class="cmti-10">pre&#xFB01;x </span>and <span 
+class="cmti-10">post&#xFB01;x </span>methods return
 strings containing the representation of the node in <span 
-class="cmti-10">infix</span>, <span 
-class="cmti-10">prefix </span>and <span 
-class="cmti-10">postfix </span>notation.
+class="cmti-10">in&#xFB01;x</span>, <span 
+class="cmti-10">pre&#xFB01;x </span>and <span 
+class="cmti-10">post&#xFB01;x </span>notation.
 <!--l. 24--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">11.3   </span> <a 
- id="x25-9200011.3"></a>Grammar</h3>
+ id="x26-9200011.3"></a>Grammar</h3>
 <!--l. 26--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">11.3.1   </span> <a 
- id="x25-9300011.3.1"></a>Infix expressions</h4>
-<!--l. 28--><p class="noindent">The grammar for infix expressions is similar to the grammar used in the previous example.
+ id="x26-9300011.3.1"></a>In&#xFB01;x expressions</h4>
+<!--l. 28--><p class="noindent">The grammar for in&#xFB01;x expressions is similar to the grammar used in the previous example.
                                                                                  
 
                                                                                  
    <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-EXPR/e&#x00A0;-&gt;&#x00A0;TERM/e&#x00A0;(&#x00A0;'[+-]'/op&#x00A0;TERM/t&#x00A0;$e=Op(op,e,t,1)$&#x00A0;)*&#x00A0;;
-&#x00A0;<br />TERM/t&#x00A0;-&gt;&#x00A0;FACT/t&#x00A0;(&#x00A0;'[*/]'/op&#x00A0;FACT/f&#x00A0;$t=Op(op,t,f,2)$&#x00A0;)*&#x00A0;;
-&#x00A0;<br />FACT/f&#x00A0;-&gt;&#x00A0;ATOM/f&#x00A0;(&#x00A0;'\^'/op&#x00A0;FACT/e&#x00A0;$f=Op(op,f,e,3)$&#x00A0;)?&#x00A0;;
+EXPR/e&#x00A0;-&gt;&#x00A0;TERM/e&#x00A0;(&#x00A0;&#8217;[+-]&#8217;/op&#x00A0;TERM/t&#x00A0;$e=Op(op,e,t,1)$&#x00A0;)*&#x00A0;;
+&#x00A0;<br />TERM/t&#x00A0;-&gt;&#x00A0;FACT/t&#x00A0;(&#x00A0;&#8217;[*/]&#8217;/op&#x00A0;FACT/f&#x00A0;$t=Op(op,t,f,2)$&#x00A0;)*&#x00A0;;
+&#x00A0;<br />FACT/f&#x00A0;-&gt;&#x00A0;ATOM/f&#x00A0;(&#x00A0;&#8217;\&#x02C6;&#8217;/op&#x00A0;FACT/e&#x00A0;$f=Op(op,f,e,3)$&#x00A0;)?&#x00A0;;
 &#x00A0;<br />
-&#x00A0;<br />ATOM/a&#x00A0;-&gt;&#x00A0;ident/s&#x00A0;$a=Atom(s)$&#x00A0;|&#x00A0;'\('&#x00A0;EXPR/a&#x00A0;'\)'
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;&#x00A0;func1/f&#x00A0;'\('&#x00A0;EXPR/x&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'\)'&#x00A0;$a=Func(f,x)
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;&#x00A0;func2/f&#x00A0;'\('&#x00A0;EXPR/x&#x00A0;','&#x00A0;EXPR/y&#x00A0;'\)'&#x00A0;$a=Func(f,x,y)
+&#x00A0;<br />ATOM/a&#x00A0;-&gt;&#x00A0;ident/s&#x00A0;$a=Atom(s)$&#x00A0;|&#x00A0;&#8217;\(&#8217;&#x00A0;EXPR/a&#x00A0;&#8217;\)&#8217;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;&#x00A0;func1/f&#x00A0;&#8217;\(&#8217;&#x00A0;EXPR/x&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#8217;\)&#8217;&#x00A0;$a=Func(f,x)
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;|&#x00A0;&#x00A0;func2/f&#x00A0;&#8217;\(&#8217;&#x00A0;EXPR/x&#x00A0;&#8217;,&#8217;&#x00A0;EXPR/y&#x00A0;&#8217;\)&#8217;&#x00A0;$a=Func(f,x,y)
 &#x00A0;<br />;
 </div>
    </td></tr></table>
 <!--l. 39--><p class="nopar">
 <!--l. 41--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">11.3.2   </span> <a 
- id="x25-9400011.3.2"></a>Prefix expressions</h4>
-<!--l. 43--><p class="noindent">The grammar for prefix expressions is very simple. A compound prefix expression is an operator followed
+ id="x26-9400011.3.2"></a>Pre&#xFB01;x expressions</h4>
+<!--l. 43--><p class="noindent">The grammar for pre&#xFB01;x expressions is very simple. A compound pre&#xFB01;x expression is an operator followed
 by two subexpressions.
                                                                                  
 
@@ -98,7 +98,7 @@ class="verbatim"><tr class="verbatim"><td
 class="verbatim"><div class="verbatim">
 EXPR_PRE/e&#x00A0;-&gt;
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;ident/s&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$&#x00A0;e=Atom(s)
-&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;'\('&#x00A0;EXPR_PRE/e&#x00A0;'\)'
+&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;&#8217;\(&#8217;&#x00A0;EXPR_PRE/e&#x00A0;&#8217;\)&#8217;
 &#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;OP/&lt;op,prec&gt;&#x00A0;EXPR_PRE/a&#x00A0;EXPR_PRE/b&#x00A0;&#x00A0;$&#x00A0;e=Op(op,a,b,prec)
 &#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;func1/f&#x00A0;EXPR/x&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$&#x00A0;e=Func(f,x)
 &#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;func1/f&#x00A0;EXPR/x&#x00A0;EXPR/y&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$&#x00A0;e=Func(f,x,y)
@@ -106,19 +106,19 @@ EXPR_PRE/e&#x00A0;-&gt;
 &#x00A0;<br />;
 &#x00A0;<br />
 &#x00A0;<br />OP/&lt;op,prec&gt;&#x00A0;-&gt;
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;'[+-]'/op&#x00A0;&#x00A0;&#x00A0;$&#x00A0;prec=1
-&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;'[*/]'/op&#x00A0;&#x00A0;&#x00A0;$&#x00A0;prec=2
-&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;'\^'/op&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$&#x00A0;prec=3
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#8217;[+-]&#8217;/op&#x00A0;&#x00A0;&#x00A0;$&#x00A0;prec=1
+&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;&#8217;[*/]&#8217;/op&#x00A0;&#x00A0;&#x00A0;$&#x00A0;prec=2
+&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;&#8217;\&#x02C6;&#8217;/op&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$&#x00A0;prec=3
 &#x00A0;<br />;
 </div>
    </td></tr></table>
 <!--l. 61--><p class="nopar">
 <!--l. 63--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">11.3.3   </span> <a 
- id="x25-9500011.3.3"></a>Postfix expressions</h4>
-<!--l. 65--><p class="noindent">At first sight postfix and infix grammars may be very similar. Only the position of the operators changes.
-So a compound postfix expression is a first expression followed by a second and an operator. This rule is
-left recursive. As TPG is a descendant recursive parser, such rules are forbidden to avoid infinite
+ id="x26-9500011.3.3"></a>Post&#xFB01;x expressions</h4>
+<!--l. 65--><p class="noindent">At &#xFB01;rst sight post&#xFB01;x and in&#xFB01;x grammars may be very similar. Only the position of the operators changes.
+So a compound post&#xFB01;x expression is a &#xFB01;rst expression followed by a second and an operator. This rule is
+left recursive. As TPG is a descendant recursive parser, such rules are forbidden to avoid in&#xFB01;nite
 recursion. To remove the left recursion a classical solution is to rewrite the grammar like
 this:
                                                                                  
@@ -131,7 +131,7 @@ EXPR_POST/e&#x00A0;-&gt;&#x00A0;ATOM_POST/a&#x00A0;SEXPR_POST&lt;a&gt;/e&#x00A0;
 &#x00A0;<br />
 &#x00A0;<br />ATOM_POST/a&#x00A0;-&gt;
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;ident/s&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;$&#x00A0;a=Atom(s)
-&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;'\('&#x00A0;EXPR_POST/a&#x00A0;'\)'
+&#x00A0;<br />|&#x00A0;&#x00A0;&#x00A0;&#8217;\(&#8217;&#x00A0;EXPR_POST/a&#x00A0;&#8217;\)&#8217;
 &#x00A0;<br />;
 &#x00A0;<br />
 &#x00A0;<br />SEXPR_POST&lt;e&gt;/e&#x00A0;-&gt;
@@ -144,13 +144,13 @@ EXPR_POST/e&#x00A0;-&gt;&#x00A0;ATOM_POST/a&#x00A0;SEXPR_POST&lt;a&gt;/e&#x00A0;
 </div>
    </td></tr></table>
 <!--l. 87--><p class="nopar">
-<!--l. 89--><p class="indent">   The parser first searches for an atomic expression and then builds the AST by passing partial
+<!--l. 89--><p class="indent">   The parser &#xFB01;rst searches for an atomic expression and then builds the AST by passing partial
 expressions by the attributes of the <span 
 class="cmti-10">SEXPR</span><span 
 class="cmti-10">_POST </span>symbol.
 <!--l. 91--><p class="noindent">
    <h3 class="sectionHead"><span class="titlemark">11.4   </span> <a 
- id="x25-9600011.4"></a>Source code</h3>
+ id="x26-9600011.4"></a>Source code</h3>
 <!--l. 93--><p class="noindent">Here is the complete source code (<span 
 class="cmti-10">notation.py</span>):
    <div class="verbatimtabinput">
@@ -226,7 +226,7 @@ class="cmtt-10">&#x00A0;("+",</span><span
 class="cmtt-10">&#x00A0;"-",</span><span 
 class="cmtt-10">&#x00A0;"*",</span><span 
 class="cmtt-10">&#x00A0;"/",</span><span 
-class="cmtt-10">&#x00A0;"^")</span>
+class="cmtt-10">&#x00A0;"&#x02C6;")</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -715,7 +715,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;separator</span><span 
 class="cmtt-10">&#x00A0;space</span><span 
-class="cmtt-10">&#x00A0;'\s+';</span>
+class="cmtt-10">&#x00A0;&#8217;\s+&#8217;;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -723,7 +723,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;token</span><span 
 class="cmtt-10">&#x00A0;func1</span><span 
-class="cmtt-10">&#x00A0;'\b(sin|cos|tan)\b'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\b(sin|cos|tan)\b&#8217;</span><span 
 class="cmtt-10">&#x00A0;;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
@@ -732,7 +732,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;token</span><span 
 class="cmtt-10">&#x00A0;func2</span><span 
-class="cmtt-10">&#x00A0;'\b(min|max)\b'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\b(min|max)\b&#8217;</span><span 
 class="cmtt-10">&#x00A0;;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
@@ -741,7 +741,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;token</span><span 
 class="cmtt-10">&#x00A0;ident</span><span 
-class="cmtt-10">&#x00A0;'\w+';</span>
+class="cmtt-10">&#x00A0;&#8217;\w+&#8217;;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br />
 <span 
@@ -770,14 +770,14 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\n'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\n&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;$</span><span 
 class="cmtt-10">&#x00A0;t</span><span 
 class="cmtt-10">&#x00A0;=</span><span 
-class="cmtt-10">&#x00A0;'infix'</span>
+class="cmtt-10">&#x00A0;&#8217;infix&#8217;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -792,14 +792,14 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\n'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\n&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;$</span><span 
 class="cmtt-10">&#x00A0;t</span><span 
 class="cmtt-10">&#x00A0;=</span><span 
-class="cmtt-10">&#x00A0;'prefix'</span>
+class="cmtt-10">&#x00A0;&#8217;prefix&#8217;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -813,14 +813,14 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\n'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\n&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;$</span><span 
 class="cmtt-10">&#x00A0;t</span><span 
 class="cmtt-10">&#x00A0;=</span><span 
-class="cmtt-10">&#x00A0;'postfix'</span>
+class="cmtt-10">&#x00A0;&#8217;postfix&#8217;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -848,7 +848,7 @@ class="cmtt-10">&#x00A0;EXPR/e</span><span
 class="cmtt-10">&#x00A0;-&gt;</span><span 
 class="cmtt-10">&#x00A0;TERM/e</span><span 
 class="cmtt-10">&#x00A0;(</span><span 
-class="cmtt-10">&#x00A0;'[+-]'/op</span><span 
+class="cmtt-10">&#x00A0;&#8217;[+-]&#8217;/op</span><span 
 class="cmtt-10">&#x00A0;TERM/t</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -894,7 +894,7 @@ class="cmtt-10">&#x00A0;TERM/t</span><span
 class="cmtt-10">&#x00A0;-&gt;</span><span 
 class="cmtt-10">&#x00A0;FACT/t</span><span 
 class="cmtt-10">&#x00A0;(</span><span 
-class="cmtt-10">&#x00A0;'[*/]'/op</span><span 
+class="cmtt-10">&#x00A0;&#8217;[*/]&#8217;/op</span><span 
 class="cmtt-10">&#x00A0;FACT/f</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -943,7 +943,7 @@ class="cmtt-10">&#x00A0;FACT/f</span><span
 class="cmtt-10">&#x00A0;-&gt;</span><span 
 class="cmtt-10">&#x00A0;ATOM/f</span><span 
 class="cmtt-10">&#x00A0;(</span><span 
-class="cmtt-10">&#x00A0;'\^'/op</span><span 
+class="cmtt-10">&#x00A0;&#8217;\&#x02C6;&#8217;/op</span><span 
 class="cmtt-10">&#x00A0;FACT/e</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1047,9 +1047,9 @@ class="cmtt-10">&#x00A0;|</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;EXPR/a</span><span 
-class="cmtt-10">&#x00A0;'\)'</span>
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1063,9 +1063,9 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;func1/f</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;EXPR/x</span><span 
-class="cmtt-10">&#x00A0;'\)'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1092,11 +1092,11 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;func2/f</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;EXPR/x</span><span 
-class="cmtt-10">&#x00A0;','</span><span 
+class="cmtt-10">&#x00A0;&#8217;,&#8217;</span><span 
 class="cmtt-10">&#x00A0;EXPR/y</span><span 
-class="cmtt-10">&#x00A0;'\)'</span><span 
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span><span 
 class="cmtt-10">&#x00A0;$</span><span 
 class="cmtt-10">&#x00A0;a=Func(f,x,y)</span>
 <span 
@@ -1176,9 +1176,9 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;|</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;EXPR_PRE/e</span><span 
-class="cmtt-10">&#x00A0;'\)'</span>
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1338,9 +1338,9 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;|</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\('</span><span 
+class="cmtt-10">&#x00A0;&#8217;\(&#8217;</span><span 
 class="cmtt-10">&#x00A0;EXPR_POST/a</span><span 
-class="cmtt-10">&#x00A0;'\)'</span>
+class="cmtt-10">&#x00A0;&#8217;\)&#8217;</span>
 <span 
 class="cmtt-10">&#x00A0;</span><br /><span 
 class="cmtt-10">&#x00A0;</span><span 
@@ -1444,7 +1444,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'[+-]'/op</span><span 
+class="cmtt-10">&#x00A0;&#8217;[+-]&#8217;/op</span><span 
 class="cmtt-10">&#x00A0;$</span><span 
 class="cmtt-10">&#x00A0;prec=1</span>
 <span 
@@ -1455,7 +1455,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;|</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'[*/]'/op</span><span 
+class="cmtt-10">&#x00A0;&#8217;[*/]&#8217;/op</span><span 
 class="cmtt-10">&#x00A0;$</span><span 
 class="cmtt-10">&#x00A0;prec=2</span>
 <span 
@@ -1466,7 +1466,7 @@ class="cmtt-10">&#x00A0;</span><span
 class="cmtt-10">&#x00A0;|</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
-class="cmtt-10">&#x00A0;'\^'/op</span><span 
+class="cmtt-10">&#x00A0;&#8217;\&#x02C6;&#8217;/op</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;</span><span 
 class="cmtt-10">&#x00A0;$</span><span 

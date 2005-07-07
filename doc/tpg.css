@@ -64,7 +64,7 @@ td.td00{ padding-left:0pt; padding-right:0pt; }
 td.td01{ padding-left:0pt; padding-right:5pt; }
 td.td10{ padding-left:5pt; padding-right:0pt; }
 td.td11{ padding-left:5pt; padding-right:5pt; }
-.hline hr, .cline hr{ height : 1px; }
+.hline hr, .cline hr{ height : 1px; margin:0px; }
 .tabbing-right {text-align:right;}
 span.TEX {letter-spacing: -0.125em; }
 span.TEX span.E{ position:relative;top:0.5ex;left:-0.0417em;}

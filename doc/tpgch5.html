@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2005-03-01 21:58:00"> 
+<meta name="date" content="2005-07-08 23:00:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
@@ -26,7 +26,7 @@ parts:
      <dl class="description"><dt class="description">
 <span 
 class="cmbx-10">Options</span> </dt><dd 
-class="description">are defined at the beginning of the grammar (see&#x00A0;<a 
+class="description">are de&#xFB01;ned at the beginning of the grammar (see&#x00A0;<a 
 href="#x17-290005.3">5.3<!--tex4ht:ref: grammar:options --></a>).
      </dd><dt class="description">
 <span 
@@ -40,7 +40,7 @@ href="tpgch6.html#x18-410006.2">6.2<!--tex4ht:ref: lexer:token_def --></a>).
 class="cmbx-10">Rules</span> </dt><dd 
 class="description">are described after tokens (see&#x00A0;<a 
 href="#x17-360005.5">5.5<!--tex4ht:ref: grammar:parser --></a>).</dd></dl>
-<!--l. 15--><p class="indent">   See figure&#x00A0;<a 
+<!--l. 15--><p class="indent">   See &#xFB01;gure&#x00A0;<a 
 href="#x17-270011">5.1<!--tex4ht:ref: grammar:struct --></a> for a generic TPG grammar.
 <!--l. 17--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
@@ -72,8 +72,8 @@ class&#x00A0;Foo(tpg.Parser):
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;set&#x00A0;lexer&#x00A0;=&#x00A0;CSL
 &#x00A0;<br />
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Tokens
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;separator&#x00A0;spaces&#x00A0;&#x00A0;&#x00A0;&#x00A0;'\s+'&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;int&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;'\d+'&#x00A0;&#x00A0;&#x00A0;int&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;separator&#x00A0;spaces&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#8217;\s+&#8217;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;token&#x00A0;int&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#8217;\d+&#8217;&#x00A0;&#x00A0;&#x00A0;int&#x00A0;;
 &#x00A0;<br />
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Rules
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;START&#x00A0;-&gt;&#x00A0;X&#x00A0;Y&#x00A0;Z&#x00A0;;
@@ -144,24 +144,24 @@ class="cmti-10">NamedGroupLexer</span>.
 class="cmbx-10">set lexer = CacheNamedGroupLexer</span> </dt><dd 
 class="description">is similar to <span 
 class="cmti-10">NamedGroupLexer </span>except that tokens are
-     first stored in a list. It is faster for heavy backtracking grammars.
+     &#xFB01;rst stored in a list. It is faster for heavy backtracking grammars.
      </dd><dt class="description">
 <span 
 class="cmbx-10">set lexer = CacheLexer</span> </dt><dd 
 class="description">is similar to <span 
-class="cmti-10">Lexer </span>except that tokens are first stored in a list. It is
+class="cmti-10">Lexer </span>except that tokens are &#xFB01;rst stored in a list. It is
      faster for heavy backtracking grammar.
      </dd><dt class="description">
 <span 
 class="cmbx-10">set lexer = ContextSensitiveLexer</span> </dt><dd 
 class="description">is the context sensitive lexer (see&#x00A0;<a 
-href="tpgch8.html#x21-720008">8<!--tex4ht:ref: tpg:CSL --></a>).</dd></dl>
+href="tpgch8.html#x22-720008">8<!--tex4ht:ref: tpg:CSL --></a>).</dd></dl>
 <!--l. 73--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">5.3.2   </span> <a 
  id="x17-310005.3.2"></a>Word bondary option</h4>
 <!--l. 75--><p class="noindent">The <span 
 class="cmti-10">word</span><span 
-class="cmti-10">_boundary </span>options tells the lexer to search for word boundaries after identifiers.
+class="cmti-10">_boundary </span>options tells the lexer to search for word boundaries after identi&#xFB01;ers.
      <dl class="description"><dt class="description">
 <span 
 class="cmbx-10">set word</span><span 
@@ -179,7 +179,7 @@ class="description">disables the word boundary search.</dd></dl>
    <h4 class="subsectionHead"><span class="titlemark">5.3.3   </span> <a 
  id="x17-320005.3.3"></a>Regular expression options</h4>
 <!--l. 84--><p class="noindent">The <span 
-class="cmti-10">sre </span>module accepts some options to define the behaviour of the compiled regular expressions. These
+class="cmti-10">sre </span>module accepts some options to de&#xFB01;ne the behaviour of the compiled regular expressions. These
 options can be changed for each parser.
      <dl class="description"><dt class="description">
 <span 
@@ -248,7 +248,7 @@ that are common to every lines. TPG considers spaces and tabulations as the same
 important to always use the same indentation style. Thus it is advised not to mix spaces and tabulations
 in indentation. Then this code will be reindented when generated according to its location (in a class, in
 a method or in global space).
-<!--l. 121--><p class="indent">   The figure&#x00A0;<a 
+<!--l. 121--><p class="indent">   The &#xFB01;gure&#x00A0;<a 
 href="#x17-350012">5.2<!--tex4ht:ref: grammar:indent --></a> shows how TPG handles indentation.
 <!--l. 123--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
@@ -290,104 +290,35 @@ class="td11"><table width="100%"
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
 {{
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />if<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />1==2:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"???"
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />else:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;if&#x2423;1==2:
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"???"
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;else:
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"OK"
 &#x00A0;<br />}}
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 138--><p class="nopar">                   </td><td  style="text-align:left;" id="TBL-14-2-2"  
 class="td11"><table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&#x00A0;<br />$<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />if<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />1==2:
-&#x00A0;<br />$<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"???"
-&#x00A0;<br />$<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />else:
-&#x00A0;<br />$<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"
+&#x00A0;<br />$&#x2423;&#x2423;if&#x2423;1==2:
+&#x00A0;<br />$&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"???"
+&#x00A0;<br />$&#x2423;&#x2423;else:
+&#x00A0;<br />$&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"OK"
 &#x00A0;<br />
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 147--><p class="nopar">                   </td><td  style="text-align:left;" id="TBL-14-2-3"  
 class="td11"><table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-&#x00A0;<br />if<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />1==2:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"???"
+&#x00A0;<br />if&#x2423;1==2:
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"???"
 &#x00A0;<br />else:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"OK"
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 155--><p class="nopar">                </td><td  style="text-align:left;" id="TBL-14-2-4"  
@@ -402,41 +333,12 @@ class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr
 class="td11"><table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-{{<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />if<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />1==2:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"???"
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />else:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"
+{{&#x2423;&#x2423;if&#x2423;1==2:
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"???"
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;else:
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"OK"
 &#x00A0;<br />}}
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 168--><p class="nopar">                   </td><td  style="text-align:left;" id="TBL-14-3-2"  
@@ -445,32 +347,11 @@ trouble in that case.   </td><td  style="text-align:left;" id="TBL-14-3-3"
 class="td11"><table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-if<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />1==2:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"???"
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />else:
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+if&#x2423;1==2:
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"???"
+&#x00A0;<br />&#x2423;&#x2423;else:
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"OK"
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 177--><p class="nopar">                </td><td  style="text-align:left;" id="TBL-14-3-4"  
@@ -479,7 +360,7 @@ class="cmti-10">WRONG</span>: it&#8217;s a bad
 idea
 to start a multiline
 code section on the
-first  line  since  the
+&#xFB01;rst  line  since  the
 common
 indentation may be
 different from what
@@ -495,66 +376,32 @@ class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr
 class="td11"><table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-{{<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />}}
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+{{&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"OK"&#x2423;}}
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 186--><p class="nopar">                   </td><td  style="text-align:left;" id="TBL-14-4-2"  
 class="td11"><table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-$<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+$&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;&#x2423;print&#x2423;"OK"
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 190--><p class="nopar">or
 <table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-$<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />$
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+$&#x2423;print&#x2423;"OK"&#x2423;$
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 194--><p class="nopar">                   </td><td  style="text-align:left;" id="TBL-14-4-3"  
 class="td11"><table width="100%" 
 class="verbatim"><tr class="verbatim"><td 
 class="verbatim"><div class="verbatim">
-print<img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />"OK"
-&#x00A0;<br /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" /><img 
-src="cmtt10-20.png" alt="_" class="10x-x-20" />
+print&#x2423;"OK"
+&#x00A0;<br />&#x2423;&#x2423;&#x2423;&#x2423;
 </div>
 </td></tr></table>
 <!--l. 198--><p class="nopar">                </td><td  style="text-align:left;" id="TBL-14-4-4"  
@@ -579,7 +426,7 @@ class="cmti-10">tpg.Parser </span>classes. The grammar is the doc string of the 
 <!--l. 213--><p class="noindent">
    <h4 class="subsectionHead"><span class="titlemark">5.5.1   </span> <a 
  id="x17-370005.5.1"></a>Methods</h4>
-<!--l. 215--><p class="noindent">As TPG parsers are just Python classes, you can use them as normal classes. If you redefine the <span 
+<!--l. 215--><p class="noindent">As TPG parsers are just Python classes, you can use them as normal classes. If you rede&#xFB01;ne the <span 
 class="cmti-10">_</span><span 
 class="cmti-10">_init</span><span 
 class="cmti-10">_</span><span 

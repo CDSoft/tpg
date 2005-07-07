@@ -7,7 +7,7 @@
 <meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/mn.html)"> 
 <!-- html,2 --> 
 <meta name="src" content="tpg.tex"> 
-<meta name="date" content="2005-03-01 21:58:00"> 
+<meta name="date" content="2005-07-08 23:00:00"> 
 <link rel="stylesheet" type="text/css" href="tpg.css"> 
 </head><body 
 >
@@ -19,12 +19,12 @@ href="tpgpa2.html#tpgch4.html" >up</a>] </p></div>
  id="x16-230004"></a>Usage</h2>
    <h3 class="sectionHead"><span class="titlemark">4.1   </span> <a 
  id="x16-240004.1"></a>Package content</h3>
-<!--l. 3--><p class="noindent">TPG is a package which main function is to define a class which particular metaclass converts a doc
-string into a parser. You only need to import TPG and use these five objects:
+<!--l. 3--><p class="noindent">TPG is a package which main function is to de&#xFB01;ne a class which particular metaclass converts a doc
+string into a parser. You only need to import TPG and use these &#xFB01;ve objects:
      <dl class="description"><dt class="description">
 <span 
 class="cmbx-10">tpg.Parser:</span> </dt><dd 
-class="description">This is the base class of the parsers you want to define.
+class="description">This is the base class of the parsers you want to de&#xFB01;ne.
      </dd><dt class="description">
 <span 
 class="cmbx-10">tpg.Error:</span> </dt><dd 
@@ -45,7 +45,7 @@ class="description">This exception is raised when the parser fails.
 class="cmbx-10">tpg.SemanticError:</span> </dt><dd 
 class="description">This  exception  is  raised  by  the  grammar  itself  when  some  semantic
      properties fail.</dd></dl>
-<!--l. 20--><p class="indent">   The grammar must be in the doc string of the class (see figure&#x00A0;<a 
+<!--l. 20--><p class="indent">   The grammar must be in the doc string of the class (see &#xFB01;gure&#x00A0;<a 
 href="#x16-240011">4.1<!--tex4ht:ref: usage:embed --></a>).
 <!--l. 22--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
@@ -75,7 +75,7 @@ class="verbatim"><div class="verbatim">
 &#x00A0;<br />
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;START/x&#x00A0;-&gt;&#x00A0;Bar/x&#x00A0;;
 &#x00A0;<br />
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Bar/x&#x00A0;-&gt;&#x00A0;'bar'/x&#x00A0;;
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Bar/x&#x00A0;-&gt;&#x00A0;&#8217;bar&#8217;/x&#x00A0;;
 &#x00A0;<br />
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;"""
 </div>
@@ -91,7 +91,7 @@ class="td11">                                                                   
                                                                                  
 <!--l. 34--><p class="indent">   </td></tr></table></div><hr class="endfigure">
 <!--l. 36--><p class="indent">   Then you can use the new generated parser. The parser is simply a Python class (see
-figure&#x00A0;<a 
+&#xFB01;gure&#x00A0;<a 
 href="#x16-240022">4.2<!--tex4ht:ref: usage:inst --></a>).
 <!--l. 38--><p class="indent">   <hr class="figure"><div class="figure" 
 ><table class="figure"><tr class="figure"><td class="figure" 
@@ -120,7 +120,7 @@ class="verbatim"><div class="verbatim">
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;my_parser&#x00A0;=&#x00A0;Foo()
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;x&#x00A0;=&#x00A0;my_parser(test)&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;#&#x00A0;Uses&#x00A0;the&#x00A0;START&#x00A0;symbol
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print&#x00A0;x
-&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;x&#x00A0;=&#x00A0;my_parser.parse('Bar',&#x00A0;test)&#x00A0;&#x00A0;#&#x00A0;Uses&#x00A0;the&#x00A0;Bar&#x00A0;symbol
+&#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;x&#x00A0;=&#x00A0;my_parser.parse(&#8217;Bar&#8217;,&#x00A0;test)&#x00A0;&#x00A0;#&#x00A0;Uses&#x00A0;the&#x00A0;Bar&#x00A0;symbol
 &#x00A0;<br />&#x00A0;&#x00A0;&#x00A0;&#x00A0;print&#x00A0;x
 </div>
 </td></tr></table>
@@ -162,18 +162,18 @@ class="cmti-10">tpg </span>into a verbose mode (it displays parser names).
 <span 
 class="cmbx-10">-vv</span> </dt><dd 
 class="description">turns <span 
-class="cmti-10">tpg </span>into a more verbose mode (it displays parser names and simplified rules).
+class="cmti-10">tpg </span>into a more verbose mode (it displays parser names and simpli&#xFB01;ed rules).
      </dd><dt class="description">
 <span 
-class="cmbx-10">-o file.py</span> </dt><dd 
+class="cmbx-10">-o &#xFB01;le.py</span> </dt><dd 
 class="description">tells <span 
 class="cmti-10">tpg </span>to generate the parser in <span 
-class="cmti-10">file.py</span>. The default output file is <span 
+class="cmti-10">&#xFB01;le.py</span>. The default output &#xFB01;le is <span 
 class="cmti-10">grammar.py </span>if -o
      option is not provided and <span 
 class="cmti-10">grammar.pyg </span>is the name of the grammar.</dd></dl>
-<!--l. 67--><p class="indent">   Notice that .pyg files are valid Python scripts. So you can choose the run .pyg file (slower startup
-but easier for debugging purpose) or turn them into a .py file (faster startup but needs a
+<!--l. 67--><p class="indent">   Notice that .pyg &#xFB01;les are valid Python scripts. So you can choose the run .pyg &#xFB01;le (slower startup
+but easier for debugging purpose) or turn them into a .py &#xFB01;le (faster startup but needs a
 &#8221;precompilation&#8221; stage). You can also write .py scripts containing grammars to be used as Python
 scripts.
 <!--l. 70--><p class="indent">   In fact I only use the <span 
