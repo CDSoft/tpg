@@ -47,15 +47,16 @@ if 'sdist' in sys.argv[1:]:
             "tpg tpg.pyg"
         ),
         # Documentation / Tutorial
-        ( 'doc/tpg.html', ['doc/*.tex'],
-            "cd doc && htlatex tpg html,2 && web2png -t && rm tpg.dvi"
-        ),
+#        ( 'doc/tpg.html', ['doc/*.tex'],
+#            #"cd doc && htlatex tpg html,2 && web2png -t && rm tpg.dvi"
+#            "cd doc && htlatex tpg html,2,png \" -g.png\" && rm tpg.dvi"
+#        ),
         ( 'doc/tpg.pdf', ['doc/*.tex'],
             "cd doc && pdflatex tpg && pdflatex tpg && pdflatex tpg"
         ),
-        ( 'doc/tpg.dvi', ['doc/*.tex'],
-            "cd doc && latex tpg && latex tpg && latex tpg"
-        ),
+#        ( 'doc/tpg.dvi', ['doc/*.tex'],
+#            "cd doc && latex tpg && latex tpg && latex tpg"
+#        ),
     ]
 
     def target_outdated(target, deps):

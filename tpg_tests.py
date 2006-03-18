@@ -184,10 +184,10 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     
                     separator spaces '\s+' ;
 
-                    START/$b,w,e$ ->            $ b, w, e = 0, 0, 0
-                        (   b                   $ b += 1
-                        |   e                   $ e += 1
-                        |   w                   $ w += 1
+                    START/$nb,nw,ne$ ->         $ nb, nw, ne = 0, 0, 0
+                        (   b                   $ nb += 1
+                        |   e                   $ ne += 1
+                        |   w                   $ nw += 1
                         )*
                         ;
                 """%tpg.Py()
@@ -210,10 +210,10 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     
                     separator spaces '\s+' ;
 
-                    START/$b,w,e$ ->            $ b, w, e = 0, 0, 0
-                        (   b                   $ b += 1
-                        |   e                   $ e += 1
-                        |   w                   $ w += 1
+                    START/$nb,nw,ne$ ->         $ nb, nw, ne = 0, 0, 0
+                        (   b                   $ nb += 1
+                        |   e                   $ ne += 1
+                        |   w                   $ nw += 1
                         )*
                         ;
                 """%tpg.Py()
@@ -266,7 +266,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 self.assertEquals(p('a\nb\nc\n'), (3, 3))
 
             class Verbose(PARSER):
-                __doc__ = r"""
+                __doc__ = (r"""
                     set lexer = %(LEXER)s
 
                     set lexer_verbose = True
@@ -275,20 +275,42 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     token foo "foo" ;
                     token bar "bar" ;
 
+                    token triple_quoted_1 '''
+                        "{3}
+                        (   \\.
+                        |   "{0,2} [^"\\]+
+                        )*
+                        "{3}
+                    ''' ;
+
+                """ + r'''
+                    token triple_quoted_2 """
+                        '{3}
+                        (   \\.
+                        |   '{0,2} [^'\\]+
+                        )*
+                        '{3}
+                    """ ;
+                ''' + r"""
+
                     separator spaces '\s+' ;
 
                     START/lst ->                $ lst = []
                         (   foobar              $ lst.append(1)
                         |   foo                 $ lst.append(2)
                         |   bar                 $ lst.append(3)
+                        |   triple_quoted_1     $ lst.append(4)
+                        |   triple_quoted_2     $ lst.append(5)
                         )*
                         ;
-                """%tpg.Py()
+                """)%tpg.Py()
                 verbose = VERBOSE
 
             def testVerbose(self):
                 p = self.Verbose()
-                self.assertEquals(p('foobar foo bar foo  bar'), [1, 2, 3, 2, 3])
+                self.assertEquals(p('''
+                    foobar foo bar foo  bar """ hello 'world' """ \''' ''hello'' ""universe"" \'''
+                '''), [1, 2, 3, 2, 3, 4, 5])
 
             class NotVerbose(PARSER):
                 __doc__ = r"""
@@ -345,11 +367,11 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                         ;
 
                     POSITIONS/lst ->                $ lst = []
-                        (                           $ line, row = self.line(), self.row()
+                        (                           $ line, column = self.line(), self.column()
                             (   text text int       $ lst.append(None)
                             |   text int            $ lst.append(None)
-                            |   text/t              $ lst.append((t, line, row))
-                            |   brackets/t          $ lst.append((t, line, row))
+                            |   text/t              $ lst.append((t, line, column))
+                            |   brackets/t          $ lst.append((t, line, column))
                             )
                         )*
                         ;   
@@ -499,10 +521,10 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     token tok "\(.*?\)" ;
 
                     START/lst ->                $ lst = []
-                        (                       $ lst.append((self.line(), self.row()))
-                            @t                  $ lst.append((t.line, t.row))
-                            tok                 $ lst.append((self.line(t), self.row(t)))
-                            @t                  $ lst.append((t.line, t.row))
+                        (                       $ lst.append((self.line(), self.column()))
+                            @t                  $ lst.append((t.line, t.column))
+                            tok                 $ lst.append((self.line(t), self.column(t)))
+                            @t                  $ lst.append((t.line, t.column))
                         )*
                         ;
                 """%tpg.Py()

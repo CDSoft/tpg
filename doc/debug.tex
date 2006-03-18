@@ -34,14 +34,14 @@ class Test(tpg.VerboseParser):
 
 The information displayed by verbose parsers has the following format:
 \begin{verbatim}
-[eat counter][stack depth]callers: (line,row) <current token> == <expected token>
+[eat counter][stack depth]callers: (line,column) <current token> == <expected token>
 \end{verbatim}
 
 \begin{description}
     \item [$eat counter$] is the number of calls of the lexer.
     \item [$stack depth$] is the depth of the Python stack since the axiom.
     \item [$callers$] is the list of non terminal symbols called before the current symbol.
-    \item [$(line,row)$] is the position of the current token in the input string.
+    \item [$(line,column)$] is the position of the current token in the input string.
     \item [$==$] means the current token matches the expected token (level 1 or 2).
     \item [$!=$] means the current token doesn't match the expected token (level 2).
 \end{description}

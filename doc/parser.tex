@@ -14,6 +14,7 @@ and the declaration ends with a \emph{;}.
 The symbol defined by the rule as well as the symbols that appear in the rule can have attributes and return values.
 The attribute list - if any - is given as an object list enclosed in left and right angles.
 The return value - if any - is extracted by the infix \emph{/} operator.
+When no return value is specified, TPG creates a variable named as the symbol.
 See figure~\ref{parser:rule} for example.
 
 \begin{code}
@@ -26,6 +27,16 @@ See figure~\ref{parser:rule} for example.
         B <y, z> / ret_value_of_B
 
         ;
+
+    S1 / $f(A,B)$ ->
+        A       # return value of A stored in variable A
+        B       # return value of B stored in variable B
+    ;
+
+    S2 ->       # we can use S2 to compute the return value
+        A       $ S2 = A
+        B       $ S2 = f(S2, B)
+    ;
 \end{verbatimtab}
 \end{code}
 
@@ -137,7 +148,11 @@ To override the default precedence you can group expressions with parenthesis.
 \section{Actions}
 
 Grammar rules can contain actions as Python code.
-Python code is copied verbatim into the generated code.
+Python code is copied verbatim into the generated code and
+is delimited by \verb!$...$!, \verb!$...EOL!\footnote{EOL means End Of Line} or \verb!{{...}}!.
+
+Please be aware that indentation should obey Python indentation rules.
+See the grammar description for further information (see figure~\ref{grammar:indent}).
 
 \subsection{Abstract syntax trees}                              \label{parser:AST}
 
@@ -158,16 +173,17 @@ class Couple:
 
 class Foo(tpg.Parser):
     r"""
-    COUPLE -> '(' ITEM/a ',' ITEM/b ')' $ c = Couple(a,b) $ ;
-
     COUPLE/$Couple(a,b)$ -> '(' ITEM/a ',' ITEM/b ')' ;
+
+    # which is equivalent to
+    # COUPLE/c -> '(' ITEM/a ',' ITEM/b ')' $ c = Couple(a,b) $ ;
     """
 \end{verbatimtab}
 \end{code}
 
 \subsubsection{Creating an AST}
 
-AST are created in Python code delimited either by \verb!$...$! or by \verb!{{...}}! (see figure~\ref{parser:AST}).
+AST are created in Python code (see section~\ref{parser:AST}).
 
 \subsubsection{Updating an AST}
 
@@ -181,8 +197,7 @@ In that case one can use a list and its append method (see figure~\ref{parser:AS
 class ListParser(tpg.Parser):
     r"""
     LIST/l ->
-        '('
-                            $ l = List<>
+        '('                 $ l = []
             ITEM/a          $ l.append(a)
             ( ',' ITEM/a    $ l.append(a)
             )*
@@ -242,9 +257,9 @@ Marks can be put in the input string by the \emph{mark} method or the prefix \em
     $ my_string = self.extract(beginning, end)
 \end{verbatimtab}
 
-\subsubsection{Getting the line and row number of a token}
+\subsubsection{Getting the line and column number of a token}
 
-The \emph{line} and \emph{row} methods return the line and row number of the current token.
+The \emph{line} and \emph{column} methods return the line and column number of the current token.
 If the first parameter is a mark (see~\ref{parser:mark}) the method returns the line number of the token following the mark.
 
 \subsubsection{Backtracking}
