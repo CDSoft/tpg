@@ -1,4 +1,12 @@
-2006-07-23  Christophe Delord <christophe.delord@free.fr>
+2006-10-07  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 3.1.1:
+        Bug fix
+
+    * Bug fixes:
+        - Change text extraction to work with Python 2.5
+
+2006-03-19  Christophe Delord <christophe.delord@free.fr>
 
     * Version 3.1.0:
         Bug fixes and new features
@@ -7,12 +15,11 @@
         - Fixed some more typos in the documentation (thanks
         to Johannes Schöön).
         - Bug fix (wrong column number for the first token).
-        - Row is renamed as column.
+        - Row is deprecated and renamed as column.
 
     * New features:
         - Make string tokens match triple quoted strings.
         - Add default variable for non specified return values.
-        - Add tips to parse indentation in the documentation
 
 2005-07-08  Christophe Delord <christophe.delord@free.fr>
 

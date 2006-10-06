@@ -1,6 +1,5 @@
 include examples/calc.pyg
 include examples/notation.pyg
-include examples/indentation.pyg
 
 include doc/*.tex
 include doc/*.dvi

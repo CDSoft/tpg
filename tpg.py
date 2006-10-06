@@ -37,11 +37,15 @@ trees while parsing.
 # For further information about TPG you can visit
 # http://christophe.delord.free.fr/en/tpg
 
+# TODO:
+#   - indent and dedent preprocessor
+#
+
 from __future__ import generators
 
 __tpgname__ = 'TPG'
-__version__ = '3.1.0'
-__date__ = '2006-07-23'
+__version__ = '3.1.1'
+__date__ = '2006-10-07'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -311,15 +315,14 @@ class NamedGroupLexer(LexerOptions):
         """
         return self.cur_token
 
-    def __getitem__(self, item):
+    def extract(self, start, stop):
         """ extract text from the input string
 
         Parameters:
-            item : slice delimiting the text to extract
-                   item.start is the token from which the extraction starts
-                   item.stop is the token where the extraction stops
+           start : token from which the extraction starts
+           stop  : token where the extraction stops
         """
-        return self.input[item.start.start:item.stop.prev_stop]
+        return self.input[start.start:stop.prev_stop]
 
 class Lexer(NamedGroupLexer):
     r""" Lexer(word_bounded, compile_options)
@@ -743,16 +746,15 @@ class ContextSensitiveLexer(LexerOptions):
         """
         return self.cur_token
 
-    def __getitem__(self, item):
+    def extract(self, start, stop):
         """ extract text from the input string
 
         Parameters:
-            item : slice delimiting the text to extract
-                   item.start is the token from which the extraction starts
-                   item.stop is the token where the extraction stops
+           start : the token from which the extraction starts
+           stop  : the token where the extraction stops
         """
-        start = item.start and item.start.next_start or 0
-        stop = item.stop and item.stop.stop or -1
+        start = start and start.next_start or 0
+        stop = stop and stop.stop or -1
         return self.input[start:stop]
 
 class Token:
@@ -781,6 +783,15 @@ class Token:
         self.end_line, self.end_column = end_line, end_column
         self.start, self.stop = start, stop
         self.prev_stop = prev_stop
+
+    #######################################################
+    # row is deprecated : to be removed in a future version
+    def warn_row(self): import warnings; warnings.warn("row is deprecated, please use column instead", category=DeprecationWarning)
+    def get_row(self): self.warn_row(); return self.column
+    def set_row(self): self.warn_row(); return self.column
+    def del_row(self): self.warn_row(); del self.column
+    row = property(fget=get_row, fset=set_row, fdel=del_row, doc="row")
+    #######################################################
 
     def match(self, name):
         """ return True is the token name is the name of the expected token
@@ -980,6 +991,14 @@ class Parser:
                 return 1
         return token.column
 
+    #######################################################
+    # row is deprecated : to be removed in a future version
+    def row(self, token=None):
+        import warnings
+        warnings.warn("row is deprecated, please use column instead.", category=DeprecationWarning)
+        return self.column(token)
+    #######################################################
+
     def mark(self):
         """ return the current token
 
@@ -995,7 +1014,7 @@ class Parser:
             start : token object as returned by mark
             stop  : token object as returned by mark
         """
-        return self.lexer[start:stop]
+        return self.lexer.extract(start, stop)
 
     def check(self, cond):
         """ check a condition and backtrack when it is False
@@ -1128,8 +1147,8 @@ class VerboseParser(Parser):
         found = "(%d,%d) %s %s"%(token.line, token.column, token.name, token.text)
         return "[%3d][%2d]%s: %s %s %s"%(eatcnt, stackdepth, callernames, found, op, expected)
 
-blank_line_re = re.compile(r"^\s*$")
-indent_re = re.compile(r"^\s*")
+blank_line_re = re.compile("^\s*$")
+indent_re = re.compile("^\s*")
 
 class tpg:
     """ This class contains some TPG classes to make the parsers usable inside and outside the tpg module
@@ -1194,7 +1213,8 @@ class TPGParser(tpg.Parser):
         RULES/rules
         ;
 
-    OPTIONS/options ->              $ options = self.Options(self)
+    OPTIONS/options ->
+                                    $ options = self.Options(self)
         (   'set' ident/name
             (   '=' ident/value     $ options.set(name, value)
             |                       $ options.set(name, 'True')
@@ -1202,7 +1222,8 @@ class TPGParser(tpg.Parser):
         )*
         ;
 
-    TOKENS/ts ->        $ ts = []
+    TOKENS/ts ->
+                        $ ts = []
         (   TOKEN/t     $ ts.append(t)
         )*
         ;
@@ -1218,13 +1239,15 @@ class TPGParser(tpg.Parser):
         )
         ;
 
-    RULES/rs ->         $ rs = self.Rules()
+    RULES/rs ->
+                        $ rs = self.Rules()
         (   RULE/r      $ rs.append(r)
         )*
         ;
 
     RULE/$self.Rule(head, body)$ -> HEAD/head '->' OR_EXPR/body ';' ;
 
+    #HEAD/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET/ret ;
     HEAD/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET<$self.PY_Ident(name)$>/ret ;
 
     OR_EXPR/$self.balance(or_expr)$ ->
@@ -1234,7 +1257,8 @@ class TPGParser(tpg.Parser):
         )*
         ;
 
-    AND_EXPR/$and_expr$ ->          $ and_expr = self.And()
+    AND_EXPR/$and_expr$ ->
+                                    $ and_expr = self.And()
         (   ATOM_EXPR/a REP<a>/a    $ and_expr.append(a)
         )*
         ;
@@ -1262,6 +1286,7 @@ class TPGParser(tpg.Parser):
         )?
         ;
 
+    #SYMBOL/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET/ret ;
     SYMBOL/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET<$self.PY_Ident(name)$>/ret ;
 
     INLINE_TOKEN/$self.InlineToken(expr, ret)$ ->
@@ -1288,6 +1313,7 @@ class TPGParser(tpg.Parser):
         |   '\*\*' ident/name           $ a = self.PY_KeywordArgumentList(name)
         ;
 
+    #RET/ret -> '/' PY_EXPR/ret | $ ret = None $ ;
     RET<ret=None>/ret -> ( '/' PY_EXPR/ret )? ;
 
     PY_EXPR/expr ->
@@ -1709,6 +1735,7 @@ class TPGParser(tpg.Parser):
                                   'ContextSensitiveLexer': ContextSensitiveLexer,
                                  },                                                     'NamedGroupLexer'),
             'word_boundary':    ({'True': True, 'False': False},                        'True'),
+            #'indent':           ({'True': True, 'False': False},                        'False'),
             'lexer_ignorecase': ({'True': "IGNORECASE", 'False': False},                'False'),
             'lexer_locale':     ({'True': "LOCALE",     'False': False},                'False'),
             'lexer_multiline':  ({'True': "MULTILINE",  'False': False},                'False'),
