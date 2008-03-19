@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import re
 import sys
@@ -181,7 +182,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     token e 'e$' ;
 
                     token w '\w' ;
-                    
+
                     separator spaces '\s+' ;
 
                     START/$nb,nw,ne$ ->         $ nb, nw, ne = 0, 0, 0
@@ -207,7 +208,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     token e 'e$' ;
 
                     token w '\w' ;
-                    
+
                     separator spaces '\s+' ;
 
                     START/$nb,nw,ne$ ->         $ nb, nw, ne = 0, 0, 0
@@ -374,7 +375,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                             |   brackets/t          $ lst.append((t, line, column))
                             )
                         )*
-                        ;   
+                        ;
                 """%tpg.Py()
                 verbose = VERBOSE
 
@@ -820,6 +821,30 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 self.assertRaises(tpg.SyntacticError, self.NOK2)
                 self.assertRaises(tpg.SyntacticError, self.NOK3)
                 self.assertRaises(tpg.SyntacticError, self.NOK4)
+
+        class UnicodeTestCase(unittest.TestCase):
+
+            class Parser(PARSER):
+                __doc__ = ur"""
+                    set lexer = %(LEXER)s
+                    set lexer_unicode = True
+
+                    token single_quote '[‘’]' unicode ;
+                    token double_quote '["“”]' ;
+                    token word '\w+' ;
+
+                    START/x -> double_quote word/x double_quote
+                             | single_quote word/x single_quote
+                             | '`' word/x '´'
+                             ;
+                """%tpg.Py()
+
+            def testExpr(self):
+                p = self.Parser()
+                self.assertEquals(p(u'"woah"'), "woah")
+                self.assertEquals(p(u"“woah”"), "woah")
+                self.assertEquals(p(u"‘woah’"), "woah")
+                self.assertEquals(p(u"`woah´"), "woah")
 
         try:
             unittest.main()

@@ -44,8 +44,8 @@ trees while parsing.
 from __future__ import generators
 
 __tpgname__ = 'TPG'
-__version__ = '3.1.1'
-__date__ = '2006-10-07'
+__version__ = '3.1.2'
+__date__ = '2008-03-19'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -954,6 +954,10 @@ class Parser:
         """
         try:
             self.lexer.start(input)
+            if isinstance(input, unicode):
+                self.string_prefix = 'ur'
+            else:
+                self.string_prefix = 'r'
             value = getattr(self, axiom)(*args, **kws)
             if not self.lexer.eof():
                 raise WrongToken
@@ -1228,7 +1232,7 @@ class TPGParser(tpg.Parser):
         )*
         ;
 
-    TOKEN/$token_type(name, expr, code)$ ->
+    TOKEN/$token_type(name, self.string_prefix, expr, code)$ ->
         (   'separator'     $ token_type = self.DefSeparator
         |   'token'         $ token_type = self.DefToken
         )
@@ -1333,7 +1337,7 @@ class TPGParser(tpg.Parser):
 
     def re_check(self, expr, tok):
         try:
-            sre_parse.parse(eval('r'+expr))
+            sre_parse.parse(eval(self.string_prefix+expr))
         except Exception, e:
             raise LexicalError((tok.line, tok.column), "Invalid regular expression: %s (%s)"%(expr, e))
 
@@ -1434,8 +1438,9 @@ class TPGParser(tpg.Parser):
 
     class DefToken:
         def_method = "def_token"
-        def __init__(self, name, expr, code=None):
+        def __init__(self, name, string_prefix, expr, code=None):
             self.name = name
+            self.string_prefix = string_prefix
             self.expr = expr
             if code is not None and code.gen_code().count('\n') > 1:
                 raise WrongToken
@@ -1443,10 +1448,10 @@ class TPGParser(tpg.Parser):
         def gen_def(self):
             expr = self.expr
             if self.code is None:
-                return "lexer.%s('%s', r%s)"%(self.def_method, self.name, expr)
+                return "lexer.%s('%s', %s%s)"%(self.def_method, self.name, self.string_prefix, expr)
             else:
                 code = self.code.gen_code().strip()
-                return "lexer.%s('%s', r%s, %s)"%(self.def_method, self.name, expr, code)
+                return "lexer.%s('%s', %s%s, %s)"%(self.def_method, self.name, self.string_prefix, expr, code)
 
     class DefSeparator(DefToken):
         def_method = "def_separator"
@@ -1795,7 +1800,7 @@ class TPGParser(tpg.Parser):
             except KeyError:
                 # Otherwise create an explicit definition for the new inline token
                 token_number += 1
-                token.set_explicit_token(self.DefToken("_tok_%s"%token_number, token.expr))
+                token.set_explicit_token(self.DefToken("_tok_%s"%token_number, self.string_prefix, token.expr))
                 explicit_tokens[token.expr[1:-1]] = token.explicit_token
                 inline_tokens.append(token)
         yield self.make_code("init_lexer",

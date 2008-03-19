@@ -2,11 +2,11 @@ include examples/calc.pyg
 include examples/notation.pyg
 
 include doc/*.tex
-include doc/*.dvi
+#include doc/*.dvi
 include doc/*.pdf
-include doc/*.html
-include doc/*.css
-include doc/*.png
+#include doc/*.html
+#include doc/*.css
+#include doc/*.png
 
 include tpg
 include tpg.pyg

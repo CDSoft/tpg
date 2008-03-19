@@ -1,3 +1,11 @@
+2008-03-20  Christophe Delord <christophe.delord@free.fr>
+
+    * Version 3.1.2:
+        Unicode support
+    * New features:
+        - Unicode grammars produce unicode parsers (thanks to
+        Gustavo Niemeyer).
+
 2006-10-07  Christophe Delord <christophe.delord@free.fr>
 
     * Version 3.1.1:
