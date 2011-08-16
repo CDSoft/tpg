@@ -5,6 +5,10 @@ import operator
 import string
 import tpg
 
+if tpg.__python__ == 3:
+    operator.div = operator.truediv
+    raw_input = input
+
 def make_op(op):
     return {
         '+'   : operator.add,
@@ -35,8 +39,8 @@ class Calc(tpg.Parser, dict):
         token mul_op    '[*/%]'                                                 $ make_op
         token funct1    '(cos|sin|tan|acos|asin|atan|sqr|sqrt|abs)\b'           $ make_op
         token funct2    '(norm)\b'                                              $ make_op
-        token real      '(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+'    $ string.atof
-        token integer   '\d+'                                                   $ string.atol
+        token real      '(\d+\.\d*|\d*\.\d+)([eE][-+]?\d+)?|\d+[eE][-+]?\d+'    $ float
+        token integer   '\d+'                                                   $ int
         token VarId     '[a-zA-Z_]\w*'                                          ;
 
         START/e ->
@@ -80,19 +84,18 @@ class Calc(tpg.Parser, dict):
     """
 
     def mem(self):
-        vars = self.items()
-        vars.sort()
+        vars = sorted(self.items())
         memory = [ "%s = %s"%(var, val) for (var, val) in vars ]
         return "\n\t" + "\n\t".join(memory)
 
-print "Calc (TPG example)"
+print("Calc (TPG example)")
 calc = Calc()
 while 1:
     l = raw_input("\n:")
     if l:
         try:
-            print calc(l)
-        except Exception, e:
-            print e
+            print(calc(l))
+        except Exception:
+            print(tpg.exc())
     else:
         break

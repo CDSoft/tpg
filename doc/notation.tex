@@ -49,7 +49,7 @@ EXPR_PRE/e ->
 |   '\(' EXPR_PRE/e '\)'
 |   OP/<op,prec> EXPR_PRE/a EXPR_PRE/b  $ e=Op(op,a,b,prec)
 |   func1/f EXPR/x                      $ e=Func(f,x)
-|   func1/f EXPR/x EXPR/y               $ e=Func(f,x,y)
+|   func2/f EXPR/x EXPR/y               $ e=Func(f,x,y)
 
 ;
 

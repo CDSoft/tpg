@@ -7,22 +7,23 @@
 
 \usepackage{a4wide, moreverb}
 
-\newif\ifpdf
-\ifx\pdfoutput\undefined
-    \pdffalse
-\else
-    \pdfoutput=1
-    \pdftrue
-\fi
+\usepackage{ifpdf}
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%    \pdffalse
+%\else
+%    \pdfoutput=1
+%    \pdftrue
+%\fi
 
 \ifpdf
     \usepackage[
         pdftex,
         pdftitle={Toy Parser Generator},
         pdfsubject={A simple parser generator for Python},
-        pdfcreator={Christophe Delord <christophe.delord@free.fr>},
-        pdfauthor={Christophe Delord <christophe.delord@free.fr>},
-        pdfproducer={Christophe Delord <christophe.delord@free.fr>},
+        pdfcreator={Christophe Delord <cdelord@cdsoft.fr>},
+        pdfauthor={Christophe Delord <cdelord@cdsoft.fr>},
+        pdfproducer={Christophe Delord <cdelord@cdsoft.fr>},
         pdfkeywords={Python, Parser, Generator, Toy Parser Generator},
         colorlinks=true
     ]{hyperref}
@@ -31,9 +32,9 @@
     \usepackage[
         pdftitle={Toy Parser Generator},
         pdfsubject={A simple parser generator for Python},
-        pdfcreator={Christophe Delord <christophe.delord@free.fr>},
-        pdfauthor={Christophe Delord <christophe.delord@free.fr>},
-        pdfproducer={Christophe Delord <christophe.delord@free.fr>},
+        pdfcreator={Christophe Delord <cdelord@cdsoft.fr>},
+        pdfauthor={Christophe Delord <cdelord@cdsoft.fr>},
+        pdfproducer={Christophe Delord <cdelord@cdsoft.fr>},
         pdfkeywords={Python, Parser, Generator, Toy Parser Generator},
         colorlinks=true
     ]{hyperref}
@@ -43,8 +44,8 @@
 
 \author{
     Christophe~Delord\\
-    christophe.delord@free.fr \\
-    \url{http://christophe.delord.free.fr/tpg/} \\
+    cdelord@cdsoft.fr \\
+    \url{http://cdsoft.fr/tpg/} \\
 }
 \title{
     Toy~Parser~Generator \\

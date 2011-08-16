@@ -10,7 +10,9 @@ include doc/*.pdf
 
 include tpg
 include tpg.pyg
+include tpg_tests.sh
 include tpg_tests.py
+include tpg_tests_py2.py
 
 include MANIFEST.in
 include THANKS

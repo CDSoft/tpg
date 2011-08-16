@@ -4,6 +4,9 @@
 
 import tpg
 
+if tpg.__python__ == 3:
+    raw_input = input
+
 class Op:
     """ Binary operator """
     def __init__(self, op, a, b, prec):
@@ -92,7 +95,7 @@ class ExpressionParser(tpg.Parser):
     |   '\(' EXPR_PRE/e '\)'
     |   OP/<op,prec> EXPR_PRE/a EXPR_PRE/b      $ e=Op(op,a,b,prec)
     |   func1/f EXPR/x                          $ e=Func(f,x)
-    |   func1/f EXPR/x EXPR/y                   $ e=Func(f,x,y)
+    |   func2/f EXPR/x EXPR/y                   $ e=Func(f,x,y)
     ;
 
     # Postfix expressions
@@ -122,14 +125,14 @@ class ExpressionParser(tpg.Parser):
 
 parser = ExpressionParser()
 while 1:
-    e = raw_input(":")
+    e = raw_input(":").rstrip()
     if e == "": break
     try:
         expr, t = parser(e+"\n")
-    except tpg.Error, e:
-        print e
+    except tpg.Error:
+        print(tpg.exc())
     else:
-        print e, "is a", t, "expression"
-        print "\tinfix   :", expr.infix()
-        print "\tprefix  :", expr.prefix()
-        print "\tpostfix :", expr.postfix()
+        print("%s is a %s expression"%(e, t))
+        print("\tinfix   : %s "%expr.infix())
+        print("\tprefix  : %s "%expr.prefix())
+        print("\tpostfix : %s "%expr.postfix())
