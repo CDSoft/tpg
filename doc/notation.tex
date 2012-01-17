@@ -4,13 +4,13 @@ In the previous example, the parser computes the value of the expression on the 
 It is also possible to build an abstract syntax tree to store an abstract representation of the input.
 This may be usefull when several passes are necessary.
 
-This example shows how to parse an expression (infix, prefix or postfix) and convert it in infix, prefix and postfix notation.
-The expression is saved in a tree. Each node of the tree correspond to an operator in the expression. Each leave is a number.
+This example shows how to parse an expression (infix, prefix or postfix) and convert it in infix, prefix and postfix notations.
+The expression is saved in a tree. Each node of the tree corresponds to an operator in the expression. Each leave is a number.
 Then to write the expression in infix, prefix or postfix notation, we just need to walk throught the tree in a particular order.
 
 \section{Abstract syntax trees}
 
-The AST of this converter has two types of node:
+The AST of this converter has three types of node:
 
 \begin{description}
     \item [class Op] is used to store operators (\verb$+$, \verb$-$, \verb$*$, \verb$/$, \verb$^$).

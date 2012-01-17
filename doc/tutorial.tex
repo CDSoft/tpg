@@ -1,6 +1,6 @@
 \section{Introduction}
 
-This short tutorial presents how to make a simple calculator.
+This short tutorial shows how to make a simple calculator.
 The calculator will compute basic mathematical expressions (\verb|+, -, *, /|) possibly nested in parenthesis.
 We assume the reader is familiar with regular expressions.
 
@@ -132,7 +132,7 @@ In fact terminal and non terminal symbols can return a value. The syntax is the 
 \end{tabular}
 \end{tableau}
 
-In the example described in this tutorial the computation of a \emph{Term} is made by applying the operator to the factors, this value is then returned :
+In the example described in this tutorial the computation of a \emph{Term} is made by applying the operator to the factors, this value is then returned:
 
 \begin{verbatimtab}[4]
     Expr/t -> Term/t ( add/op Term/f $t=op(t,f)$ )* ;

@@ -18,7 +18,7 @@ trees while parsing.
 """
 
 # Toy Parser Generator: A Python parser generator
-# Copyright (C) 2001-2011 Christophe Delord
+# Copyright (C) 2001-2012 Christophe Delord
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -42,8 +42,8 @@ trees while parsing.
 #
 
 __tpgname__ = 'TPG'
-__version__ = '3.1.3'
-__date__ = '2011-08-17'
+__version__ = '3.1.4'
+__date__ = '2012-01-18'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -855,7 +855,7 @@ class Py:
 class ParserMetaClass(type):
     """ ParserMetaClass is the metaclass of Parser objects.
 
-    When a ParserMetaClass class in defined, its doc string should contain
+    When a ParserMetaClass class is defined, its doc string should contain
     a grammar. This grammar is parsed by TPGParser and the generated code
     is added to the class.
     If the class doesn't have a doc string, nothing is generated
@@ -1160,7 +1160,7 @@ class TPGParser(tpg.Parser):
     __grammar__ = r"""
 
     # This class parses TPG grammar
-    # and generate the Python source and compiled code for the parser
+    # and generates the Python source and compiled code for the parser
 
     set lexer = NamedGroupLexer
     set lexer_verbose
@@ -1241,7 +1241,6 @@ class TPGParser(tpg.Parser):
 
     RULE/$self.Rule(head, body)$ -> HEAD/head '->' OR_EXPR/body ';' ;
 
-    #HEAD/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET/ret ;
     HEAD/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET<$self.PY_Ident(name)$>/ret ;
 
     OR_EXPR/$self.balance(or_expr)$ ->
@@ -1280,7 +1279,6 @@ class TPGParser(tpg.Parser):
         )?
         ;
 
-    #SYMBOL/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET/ret ;
     SYMBOL/$self.Symbol(name, args, ret)$ -> ident/name OPT_ARGS/args RET<$self.PY_Ident(name)$>/ret ;
 
     INLINE_TOKEN/$self.InlineToken(expr, ret)$ ->
@@ -1307,7 +1305,6 @@ class TPGParser(tpg.Parser):
         |   '\*\*' ident/name           $ a = self.PY_KeywordArgumentList(name)
         ;
 
-    #RET/ret -> '/' PY_EXPR/ret | $ ret = None $ ;
     RET<ret=None>/ret -> ( '/' PY_EXPR/ret )? ;
 
     PY_EXPR/expr ->

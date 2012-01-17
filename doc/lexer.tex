@@ -6,7 +6,7 @@ This document assumes the reader is familiar with regular expressions.
 
 You can use the syntax of regular expressions as expected by the \emph{re} module except from the grouping by name syntax since it is used by TPG to decide which token is recognized.
 
-Here is a summary\footnote{From the Python documentation : \url{http://docs.python.org/lib/re-syntax.html}} of the regular expression syntax:
+Here is a summary\footnote{From the Python documentation: \url{http://docs.python.org/lib/re-syntax.html}} of the regular expression syntax:
 
 \begin{description}
     \item ["."]
@@ -110,7 +110,7 @@ There are two kinds of tokens. Tokens defined by the \emph{token} keyword are pa
 
 \subsection{Inline tokens}
 
-Tokens can also be defined on the fly. Their definition are then inlined in the grammar rules.
+Tokens can also be defined on the fly. Their definitions are then inlined in the grammar rules.
 This feature may be useful for keywords or punctuation signs.
 Inline tokens can not be transformed by an action as predefined tokens.
 They always return the token in a string.
@@ -128,7 +128,7 @@ See figure~\ref{lexer:inline_tokens} for examples.
 \end{verbatimtab}
 \end{code}
 
-Inline tokens have a higher precedence than predefined tokens to avoid conflicts (an inlined \emph{if} won't be matched as a predefined \emph{identifier}).
+Inline tokens have a higher precedence than predefined tokens to avoid conflicts (an inlined \emph{if} will not be matched as a predefined \emph{identifier}).
 
 \section{Token matching}                                    \label{lexer:token_matching}
 
@@ -139,7 +139,7 @@ This way TPG 3 need less memory when parsing huge files.
 
 \subsection{Splitting the input string}
 
-The lexer split the input string according to the token definitions (see~\ref{lexer:token_def}). When the input string can not be matched a \emph{tpg.LexicalError} exception is raised.
+The lexer splits the input string according to the token definitions (see~\ref{lexer:token_def}). When the input string can not be matched a \emph{tpg.LexicalError} exception is raised.
 
 The lexer may loop indefinitely if a token can match an empty string since empty strings are everywhere.
 

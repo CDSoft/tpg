@@ -78,7 +78,7 @@ you can write:
 
 \subsection{In a rule}
 
-To parse a non terminal symbol in a rule, TPG call the rule corresponding to the symbol.
+To parse a non terminal symbol in a rule, TPG calls the rule corresponding to the symbol.
 
 \section{Sequences}                                             \label{parser:sequences}
 
@@ -221,7 +221,7 @@ Other objects must be written in Python code delimited either by \verb!$...$! or
 
 \subsubsection{Argument lists and tuples}
 
-Argument list is a comma separated list of objects.
+An argument list is a comma separated list of objects.
 \emph{Remember that arguments are enclosed in left and right angles.}
 
 \begin{verbatimtab}[4]
@@ -280,7 +280,7 @@ The module has a \emph{WrongToken} exception for that purpose (see figure~\ref{p
 
 Parsers have another useful method named \emph{check} (see figure~\ref{parser:check}).
 This method checks a condition.
-If this condition is false then \emph{WrongToken} if called in order to backtrack.
+If this condition is false then \emph{WrongToken} is called in order to backtrack.
 
 \begin{code}
 \caption{Backtracking with the \emph{check} method example}     \label{parser:check}

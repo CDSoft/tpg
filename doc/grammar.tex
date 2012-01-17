@@ -60,19 +60,19 @@ The \emph{lexer} option tells TPG which lexer to use.
 
 \begin{description}
     \item [set lexer = NamedGroupLexer] is the default lexer.
-        It is context free and uses named groups of the \emph{sre} package (and its limitation of 100 named groups, ie 100 tokens).
+        It is context free and uses named groups of the \emph{re} package (and its limitation of 100 named groups, ie 100 tokens).
     \item [set lexer = Lexer] is similar to \emph{NamedGroupLexer} but doesn't use named groups.
         It is slower than \emph{NamedGroupLexer}.
     \item [set lexer = CacheNamedGroupLexer] is similar to \emph{NamedGroupLexer} except that tokens are first stored in a list.
         It is faster for heavy backtracking grammars.
     \item [set lexer = CacheLexer] is similar to \emph{Lexer} except that tokens are first stored in a list.
-        It is faster for heavy backtracking grammar.
+        It is faster for heavy backtracking grammars.
     \item [set lexer = ContextSensitiveLexer] is the context sensitive lexer (see~\ref{tpg:CSL}).
 \end{description}
 
 \subsection{Word bondary option}                            \label{grammar:word_boundary_option}
 
-The \emph{word\_boundary} options tells the lexer to search for word boundaries after identifiers.
+The \emph{word\_boundary} option tells the lexer to search for word boundaries after identifiers.
 
 \begin{description}
     \item [set word\_boundary = True] enables the word boundary search. This is the default.
@@ -81,7 +81,7 @@ The \emph{word\_boundary} options tells the lexer to search for word boundaries 
 
 \subsection{Regular expression options}
 
-The \emph{sre} module accepts some options to define the behaviour of the compiled regular expressions.
+The \emph{re} module accepts some options to define the behaviour of the compiled regular expressions.
 These options can be changed for each parser.
 
 \begin{description}
@@ -95,14 +95,14 @@ These options can be changed for each parser.
 
 \section{Python code}                                       \label{grammar:code}
 
-Python code section are not handled by TPG.
+Python code sections are not handled by TPG.
 TPG won't complain about syntax errors in Python code sections, it is Python's job.
 They are copied verbatim to the generated Python parser.
 
 \subsection{Syntax}
 
-Before TPG 3, Python code is enclosed in double curly brackets.
-That means that Python code must not contain to consecutive close brackets.
+Before TPG 3, Python code was enclosed in double curly brackets.
+That means that Python code must not contain two consecutive close brackets.
 You can avoid this by writting \emph{\}~\}} (with a space) instead of \emph{\}\}} (without space).
 This syntaxe is still available but the new syntax may be more readable.
 The new syntax uses \emph{\$} to delimit code sections.
@@ -113,7 +113,7 @@ When several \emph{\$} sections are consecutive they are seen as a single sectio
 Python code can appear in several parts of a grammar.
 Since indentation has a special meaning in Python it is important to know how TPG handles spaces and tabulations at the beginning of the lines.
 
-When TPG encounters some Python code it removes in all non blank lines the spaces and tabulations that are common to every lines.
+When TPG encounters some Python code it removes from all non blank lines the spaces and tabulations that are common to every lines.
 TPG considers spaces and tabulations as the same character so it is important to always use the same indentation style.
 Thus it is advised not to mix spaces and tabulations in indentation.
 Then this code will be reindented when generated according to its location (in a class, in a method or in global space).
@@ -176,7 +176,7 @@ if 1==2:
       print "OK"
     \end{verbatim*}
     &
-    \emph{WRONG}: it's a bad idea to start a multiline code section on the first line since the common indentation may be different from what you expect.  No error will be raised by TPG but Python won't compile this code.
+    \emph{WRONG}: it is a bad idea to start a multiline code section on the first line since the common indentation may be different from what you expect.  No error will be raised by TPG but Python will not compile this code.
     \\
 
 \hline
@@ -213,7 +213,7 @@ The grammar is the doc string of the class.
 \subsection{Methods}
 
 As TPG parsers are just Python classes, you can use them as normal classes.
-If you redefine the \emph{\_\_init\_\_} method, don't forget to call \emph{tpg.Parser.\_\_init\_\_}.
+If you redefine the \emph{\_\_init\_\_} method, do not forget to call \emph{tpg.Parser.\_\_init\_\_}.
 
 \subsection{Rules}
 

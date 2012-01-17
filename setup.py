@@ -6,7 +6,7 @@ Just run "python setup.py install" to install TPG
 
 
 Toy Parser Generator: A Python parser generator
-Copyright (C) 2001-2011 Christophe Delord
+Copyright (C) 2001-2012 Christophe Delord
  
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -95,7 +95,7 @@ setup(name             = tpg.__tpgname__,
       maintainer       = tpg.__author__,
       maintainer_email = tpg.__email__,
       license          = tpg.__license__,
-      platforms        = ['Linux', 'Unix', 'Mac OSX', 'Windows XP/2000/NT', 'Windows 95/98/ME'],
+      platforms        = ['Linux', 'Unix', 'Mac OSX', 'Windows 8/7/XP/2000/NT', 'Windows 95/98/ME'],
       keywords         = ['Parsing', 'Parser', 'Generator', 'Python'],
       py_modules       = ['tpg'],
       scripts          = ['tpg'],
