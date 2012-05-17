@@ -42,8 +42,8 @@ trees while parsing.
 #
 
 __tpgname__ = 'TPG'
-__version__ = '3.1.4'
-__date__ = '2012-01-18'
+__version__ = '3.2.0'
+__date__ = '2012-05-18'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -1322,6 +1322,24 @@ class TPGParser(tpg.Parser):
         else:
             self.env = {}
 
+    def __call__(self, input, *args, **kws):
+        """ parse a string starting from the default axiom
+
+        The default axiom is START.
+
+        Parameters:
+            input : input string to parse
+            *args : argument list to pass to START
+            **kws : argument dictionnary to pass to START
+
+        If a line ends with '::', it is considered as the end
+        of the ReST part. The lines after are the grammar.
+        """
+        docs = re.split(r"::[ \t]*$", input, maxsplit=1, flags=re.M)
+        if len(docs) == 2:
+            input = re.sub(".", " ", docs[0])+docs[1]
+        return self.parse('START', input, *args, **kws)
+
     def re_check(self, expr, tok):
         try:
             sre_parse.parse(eval(self.string_prefix+expr))
@@ -1474,7 +1492,7 @@ class TPGParser(tpg.Parser):
             counters = self.Counters()
             return self.head.name, [
                 self.head.gen_def(),
-                tab + 'r""" %s -> %s """'%(self.head.gen_doc(self), self.body.gen_doc(self)),
+                tab + 'r""" ``%s -> %s ;`` """'%(self.head.gen_doc(self), self.body.gen_doc(self)),
                 self.head.gen_init_ret(tab),
                 self.body.gen_code(tab, counters, None),
                 self.head.gen_ret(tab),

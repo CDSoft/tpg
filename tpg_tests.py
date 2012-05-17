@@ -828,6 +828,35 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 self.assertRaises(tpg.SyntacticError, self.NOK3)
                 self.assertRaises(tpg.SyntacticError, self.NOK4)
 
+        class ReSTTestCase(unittest.TestCase):
+
+            class OK1(PARSER):
+                r"""
+                    This is an ReST documented grammar
+                    (for Sphinx for instance). The ReST
+                    part ends with '::'.
+
+                    Here is the grammar::
+
+                        START/x -> '\w+'/x ;
+                """
+
+            class OK2(PARSER):
+                r"""
+                    This is an ReST documented grammar
+                    (for Sphinx for instance). The ReST
+                    part ends with '::'.
+
+                    Note the trailling spaces after '::'
+                    Here is the grammar::    
+
+                        START/x -> '\w+'/x ;
+                """
+
+            def testReST(self):
+                self.assertEquals(self.OK1()("OK"), "OK")
+                self.assertEquals(self.OK2()("OK"), "OK")
+
         if tpg.__python__ == 3:
 
             class UnicodeTestCase(unittest.TestCase):

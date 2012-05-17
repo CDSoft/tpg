@@ -4,6 +4,8 @@ TPG grammars are contained in the doc string\footnote{If the grammar (i.e. the d
 TPG grammars may contain three parts:
 
 \begin{description}
+    \item [ReStructuredText docstring]
+        is a part of the grammar that is ignore by TPG. It shall end with a `::` at the end of a line.
     \item [Options]
         are defined at the beginning of the grammar (see~\ref{grammar:options}).
     \item [Tokens]
@@ -19,6 +21,10 @@ See figure~\ref{grammar:struct} for a generic TPG grammar.
 \begin{verbatimtab}[4]
 class Foo(tpg.Parser):
     r"""
+    Here is some ReStructuredText documentation
+    (for Sphinx for instance).
+
+    And now, the grammar::
 
         # Options
         set lexer = CSL
