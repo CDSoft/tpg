@@ -42,13 +42,13 @@ trees while parsing.
 #
 
 __tpgname__ = 'TPG'
-__version__ = '3.2.0'
-__date__ = '2012-05-18'
+__version__ = '3.2.1'
+__date__ = '2012-05-28'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
 __author__ = 'Christophe Delord'
-__email__ = 'cdelord@cdsoft.fr'
+__email__ = 'cdsoft.fr'
 __url__ = 'http://cdsoft.fr/tpg/'
 
 import parser
@@ -1080,11 +1080,13 @@ class VerboseParser(Parser):
         try:
             value = Parser.eat(self, name)
             if self.verbose >= 1:
-                print(self.token_info(token, "==", name))
+                #print(self.token_info(token, "==", name))
+                sys.stderr.write(self.token_info(token, "==", name)+"\n")
             return value
         except WrongToken:
             if self.verbose >= 2:
-                print(self.token_info(token, "!=", name))
+                #print(self.token_info(token, "!=", name))
+                sys.stderr.write(self.token_info(token, "!=", name)+"\n")
             raise
 
     def eatCSL(self, name):
@@ -1100,12 +1102,14 @@ class VerboseParser(Parser):
             value = Parser.eatCSL(self, name)
             if self.verbose >= 1:
                 token = self.lexer.token()
-                print(self.token_info(token, "==", name))
+                #print(self.token_info(token, "==", name))
+                sys.stderr.write(self.token_info(token, "==", name)+"\n")
             return value
         except WrongToken:
             if self.verbose >= 2:
                 token = Token("???", self.lexer.input[self.lexer.pos:self.lexer.pos+10].replace('\n', ' '), "???", self.lexer.line, self.lexer.column, self.lexer.line, self.lexer.column, self.lexer.pos, self.lexer.pos, self.lexer.pos)
-                print(self.token_info(token, "!=", name))
+                #print(self.token_info(token, "!=", name))
+                sys.stderr.write(self.token_info(token, "!=", name)+"\n")
             raise
 
     def parse(self, axiom, input, *args, **kws):
@@ -1372,14 +1376,14 @@ class TPGParser(tpg.Parser):
         return lexer
 
     def START(self, ):
-        r""" START -> OPTIONS TOKENS RULES """
+        r""" ``START -> OPTIONS TOKENS RULES ;`` """
         options = self.OPTIONS()
         tokens = self.TOKENS()
         rules = self.RULES()
         return self.gen(options, tokens, rules)
 
     def OPTIONS(self, ):
-        r""" OPTIONS -> ('set' ident ('=' ident | ))* """
+        r""" ``OPTIONS -> ('set' ident ('=' ident | ))* ;`` """
         options = self.Options(self)
         while True:
             _p1 = self.lexer.token()
@@ -1400,7 +1404,7 @@ class TPGParser(tpg.Parser):
         return options
 
     def TOKENS(self, ):
-        r""" TOKENS -> (TOKEN)* """
+        r""" ``TOKENS -> (TOKEN)* ;`` """
         ts = []
         while True:
             _p1 = self.lexer.token()
@@ -1413,7 +1417,7 @@ class TPGParser(tpg.Parser):
         return ts
 
     def TOKEN(self, ):
-        r""" TOKEN -> ('separator' | 'token') ident ':'? string (PY_EXPR ';'? | ';') """
+        r""" ``TOKEN -> ('separator' | 'token') ident ':'? string (PY_EXPR ';'? | ';') ;`` """
         _p1 = self.lexer.token()
         try:
             self.eat('_tok_3') # 'separator'
@@ -1446,7 +1450,7 @@ class TPGParser(tpg.Parser):
         return token_type(name, self.string_prefix, expr, code)
 
     def RULES(self, ):
-        r""" RULES -> (RULE)* """
+        r""" ``RULES -> (RULE)* ;`` """
         rs = self.Rules()
         while True:
             _p1 = self.lexer.token()
@@ -1459,7 +1463,7 @@ class TPGParser(tpg.Parser):
         return rs
 
     def RULE(self, ):
-        r""" RULE -> HEAD '->' OR_EXPR ';' """
+        r""" ``RULE -> HEAD '->' OR_EXPR ';' ;`` """
         head = self.HEAD()
         self.eat('_tok_7') # '->'
         body = self.OR_EXPR()
@@ -1467,14 +1471,14 @@ class TPGParser(tpg.Parser):
         return self.Rule(head, body)
 
     def HEAD(self, ):
-        r""" HEAD -> ident OPT_ARGS RET """
+        r""" ``HEAD -> ident OPT_ARGS RET ;`` """
         name = self.eat('ident')
         args = self.OPT_ARGS()
         ret = self.RET(self.PY_Ident(name))
         return self.Symbol(name, args, ret)
 
     def OR_EXPR(self, ):
-        r""" OR_EXPR -> AND_EXPR ('\|' AND_EXPR)* """
+        r""" ``OR_EXPR -> AND_EXPR ('\|' AND_EXPR)* ;`` """
         a = self.AND_EXPR()
         or_expr = [a]
         while True:
@@ -1490,7 +1494,7 @@ class TPGParser(tpg.Parser):
         return self.balance(or_expr)
 
     def AND_EXPR(self, ):
-        r""" AND_EXPR -> (ATOM_EXPR REP)* """
+        r""" ``AND_EXPR -> (ATOM_EXPR REP)* ;`` """
         and_expr = self.And()
         while True:
             _p1 = self.lexer.token()
@@ -1504,7 +1508,7 @@ class TPGParser(tpg.Parser):
         return and_expr
 
     def ATOM_EXPR(self, ):
-        r""" ATOM_EXPR -> SYMBOL | INLINE_TOKEN | code | '\(' OR_EXPR '\)' | 'check' PY_EXPR | 'error' PY_EXPR | '@' PY_EXPR """
+        r""" ``ATOM_EXPR -> SYMBOL | INLINE_TOKEN | code | '\(' OR_EXPR '\)' | 'check' PY_EXPR | 'error' PY_EXPR | '@' PY_EXPR ;`` """
         _p1 = self.lexer.token()
         try:
             try:
@@ -1544,7 +1548,7 @@ class TPGParser(tpg.Parser):
         return a
 
     def REP(self, a):
-        r""" REP -> ('\*' | '\+' | '\?' | '\{' (PY_EXPR | ) (',' (PY_EXPR | ) | ) '\}')? """
+        r""" ``REP -> ('\*' | '\+' | '\?' | '\{' (PY_EXPR | ) (',' (PY_EXPR | ) | ) '\}')? ;`` """
         _p1 = self.lexer.token()
         try:
             try:
@@ -1588,14 +1592,14 @@ class TPGParser(tpg.Parser):
         return a
 
     def SYMBOL(self, ):
-        r""" SYMBOL -> ident OPT_ARGS RET """
+        r""" ``SYMBOL -> ident OPT_ARGS RET ;`` """
         name = self.eat('ident')
         args = self.OPT_ARGS()
         ret = self.RET(self.PY_Ident(name))
         return self.Symbol(name, args, ret)
 
     def INLINE_TOKEN(self, ):
-        r""" INLINE_TOKEN -> string RET """
+        r""" ``INLINE_TOKEN -> string RET ;`` """
         t = self.mark()
         expr = self.eat('string')
         self.re_check(expr, t)
@@ -1603,7 +1607,7 @@ class TPGParser(tpg.Parser):
         return self.InlineToken(expr, ret)
 
     def OPT_ARGS(self, ):
-        r""" OPT_ARGS -> ARGS |  """
+        r""" ``OPT_ARGS -> ARGS |  ;`` """
         _p1 = self.lexer.token()
         try:
             args = self.ARGS()
@@ -1613,7 +1617,7 @@ class TPGParser(tpg.Parser):
         return args
 
     def ARGS(self, ):
-        r""" ARGS -> '<' (ARG (',' ARG)* ','?)? '>' """
+        r""" ``ARGS -> '<' (ARG (',' ARG)* ','?)? '>' ;`` """
         self.eat('_tok_17') # '<'
         args = self.Args()
         _p1 = self.lexer.token()
@@ -1640,7 +1644,7 @@ class TPGParser(tpg.Parser):
         return args
 
     def ARG(self, ):
-        r""" ARG -> ident '=' PY_EXPR | PY_EXPR | '\*' ident | '\*\*' ident """
+        r""" ``ARG -> ident '=' PY_EXPR | PY_EXPR | '\*' ident | '\*\*' ident ;`` """
         _p1 = self.lexer.token()
         try:
             try:
@@ -1666,7 +1670,7 @@ class TPGParser(tpg.Parser):
         return a
 
     def RET(self, ret=None):
-        r""" RET -> ('/' PY_EXPR)? """
+        r""" ``RET -> ('/' PY_EXPR)? ;`` """
         _p1 = self.lexer.token()
         try:
             self.eat('_tok_19') # '/'
@@ -1676,7 +1680,7 @@ class TPGParser(tpg.Parser):
         return ret
 
     def PY_EXPR(self, ):
-        r""" PY_EXPR -> ident | string | code | ARGS """
+        r""" ``PY_EXPR -> ident | string | code | ARGS ;`` """
         _p1 = self.lexer.token()
         try:
             try:

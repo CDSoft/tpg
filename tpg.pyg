@@ -42,13 +42,13 @@ trees while parsing.
 #
 
 __tpgname__ = 'TPG'
-__version__ = '3.2.0'
-__date__ = '2012-05-18'
+__version__ = '3.2.1'
+__date__ = '2012-05-28'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
 __author__ = 'Christophe Delord'
-__email__ = 'cdelord@cdsoft.fr'
+__email__ = 'cdsoft.fr'
 __url__ = 'http://cdsoft.fr/tpg/'
 
 import parser
@@ -1080,11 +1080,13 @@ class VerboseParser(Parser):
         try:
             value = Parser.eat(self, name)
             if self.verbose >= 1:
-                print(self.token_info(token, "==", name))
+                #print(self.token_info(token, "==", name))
+                sys.stderr.write(self.token_info(token, "==", name)+"\n")
             return value
         except WrongToken:
             if self.verbose >= 2:
-                print(self.token_info(token, "!=", name))
+                #print(self.token_info(token, "!=", name))
+                sys.stderr.write(self.token_info(token, "!=", name)+"\n")
             raise
 
     def eatCSL(self, name):
@@ -1100,12 +1102,14 @@ class VerboseParser(Parser):
             value = Parser.eatCSL(self, name)
             if self.verbose >= 1:
                 token = self.lexer.token()
-                print(self.token_info(token, "==", name))
+                #print(self.token_info(token, "==", name))
+                sys.stderr.write(self.token_info(token, "==", name)+"\n")
             return value
         except WrongToken:
             if self.verbose >= 2:
                 token = Token("???", self.lexer.input[self.lexer.pos:self.lexer.pos+10].replace('\n', ' '), "???", self.lexer.line, self.lexer.column, self.lexer.line, self.lexer.column, self.lexer.pos, self.lexer.pos, self.lexer.pos)
-                print(self.token_info(token, "!=", name))
+                #print(self.token_info(token, "!=", name))
+                sys.stderr.write(self.token_info(token, "!=", name)+"\n")
             raise
 
     def parse(self, axiom, input, *args, **kws):

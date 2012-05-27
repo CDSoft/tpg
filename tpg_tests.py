@@ -64,8 +64,8 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testWordBound(self):
                 p = self.WordBounded()
-                self.assertEquals(p('abcabc a b c'), ['abcabc', 'a', 'b', 'c'])
-                self.assertEquals(p('abc abc a b c'), ['abc', 'abc', 'a', 'b', 'c'])
+                self.assertEqual(p('abcabc a b c'), ['abcabc', 'a', 'b', 'c'])
+                self.assertEqual(p('abc abc a b c'), ['abc', 'abc', 'a', 'b', 'c'])
 
             class NotWordBounded(PARSER):
                 __doc__ = r"""
@@ -91,11 +91,11 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
             def testNotWordBound(self):
                 p = self.NotWordBounded()
                 if LEXER in ('Lexer', 'CacheLexer'):
-                    self.assertEquals(p('abcabc a b c'), ['abcabc', 'a', 'b', 'c'])
-                    self.assertEquals(p('abc abc a b c'), ['abc', 'abc', 'a', 'b', 'c'])
+                    self.assertEqual(p('abcabc a b c'), ['abcabc', 'a', 'b', 'c'])
+                    self.assertEqual(p('abc abc a b c'), ['abc', 'abc', 'a', 'b', 'c'])
                 else:
-                    self.assertEquals(p('abcabc a b c'), ['a', 'b', 'cabc', 'a', 'b', 'c'])
-                    self.assertEquals(p('abc abc a b c'), ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'])
+                    self.assertEqual(p('abcabc a b c'), ['a', 'b', 'cabc', 'a', 'b', 'c'])
+                    self.assertEqual(p('abc abc a b c'), ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'])
 
             class WordBounded2(PARSER):
                 __doc__ = r"""
@@ -122,11 +122,11 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testWordBounded2(self):
                 p = self.WordBounded2()
-                self.assertEquals(p("abc :titi: :def: toto :ghi:"), ['abc', 'def:', ':ghi'])
-                self.assertEquals(p(":abc:def:ghi:"), ['abc', 'def:'])
-                self.assertEquals(p(":abc:ghi:def:"), ['abc', ':ghi', 'def:'])
-                self.assertEquals(p("::abc::def::ghi::"), ['abc', 'def:', ':ghi'])
-                self.assertEquals(p("::abc::ghi::def::"), ['abc', ':ghi', 'def:'])
+                self.assertEqual(p("abc :titi: :def: toto :ghi:"), ['abc', 'def:', ':ghi'])
+                self.assertEqual(p(":abc:def:ghi:"), ['abc', 'def:'])
+                self.assertEqual(p(":abc:ghi:def:"), ['abc', ':ghi', 'def:'])
+                self.assertEqual(p("::abc::def::ghi::"), ['abc', 'def:', ':ghi'])
+                self.assertEqual(p("::abc::ghi::def::"), ['abc', ':ghi', 'def:'])
 
             class IgnoreCase(PARSER):
                 __doc__ = r"""
@@ -149,7 +149,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testIgnoreCase(self):
                 p = self.IgnoreCase()
-                self.assertEquals(p('a A b B'), ['a', 'A', 'b', 'B'])
+                self.assertEqual(p('a A b B'), ['a', 'A', 'b', 'B'])
 
             class NotIgnoreCase(PARSER):
                 __doc__ = r"""
@@ -176,7 +176,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     self.assertRaises(tpg.SyntacticError, p, 'a A b B')
                 else:
                     self.assertRaises(tpg.LexicalError, p, 'a A b B')
-                self.assertEquals(p('a B a B'), ['a', 'B', 'a', 'B'])
+                self.assertEqual(p('a B a B'), ['a', 'B', 'a', 'B'])
 
             class Multiline(PARSER):
                 __doc__ = r"""
@@ -202,7 +202,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testMultiline(self):
                 p = self.Multiline()
-                self.assertEquals(p('b b w e e\nb b w e e\nb b w e e'), (3, 9, 3))
+                self.assertEqual(p('b b w e e\nb b w e e\nb b w e e'), (3, 9, 3))
 
             class NotMultiline(PARSER):
                 __doc__ = r"""
@@ -228,7 +228,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testNotMultiline(self):
                 p = self.NotMultiline()
-                self.assertEquals(p('b b w e e\nb b w e e\nb b w e e'), (1, 13, 1))
+                self.assertEqual(p('b b w e e\nb b w e e\nb b w e e'), (1, 13, 1))
 
             class DotAll(PARSER):
                 __doc__ = r"""
@@ -249,7 +249,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testDotAll(self):
                 p = self.DotAll()
-                self.assertEquals(p('a\nb\nc\n'), (6, 0))
+                self.assertEqual(p('a\nb\nc\n'), (6, 0))
 
             class NotDotAll(PARSER):
                 __doc__ = r"""
@@ -270,7 +270,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testNotDotAll(self):
                 p = self.NotDotAll()
-                self.assertEquals(p('a\nb\nc\n'), (3, 3))
+                self.assertEqual(p('a\nb\nc\n'), (3, 3))
 
             class Verbose(PARSER):
                 __doc__ = (r"""
@@ -315,7 +315,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testVerbose(self):
                 p = self.Verbose()
-                self.assertEquals(p('''
+                self.assertEqual(p('''
                     foobar foo bar foo  bar """ hello 'world' """ \''' ''hello'' ""universe"" \'''
                 '''), [1, 2, 3, 2, 3, 4, 5])
 
@@ -346,7 +346,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     self.assertRaises(tpg.SyntacticError, p, 'foobar foo bar foo  bar')
                 else:
                     self.assertRaises(tpg.LexicalError, p, 'foobar foo bar foo  bar')
-                self.assertEquals(p('foo bar foo  bar'), [1, 2, 3])
+                self.assertEqual(p('foo bar foo  bar'), [1, 2, 3])
 
         class LexersTestCase(unittest.TestCase):
 
@@ -387,11 +387,11 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testLexers(self):
                 p = self.Parser()
-                self.assertEquals(p('  314'), (314, int))
-                self.assertEquals(p('3.14   '), (3.14, float))
-                self.assertEquals(p(' (one identifier) cool'), ('cool', str))
-                self.assertEquals(p('"Super cool"  (!!!) '), ('Super cool', str))
-                self.assertEquals(p('  { ... }  (!!!) '), ('{}', str))
+                self.assertEqual(p('  314'), (314, int))
+                self.assertEqual(p('3.14   '), (3.14, float))
+                self.assertEqual(p(' (one identifier) cool'), ('cool', str))
+                self.assertEqual(p('"Super cool"  (!!!) '), ('Super cool', str))
+                self.assertEqual(p('  { ... }  (!!!) '), ('{}', str))
 
             def testPositions(self):
                 p = self.Parser()
@@ -401,7 +401,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 ... } y
                 z
                 """
-                self.assertEquals(p.parse('POSITIONS',s), [('a', 1, 1), ('b', 1, 3), ('c', 1, 5),
+                self.assertEqual(p.parse('POSITIONS',s), [('a', 1, 1), ('b', 1, 3), ('c', 1, 5),
                                                            ('d', 2, 17), ('e', 2, 19), ('f', 2, 21),
                                                            ('{}', 3, 17), ('y', 4, 23), ('z', 5, 17),
                                                           ])
@@ -442,17 +442,17 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testBacktracking(self):
                 p = self.Parser()
-                self.assertEquals(p('abcd'), 1)
-                self.assertEquals(p('abdc'), 2)
-                self.assertEquals(p('acbd'), 3)
-                self.assertEquals(p('acdb'), 4)
-                self.assertEquals(p('adbc'), 5)
-                self.assertEquals(p('adcb'), 6)
-                self.assertEquals(p('bacd'), 7)
-                self.assertEquals(p('badc'), 8)
-                self.assertEquals(p('bcad'), 9)
-                self.assertEquals(p('bcda'), 10)
-                self.assertEquals(p('e'), 11)
+                self.assertEqual(p('abcd'), 1)
+                self.assertEqual(p('abdc'), 2)
+                self.assertEqual(p('acbd'), 3)
+                self.assertEqual(p('acdb'), 4)
+                self.assertEqual(p('adbc'), 5)
+                self.assertEqual(p('adcb'), 6)
+                self.assertEqual(p('bacd'), 7)
+                self.assertEqual(p('badc'), 8)
+                self.assertEqual(p('bcad'), 9)
+                self.assertEqual(p('bcda'), 10)
+                self.assertEqual(p('e'), 11)
                 self.assertRaises(tpg.SyntacticError, p, 'abce')
                 self.assertRaises(tpg.SyntacticError, p, 'abec')
                 self.assertRaises(tpg.SyntacticError, p, 'aebc')
@@ -482,11 +482,11 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testExtract(self):
                 p = self.Parser()
-                self.assertEquals(p(''), [''])
-                self.assertEquals(p('() ()'), ['', '', '() ()'])
-                self.assertEquals(p('  ( ) (  )   '), ['', '', '( ) (  )'])
-                self.assertEquals(p('(a b)  (c  d)'), ['a b', 'c  d', '(a b)  (c  d)'])
-                self.assertEquals(p('  (a b)  (  c  d   )   '), ['a b', 'c  d', '(a b)  (  c  d   )'])
+                self.assertEqual(p(''), [''])
+                self.assertEqual(p('() ()'), ['', '', '() ()'])
+                self.assertEqual(p('  ( ) (  )   '), ['', '', '( ) (  )'])
+                self.assertEqual(p('(a b)  (c  d)'), ['a b', 'c  d', '(a b)  (c  d)'])
+                self.assertEqual(p('  (a b)  (  c  d   )   '), ['a b', 'c  d', '(a b)  (  c  d   )'])
 
         class AxiomTestCase(unittest.TestCase):
 
@@ -505,10 +505,10 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testAxiom(self):
                 p = self.Parser()
-                self.assertEquals(p(''), "Axiom == START")
-                self.assertEquals(p.parse('START', ''), "Axiom == START")
-                self.assertEquals(p.parse('SYMBOL1', ''), "Axiom == SYMBOL1")
-                self.assertEquals(p.parse('SYMBOL2', ''), "Axiom == SYMBOL2")
+                self.assertEqual(p(''), "Axiom == START")
+                self.assertEqual(p.parse('START', ''), "Axiom == START")
+                self.assertEqual(p.parse('SYMBOL1', ''), "Axiom == SYMBOL1")
+                self.assertEqual(p.parse('SYMBOL2', ''), "Axiom == SYMBOL2")
                 self.assertRaises(AttributeError, p.parse, 'SYMBOL3', '')
                 self.assertRaises(tpg.SyntacticError, p, 'x')
                 self.assertRaises(tpg.SyntacticError, p.parse ,'START', 'x')
@@ -539,15 +539,15 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
             def testTokenInfo(self):
                 p = self.Parser()
                 if LEXER in ('ContextSensitiveLexer', ):
-                    self.assertEquals(p(''), [(1,1), (1,1)])
-                    self.assertEquals(p(' ( ) (\n) (w)'), [(1,1), (1,1), (1,1), (1,2),
+                    self.assertEqual(p(''), [(1,1), (1,1)])
+                    self.assertEqual(p(' ( ) (\n) (w)'), [(1,1), (1,1), (1,1), (1,2),
                                                            (1,2), (1,2), (1,2), (1,6),
                                                            (1,6), (1,6), (1,6), (2,3),
                                                            (2,3), (2,3)
                                                           ])
                 else:
-                    self.assertEquals(p(''), [(1,1), (1,1)])
-                    self.assertEquals(p(' ( ) (\n) (w)'), [(1,2), (1,2), (1,2), (1,6),
+                    self.assertEqual(p(''), [(1,1), (1,1)])
+                    self.assertEqual(p(' ( ) (\n) (w)'), [(1,2), (1,2), (1,2), (1,6),
                                                            (1,6), (1,6), (1,6), (2,3),
                                                            (2,3), (2,3), (2,3), (2,6),
                                                            (2,6), (2,6)
@@ -574,21 +574,21 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
             def testCheckError(self):
                 p = self.Parser()
                 for x in ("1", "18"):
-                    self.assertEquals(p.parse('POSITIVE_1', x), int(x))
-                    self.assertEquals(p.parse('POSITIVE_2', x), int(x))
-                    self.assertEquals(p.parse('POSITIVE_3', x), int(x))
-                    self.assertEquals(p.parse('POSITIVE_4', x), int(x))
-                    self.assertEquals(p.parse('POSITIVE_5', x), int(x))
-                    self.assertEquals(p.parse('POSITIVE_6', x), int(x))
-                    self.assertEquals(p.parse('POSITIVE_7', x), int(x))
+                    self.assertEqual(p.parse('POSITIVE_1', x), int(x))
+                    self.assertEqual(p.parse('POSITIVE_2', x), int(x))
+                    self.assertEqual(p.parse('POSITIVE_3', x), int(x))
+                    self.assertEqual(p.parse('POSITIVE_4', x), int(x))
+                    self.assertEqual(p.parse('POSITIVE_5', x), int(x))
+                    self.assertEqual(p.parse('POSITIVE_6', x), int(x))
+                    self.assertEqual(p.parse('POSITIVE_7', x), int(x))
                 for x in ("0", "-36"):
                     self.assertRaises(tpg.SyntacticError, p.parse, 'POSITIVE_1', x)
                     self.assertRaises(tpg.SyntacticError, p.parse, 'POSITIVE_2', x)
                     self.assertRaises(tpg.SemanticError, p.parse, 'POSITIVE_3', x)
                     self.assertRaises(tpg.SemanticError, p.parse, 'POSITIVE_4', x)
                     self.assertRaises(tpg.SemanticError, p.parse, 'POSITIVE_5', x)
-                    self.assertEquals(p.parse('POSITIVE_6', x), None)
-                    self.assertEquals(p.parse('POSITIVE_7', x), None)
+                    self.assertEqual(p.parse('POSITIVE_6', x), None)
+                    self.assertEqual(p.parse('POSITIVE_7', x), None)
 
         class RepetitionTestCase(unittest.TestCase):
 
@@ -613,28 +613,28 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testStar(self):
                 p = self.Parser()
-                self.assertEquals(p.parse('STAR', ''), 0)
-                self.assertEquals(p.parse('STAR', 'a'), 1)
-                self.assertEquals(p.parse('STAR', 'a b'), 2)
-                self.assertEquals(p.parse('STAR', 'a b c d e f'), 6)
+                self.assertEqual(p.parse('STAR', ''), 0)
+                self.assertEqual(p.parse('STAR', 'a'), 1)
+                self.assertEqual(p.parse('STAR', 'a b'), 2)
+                self.assertEqual(p.parse('STAR', 'a b c d e f'), 6)
 
             def testPlus(self):
                 p = self.Parser()
                 self.assertRaises(tpg.SyntacticError, p.parse, 'PLUS', '')
-                self.assertEquals(p.parse('PLUS', 'a'), 1)
-                self.assertEquals(p.parse('PLUS', 'a b'), 2)
-                self.assertEquals(p.parse('PLUS', 'a b c d e f'), 6)
+                self.assertEqual(p.parse('PLUS', 'a'), 1)
+                self.assertEqual(p.parse('PLUS', 'a b'), 2)
+                self.assertEqual(p.parse('PLUS', 'a b c d e f'), 6)
 
             def testQuestion(self):
                 p = self.Parser()
-                self.assertEquals(p.parse('QUES', ''), 0)
-                self.assertEquals(p.parse('QUES', 'a'), 1)
+                self.assertEqual(p.parse('QUES', ''), 0)
+                self.assertEqual(p.parse('QUES', 'a'), 1)
                 self.assertRaises(tpg.SyntacticError, p.parse, 'QUES', 'a b')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'QUES', 'a b c d e f')
 
             def testREP1(self):
                 p = self.Parser()
-                self.assertEquals(p.parse('REP1', ''), 0)
+                self.assertEqual(p.parse('REP1', ''), 0)
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP1', '1')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP1', '1 2')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP1', '1 2 3 4 5 6')
@@ -643,26 +643,26 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 p = self.Parser()
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP2', '1')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP2', '1 2')
-                self.assertEquals(p.parse('REP2', '1 2 3'), 3)
+                self.assertEqual(p.parse('REP2', '1 2 3'), 3)
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP2', '1 2 3 4')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP2', '1 2 3 4 5 6')
 
             def testREP3(self):
                 p = self.Parser()
-                self.assertEquals(p.parse('REP3', ''), 0)
-                self.assertEquals(p.parse('REP3', '1'), 1)
-                self.assertEquals(p.parse('REP3', '1 2'), 2)
-                self.assertEquals(p.parse('REP3', '1 2 3'), 3)
-                self.assertEquals(p.parse('REP3', '1 2 3 4'), 4)
-                self.assertEquals(p.parse('REP3', '1 2 3 4 5'), 5)
-                self.assertEquals(p.parse('REP3', '1 2 3 4 5 6'), 6)
+                self.assertEqual(p.parse('REP3', ''), 0)
+                self.assertEqual(p.parse('REP3', '1'), 1)
+                self.assertEqual(p.parse('REP3', '1 2'), 2)
+                self.assertEqual(p.parse('REP3', '1 2 3'), 3)
+                self.assertEqual(p.parse('REP3', '1 2 3 4'), 4)
+                self.assertEqual(p.parse('REP3', '1 2 3 4 5'), 5)
+                self.assertEqual(p.parse('REP3', '1 2 3 4 5 6'), 6)
 
             def testREP4(self):
                 p = self.Parser()
-                self.assertEquals(p.parse('REP4', ''), 0)
-                self.assertEquals(p.parse('REP4', '1'), 1)
-                self.assertEquals(p.parse('REP4', '1 2'), 2)
-                self.assertEquals(p.parse('REP4', '1 2 3'), 3)
+                self.assertEqual(p.parse('REP4', ''), 0)
+                self.assertEqual(p.parse('REP4', '1'), 1)
+                self.assertEqual(p.parse('REP4', '1 2'), 2)
+                self.assertEqual(p.parse('REP4', '1 2 3'), 3)
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP4', '1 2 3 4')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP4', '1 2 3 4 5')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP4', '1 2 3 4 5 6')
@@ -671,18 +671,18 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 p = self.Parser()
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP5', '')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP5', '1')
-                self.assertEquals(p.parse('REP5', '1 2'), 2)
-                self.assertEquals(p.parse('REP5', '1 2 3'), 3)
-                self.assertEquals(p.parse('REP5', '1 2 3 4 5 6'), 6)
+                self.assertEqual(p.parse('REP5', '1 2'), 2)
+                self.assertEqual(p.parse('REP5', '1 2 3'), 3)
+                self.assertEqual(p.parse('REP5', '1 2 3 4 5 6'), 6)
 
             def testREP6(self):
                 p = self.Parser()
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP6', '')
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP6', '1')
-                self.assertEquals(p.parse('REP6', '1 2'), 2)
-                self.assertEquals(p.parse('REP6', '1 2 3'), 3)
-                self.assertEquals(p.parse('REP6', '1 2 3 4'), 4)
-                self.assertEquals(p.parse('REP6', '1 2 3 4 5'), 5)
+                self.assertEqual(p.parse('REP6', '1 2'), 2)
+                self.assertEqual(p.parse('REP6', '1 2 3'), 3)
+                self.assertEqual(p.parse('REP6', '1 2 3 4'), 4)
+                self.assertEqual(p.parse('REP6', '1 2 3 4 5'), 5)
                 self.assertRaises(tpg.SyntacticError, p.parse, 'REP6', '1 2 3 4 5 6')
 
         class ArgsTestCase(unittest.TestCase):
@@ -701,14 +701,14 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
             def testArgs(self):
                 p = self.Parser()
                 self.assertRaises(TypeError, p, '', 'a')
-                self.assertEquals(p('', 'a', 'b'), ('a', 'b', (), {}))
-                self.assertEquals(p('', 'a', 'b', 'c'), ('a', 'b', ('c',), {}))
-                self.assertEquals(p('', 'a', 'b', 'c', 'd'), ('a', 'b', ('c', 'd'), {}))
-                self.assertEquals(p('', 'a', 'b', 'c', 'd', e='e'), ('a', 'b', ('c', 'd'), {'e':'e'}))
-                self.assertEquals(p('', 'a', 'b', 'c', 'd', e='e', f='f'), ('a', 'b', ('c', 'd'), {'e':'e', 'f':'f'}))
-                self.assertEquals(p('', 'a', 'b', **({'e':'e', 'f':'f'})), ('a', 'b', (), {'e':'e', 'f':'f'}))
-                self.assertEquals(p('', 'a', 'b', *('c', 'd')), ('a', 'b', ('c', 'd'), {}))
-                self.assertEquals(p('', 'a', 'b', *('c', 'd'), **({'e':'e', 'f':'f'})), ('a', 'b', ('c', 'd'), {'e':'e', 'f':'f'}))
+                self.assertEqual(p('', 'a', 'b'), ('a', 'b', (), {}))
+                self.assertEqual(p('', 'a', 'b', 'c'), ('a', 'b', ('c',), {}))
+                self.assertEqual(p('', 'a', 'b', 'c', 'd'), ('a', 'b', ('c', 'd'), {}))
+                self.assertEqual(p('', 'a', 'b', 'c', 'd', e='e'), ('a', 'b', ('c', 'd'), {'e':'e'}))
+                self.assertEqual(p('', 'a', 'b', 'c', 'd', e='e', f='f'), ('a', 'b', ('c', 'd'), {'e':'e', 'f':'f'}))
+                self.assertEqual(p('', 'a', 'b', **({'e':'e', 'f':'f'})), ('a', 'b', (), {'e':'e', 'f':'f'}))
+                self.assertEqual(p('', 'a', 'b', *('c', 'd')), ('a', 'b', ('c', 'd'), {}))
+                self.assertEqual(p('', 'a', 'b', *('c', 'd'), **({'e':'e', 'f':'f'})), ('a', 'b', ('c', 'd'), {'e':'e', 'f':'f'}))
 
         class PyExprTestCase(unittest.TestCase):
 
@@ -731,9 +731,9 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
             def testExpr(self):
                 p = self.Parser()
-                self.assertEquals(p("1"), ("*foo*", 314))
-                self.assertEquals(p("2"), "a string")
-                self.assertEquals(p("3"), 3)
+                self.assertEqual(p("1"), ("*foo*", 314))
+                self.assertEqual(p("2"), "a string")
+                self.assertEqual(p("3"), 3)
 
         class EmptyChoiceTestCase(unittest.TestCase):
 
@@ -820,7 +820,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     """%tpg.Py()
 
             def testEmptyLast(self):
-                self.assertEquals(self.OK(), None)
+                self.assertEqual(self.OK(), None)
 
             def testEmptyNonLast(self):
                 self.assertRaises(tpg.SyntacticError, self.NOK1)
@@ -854,8 +854,8 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 """
 
             def testReST(self):
-                self.assertEquals(self.OK1()("OK"), "OK")
-                self.assertEquals(self.OK2()("OK"), "OK")
+                self.assertEqual(self.OK1()("OK"), "OK")
+                self.assertEqual(self.OK2()("OK"), "OK")
 
         if tpg.__python__ == 3:
 
@@ -878,10 +878,10 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
 
                 def testExpr(self):
                     p = self.Parser()
-                    self.assertEquals(p('"woah"'), "woah")
-                    self.assertEquals(p("“woah”"), "woah")
-                    self.assertEquals(p("‘woah’"), "woah")
-                    self.assertEquals(p("`woah´"), "woah")
+                    self.assertEqual(p('"woah"'), "woah")
+                    self.assertEqual(p("“woah”"), "woah")
+                    self.assertEqual(p("‘woah’"), "woah")
+                    self.assertEqual(p("`woah´"), "woah")
 
         try:
             unittest.main()
