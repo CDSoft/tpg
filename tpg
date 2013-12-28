@@ -3,8 +3,8 @@
 """ Toy Parser Generator - A Python parser generator
 
 Toy Parser Generator: A Python parser generator
-Copyright (C) 2001-2012 Christophe Delord
- 
+Copyright (C) 2001-2013 Christophe Delord
+
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either
@@ -85,14 +85,14 @@ else:
                 code.append(indented_code)
             code = "__grammar__ = %s\n\n%s"%(grammar, "\n".join(code))
             source = source.replace(grammar, code)
-        
+
         g = open(output_file, 'w')
         g.write(source)
         g.close()
-        
+
         say("Translation OK")
         sys.exit(0)
-        
+
     except IOError:
         say("IOError: %s"%tpg.exc(), file=sys.stderr)
     except tpg.Error:

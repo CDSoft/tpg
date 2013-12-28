@@ -18,7 +18,7 @@ trees while parsing.
 """
 
 # Toy Parser Generator: A Python parser generator
-# Copyright (C) 2001-2012 Christophe Delord
+# Copyright (C) 2001-2013 Christophe Delord
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -42,8 +42,8 @@ trees while parsing.
 #
 
 __tpgname__ = 'TPG'
-__version__ = '3.2.1'
-__date__ = '2012-05-28'
+__version__ = '3.2.2'
+__date__ = '2013-12-29'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -72,7 +72,7 @@ tab = " "*4
 
 class Error(Exception):
     """ Error((line, column), msg)
-    
+
     Error is the base class for TPG exceptions.
 
     Attributes:
@@ -88,7 +88,7 @@ class Error(Exception):
 
 class WrongToken(Error):
     """ WrongToken()
-    
+
     WrongToken is raised when the parser can not continue in order to backtrack.
     """
     def __init__(self):
@@ -196,7 +196,7 @@ class NamedGroupLexer(LexerOptions):
 
     def def_token(self, name, expr, value=_id):
         """ add a new token to the lexer
-        
+
         Parameters:
             name : name of the token
             expr : regular expression of the token
@@ -215,7 +215,7 @@ class NamedGroupLexer(LexerOptions):
 
     def def_separator(self, name, expr, value=_id):
         """ add a new separator to the lexer
-        
+
         Parameters:
             name : name of the separator
             expr : regular expression of the separator
@@ -358,7 +358,7 @@ class Lexer(NamedGroupLexer):
 
     def def_token(self, name, expr, value=_id):
         """ adds a new token to the lexer
-        
+
         Parameters:
             name : name of the token
             expr : regular expression of the token
@@ -373,10 +373,10 @@ class Lexer(NamedGroupLexer):
             self.tokens.append((name, self.re_compile(self.word_bounded(expr)), value, True))
         else:
             raise SemanticError("Duplicate token definition (%s)"%name)
-    
+
     def def_separator(self, name, expr, value=_id):
         """ add a new separator to the lexer
-        
+
         Parameters:
             name : name of the separator
             expr : regular expression of the separator
@@ -630,7 +630,7 @@ class ContextSensitiveLexer(LexerOptions):
 
     def def_token(self, name, expr, value=_id):
         """ add a new token to the lexer
-        
+
         Parameters:
             name : name of the token
             expr : regular expression of the token
@@ -648,7 +648,7 @@ class ContextSensitiveLexer(LexerOptions):
 
     def def_separator(self, name, expr, value=_id):
         """ add a new separator to the lexer
-        
+
         Parameters:
             name : name of the separator
             expr : regular expression of the separator
@@ -892,10 +892,10 @@ class Parser(_Parser):
 
     def __init__(self):
         """ Parser is the base class for parsers.
-       
+
         This class can not have a doc string otherwise it would be considered as a grammar.
         The metaclass of this class is ParserMetaClass.
-        
+
         Attributes:
             lexer : lexer build from the grammar
 
@@ -1050,18 +1050,18 @@ class VerboseParser(Parser):
 
     def __init__(self):
         """ VerboseParser is the base class for debugging parsers.
-       
+
         This class can not have a doc string otherwise it would be considered as a grammar.
         The metaclass of this class is ParserMetaClass.
         It extends the Parser class to log the activity of the lexer.
-       
+
         Attributes:
           lexer   : lexer build from the grammar
           verbose : level of information
                       0 : no information
                       1 : print tokens successfully matched
                       2 : print tokens matched and not matched
-       
+
         Methods added to the generated parsers:
           init_lexer(self) : return a lexer object to scan the tokens defined by the grammar
           <rule>           : each rule is translated into a method with the same name
@@ -1190,7 +1190,7 @@ class TPGParser(tpg.Parser):
                                         (?: \\. [^'\\\n]* )*
                                 '
                             '''                                                         ;
-    
+
     token       code        '''
                                 \{\{
                                     ( \}? [^\}]+ )*

@@ -120,7 +120,7 @@ Repetitions in grammar rules describe how many times an expression should be mat
 
 Repetitions are greedy.
 Repetitions are translated into Python loops.
-Thus whatever the length of the repetitions, the Python stack will not overflow. 
+Thus whatever the length of the repetitions, the Python stack will not overflow.
 
 \section{Precedence and grouping}
 
@@ -173,10 +173,10 @@ class Couple:
 
 class Foo(tpg.Parser):
     r"""
-    COUPLE/$Couple(a,b)$ -> '(' ITEM/a ',' ITEM/b ')' ;
+    COUPLE/$Couple(a,b)$ -> '\(' ITEM/a ',' ITEM/b '\)' ;
 
     # which is equivalent to
-    # COUPLE/c -> '(' ITEM/a ',' ITEM/b ')' $ c = Couple(a,b) $ ;
+    # COUPLE/c -> '\(' ITEM/a ',' ITEM/b '\)' $ c = Couple(a,b) $ ;
     """
 \end{verbatimtab}
 \end{code}
@@ -197,11 +197,11 @@ In that case one can use a list and its append method (see figure~\ref{parser:AS
 class ListParser(tpg.Parser):
     r"""
     LIST/l ->
-        '('                 $ l = []
+        '\('                $ l = []
             ITEM/a          $ l.append(a)
             ( ',' ITEM/a    $ l.append(a)
             )*
-        ')'
+        '\)'
         ;
     """
 \end{verbatimtab}

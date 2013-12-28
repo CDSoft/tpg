@@ -34,7 +34,7 @@ Here is a summary\footnote{From the Python documentation: \url{http://docs.pytho
     \item [$\lbrack\rbrack$]
     Used to indicate a set of characters. Characters can be listed individually, or a range of characters can be indicated by giving two characters and separating them by a "-". Special characters are not active inside sets. For example, $[akm\$]$ will match any of the characters "a", "k", "m", or "\$"; $[a-z]$ will match any lowercase letter, and $[a-zA-Z0-9]$ matches any letter or digit. Character classes such as $\backslash$w or $\backslash$S (defined below) are also acceptable inside a range. If you want to include a "$]$" or a "-" inside a set, precede it with a backslash, or place it as the first character. The pattern $[]]$ will match '$]$', for example.
 
-    You can match the characters not within a range by complementing the set. This is indicated by including a "$\hat{~}$" as the first character of the set; "$\hat{~}$" elsewhere will simply match the "$\hat{~}$" character. For example, $[\hat{~}5]$ will match any character except "5", and $[\hat{~}\hat{~}]$ will match any character except "$\hat{~}$". 
+    You can match the characters not within a range by complementing the set. This is indicated by including a "$\hat{~}$" as the first character of the set; "$\hat{~}$" elsewhere will simply match the "$\hat{~}$" character. For example, $[\hat{~}5]$ will match any character except "5", and $[\hat{~}\hat{~}]$ will match any character except "$\hat{~}$".
     \item ["$\vert$"]
     $A|B$, where $A$ and $B$ can be arbitrary REs, creates a regular expression that will match either A or B. An arbitrary number of REs can be separated by the "$\vert$" in this way. This can be used inside groups (see below) as well. As the target string is scanned, REs separated by "$\vert$" are tried from left to right. When one pattern completely matches, that branch is accepted. This means that once A matches, B will not be tested further, even if it would produce a longer overall match. In other words, the "$|$" operator is never greedy. To match a literal "$|$", use $\backslash|$, or enclose it inside a character class, as in $[|]$.
     \item [(...)]
@@ -69,7 +69,7 @@ Here is a summary\footnote{From the Python documentation: \url{http://docs.pytho
     Matches only at the end of the string.
     \item [$\backslash a ~ \backslash f ~ \backslash n ~ \backslash r ~ \backslash t ~ \backslash v ~ \backslash x ~ \backslash\backslash$]
     Most of the standard escapes supported by Python string literals are also accepted by the regular expression parser.
-    \item [$\backslash 0xyz$, $\backslash xyz$] Octal escapes are included in a limited form: If the first digit is a 0, or if there are three octal digits, it is considered an octal escape. As for string literals, octal escapes are always at most three digits in length. 
+    \item [$\backslash 0xyz$, $\backslash xyz$] Octal escapes are included in a limited form: If the first digit is a 0, or if there are three octal digits, it is considered an octal escape. As for string literals, octal escapes are always at most three digits in length.
 \end{description}
 
 \section{Token definition}                                  \label{lexer:token_def}
@@ -161,7 +161,7 @@ Inline tokens have a similar syntax. You just write the regular expression (in a
 \begin{code}
 \caption{Token usage examples}                              \label{lexer:inline_token_ret_val}
 \begin{verbatimtab}[4]
-    S -> '(' '\w+'/i ')';
+    S -> '\(' '\w+'/i '\)';
 \end{verbatimtab}
 \end{code}
 

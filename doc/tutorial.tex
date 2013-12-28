@@ -85,7 +85,7 @@ With this small grammar we can only recognize a correct expression. We will see 
 
 The input of the grammar is a string. To do something useful we need to read this string in order to transform it into an expected result.
 
-This string can be read by catching the return value of terminal symbols. By default any terminal symbol returns a string containing the current token. So the token $'('$ always returns the string $'('$. For some tokens it may be useful to compute a Python object from the token. For example \emph{number} should return an integer instead of a string, \emph{add} and \emph{mul} should return a function corresponding to the operator. That why we will add a function to the token definitions. So we associate \emph{int} to \emph{number} and \emph{make\_op} to \emph{add} and \emph{mul}.
+This string can be read by catching the return value of terminal symbols. By default any terminal symbol returns a string containing the current token. So the token $'\backslash('$ always returns the string $'('$. For some tokens it may be useful to compute a Python object from the token. For example \emph{number} should return an integer instead of a string, \emph{add} and \emph{mul} should return a function corresponding to the operator. That why we will add a function to the token definitions. So we associate \emph{int} to \emph{number} and \emph{make\_op} to \emph{add} and \emph{mul}.
 
 \emph{int} is a Python function converting objects to integers and \emph{make\_op} is a user defined function (figure~\ref{tut:make_op}).
 
