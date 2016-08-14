@@ -1,0 +1,6 @@
+dist/
+mk
+*.pyc
+__pycache__
+*.swp
+MANIFEST
