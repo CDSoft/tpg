@@ -35,21 +35,21 @@ trees while parsing.
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # For further information about TPG you can visit
-# http://cdsoft.fr/tpg
+# http://cdelord.fr/tpg
 
 # TODO:
 #   - indent and dedent preprocessor
 #
 
 __tpgname__ = 'TPG'
-__version__ = '3.2.2'
-__date__ = '2013-12-29'
+__version__ = '3.2.3'
+__date__ = '2020-05-29'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
 __author__ = 'Christophe Delord'
-__email__ = 'cdsoft.fr'
-__url__ = 'http://cdsoft.fr/tpg/'
+__email__ = 'cdelord.fr'
+__url__ = 'http://cdelord.fr/tpg/'
 
 import parser
 import re

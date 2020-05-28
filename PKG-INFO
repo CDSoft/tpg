@@ -1,10 +1,10 @@
 Metadata-Version: 1.0
 Name: TPG
-Version: 3.2.2
+Version: 3.2.3
 Summary: A Python parser generator
-Home-page: http://cdsoft.fr/tpg/
+Home-page: http://cdelord.fr/tpg/
 Author: Christophe Delord
-Author-email: cdsoft.fr
+Author-email: cdelord.fr
 License: LGPL
 Description: Toy Parser Generator is a lexical and syntactic parser generator
         for Python. This generator was born from a simple statement: YACC

@@ -14,7 +14,7 @@ Abstract
 Contact
 =======
 
-The author can be contacted on GitHub as well as at <http://cdsoft.fr/tpg>.
+The author can be contacted on GitHub as well as at <http://cdelord.fr/tpg>.
 
 Prerequisites
 =============
@@ -170,7 +170,7 @@ The Windows installer is not available anymore because of a virus infection. I w
 Projects using TPG
 ==================
 
-[TPG](http://cdsoft.fr/index.html)  
+[TPG](http://cdelord.fr/index.html)  
 Toy Parser Generator (itself ;-)
 
 [Tentakel](http://tentakel.biskalar.de/)  

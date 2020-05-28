@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # For further information about TPG you can visit
-# http://cdsoft.fr/tpg
+# http://cdelord.fr/tpg
 
 all: tpg.py README doc/tpg.pdf
 
@@ -30,6 +30,6 @@ doc/tpg.pdf: $(wildcard doc/*.tex)
 	python3 setup.py sdist
 
 test:
-	python2 tpg_tests_py2.py
-	python2 tpg_tests.py
+	#python2 tpg_tests_py2.py
+	#python2 tpg_tests.py
 	python3 tpg_tests.py
