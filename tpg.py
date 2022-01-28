@@ -18,7 +18,7 @@ trees while parsing.
 """
 
 # Toy Parser Generator: A Python parser generator
-# Copyright (C) 2001-2013 Christophe Delord
+# Copyright (C) 2001-2022 Christophe Delord
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -42,8 +42,8 @@ trees while parsing.
 #
 
 __tpgname__ = 'TPG'
-__version__ = '3.2.3'
-__date__ = '2020-05-29'
+__version__ = '3.2.4'
+__date__ = '2022-01-28'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
@@ -51,7 +51,6 @@ __author__ = 'Christophe Delord'
 __email__ = 'cdelord.fr'
 __url__ = 'http://cdelord.fr/tpg/'
 
-import parser
 import re
 import sre_parse
 import sys
@@ -61,7 +60,8 @@ __python__ = sys.version_info[0]
 
 if __python__ == 3:
     import collections
-    callable = lambda value: isinstance(value, collections.Callable)
+    if callable is None:
+        callable = lambda value: isinstance(value, collections.Callable)
     exc = lambda: sys.exc_info()[1]
 
 if __python__ == 2:
@@ -1733,7 +1733,7 @@ class TPGParser(tpg.Parser):
 
     def code_check(self, code, tok):
         try:
-            parser.suite(code.code)
+            compile(code.code, "-", 'exec')
         except Exception:
             erroneous_code = "\n".join([ "%2d: %s"%(i+1, l) for (i, l) in enumerate(code.code.splitlines()) ])
             raise LexicalError((tok.line, tok.column), "Invalid Python code (%s): \n%s"%(exc, erroneous_code))
