@@ -11,6 +11,11 @@ Abstract
 >
 > Please let me know if you use TPG in one of your projects. I will add you in the list of projects using TPG.
 
+Download
+========
+
+TPG can be downloaded on Github: <https://github.com/CDSoft/tpg>.
+
 Contact
 =======
 
