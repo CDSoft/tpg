@@ -52,7 +52,17 @@ __email__ = 'cdelord.fr'
 __url__ = 'http://cdelord.fr/tpg/'
 
 import re
-import sre_parse
+import warnings
+try:
+    warnings.filterwarnings('error')
+    import sre_parse
+
+except DeprecationWarning:
+    sre_parse = re._parser
+
+finally:
+    warnings.resetwarnings()
+
 import sys
 
 # Python 2/3 compatibility
@@ -1572,7 +1582,7 @@ class TPGParser(tpg.Parser):
                         min = self.PY_EXPR()
                     except tpg.WrongToken:
                         self.lexer.back(_p2)
-                        min = self.PY_Ident("0") 
+                        min = self.PY_Ident("0")
                     _p3 = self.lexer.token()
                     try:
                         self.eat('_tok_16') # ','
@@ -1581,10 +1591,10 @@ class TPGParser(tpg.Parser):
                             max = self.PY_EXPR()
                         except tpg.WrongToken:
                             self.lexer.back(_p4)
-                            max = self.PY_Ident("None") 
+                            max = self.PY_Ident("None")
                     except tpg.WrongToken:
                         self.lexer.back(_p3)
-                        max = min 
+                        max = min
                     self.eat('rcbra') # '\}'
                     a = self.Rep(a, min, max)
         except tpg.WrongToken:
@@ -1613,7 +1623,7 @@ class TPGParser(tpg.Parser):
             args = self.ARGS()
         except tpg.WrongToken:
             self.lexer.back(_p1)
-            args = self.Args() 
+            args = self.Args()
         return args
 
     def ARGS(self, ):
@@ -2208,4 +2218,3 @@ class TPGParser(tpg.Parser):
         rules.links_symbols_to_tokens(tokens_from_name)
         for name, code in rules.gen_code():
             yield self.make_code(name, *code)
-
