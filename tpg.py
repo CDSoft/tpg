@@ -52,7 +52,10 @@ __email__ = 'cdelord.fr'
 __url__ = 'http://cdelord.fr/tpg/'
 
 import re
-import sre_parse
+try:
+    sre_parse = re._parser
+except AttributeError:
+    import sre_parse
 import sys
 
 # Python 2/3 compatibility
@@ -2208,4 +2211,3 @@ class TPGParser(tpg.Parser):
         rules.links_symbols_to_tokens(tokens_from_name)
         for name, code in rules.gen_code():
             yield self.make_code(name, *code)
-
