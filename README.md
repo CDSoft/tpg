@@ -14,12 +14,12 @@ Abstract
 Download
 ========
 
-TPG can be downloaded on Github: <https://github.com/CDSoft/tpg>.
+TPG can be downloaded on Codeberg: <https://codeberg.org/cdsoft/tpg>.
 
 Contact
 =======
 
-The author can be contacted on GitHub as well as at <http://cdelord.fr/tpg>.
+The author can be contacted on Codeberg as well as at <http://cdelord.fr/tpg>.
 
 Prerequisites
 =============
@@ -175,25 +175,25 @@ The Windows installer is not available anymore because of a virus infection. I w
 Projects using TPG
 ==================
 
-[TPG](http://cdelord.fr/index.html)  
+[TPG](http://cdelord.fr/index.html)
 Toy Parser Generator (itself ;-)
 
-[Tentakel](http://tentakel.biskalar.de/)  
+[Tentakel](http://tentakel.biskalar.de/)
 distributed command execution
 
-[Xoot](http://xoot.org/)  
+[Xoot](http://xoot.org/)
 shorthand to XSLT
 
-[EZgnupy](http://cyrille.boullier.free.fr/python/projects/ezgnupy/index.php)  
+[EZgnupy](http://cyrille.boullier.free.fr/python/projects/ezgnupy/index.php)
 a front-end for gnuplot written in python
 
-[Ize](http://maxrepo.info/taxonomy/term/3,6/all)  
+[Ize](http://maxrepo.info/taxonomy/term/3,6/all)
 python module providing a set of function decorators
 
-[Rugg](http://rugg.sf.net/)  
+[Rugg](http://rugg.sf.net/)
 Flexible file system and hard drive crash testing
 
-[Osh](http://geophile.com/osh/)  
+[Osh](http://geophile.com/osh/)
 An Open-Source Python-Based Object-Oriented Shell
 
 Links
@@ -201,5 +201,5 @@ Links
 
 -   [Python](http://www.python.org/)
 -   [Parser-SIG](http://www.python.org/sigs/parser-sig/)
--   See also [Simple Parser](http://github.com/CDSoft/sp)
+-   See also [Simple Parser](http://codeberg.org/cdsoft/sp)
 
