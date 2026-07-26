@@ -4,3 +4,9 @@ mk
 __pycache__
 *.swp
 MANIFEST
+TPG.egg-info
+doc/*.aux
+doc/*.lof
+doc/*.log
+doc/*.out
+doc/*.toc

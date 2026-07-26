@@ -1,50 +1,68 @@
-Abstract
-========
+# Toy Parser Generator
 
-> Toy Parser Generator is a lexical and syntactic parser generator for Python. This generator was born from a simple statement: YACC is too complex to use in simple cases (calculators, configuration files, small programming languages, ...).
+## Abstract
+
+> Toy Parser Generator is a lexical and syntactic parser generator for Python.
+> This generator was born from a simple statement:
+> YACC is too complex to use in simple cases (calculators, configuration files, small programming languages, ...).
 >
-> TPG can very simply write parsers that are useful for most every day needs (even if it can't make your coffee). With a very clear and simple syntax, you can write an attributed grammar that is translated into a recursive descendant parser. TPG generated code is very closed to the original grammar. This means that the parser works *like* the grammar. A grammar rule can be seen as a method of the parser class, symbols as method calls, attributes as method parameters and semantic values as return values. You can also add Python code directly into grammar rules and build abstract syntax trees while parsing.
+> TPG can very simply write parsers that are useful for most every day needs (even if it can't make your coffee).
+> With a very clear and simple syntax, you can write an attributed grammar
+> that is translated into a recursive descendant parser.
+> TPG generated code is very closed to the original grammar.
+> This means that the parser works *like* the grammar.
+> A grammar rule can be seen as a method of the parser class, symbols as method calls,
+> attributes as method parameters and semantic values as return values.
+> You can also add Python code directly into grammar rules and build abstract syntax trees while parsing.
 >
-> The first application of TPG is TPG itself. The first (not released) version of TPG has been written by hand then was used to generate next versions. Now TPG can generate itself.
+> The first application of TPG is TPG itself.
+> The first (not released) version of TPG has been written by hand then was used to generate next versions.
+> Now TPG can generate itself.
 >
 > For an up-to-date documentation, please read [tpg.pdf](doc/tpg.pdf).
 >
 > Please let me know if you use TPG in one of your projects. I will add you in the list of projects using TPG.
 
-Download
-========
+## Download
 
 TPG can be downloaded on Codeberg: <https://codeberg.org/cdsoft/tpg>.
 
-Contact
-=======
+## Contact
 
 The author can be contacted on Codeberg as well as at <http://cdelord.fr/tpg>.
 
-Prerequisites
-=============
+## Prerequisites
 
-[Python 2.2](http://www.python.org/) or newer is required. TPG works with both Python 2 and 3.
+[Python 2.2](http://www.python.org/) or newer is required.
+TPG works with both Python 2 and 3.
 
-How it works
-============
+## How it works
 
-Lexical scanner
----------------
+### Lexical scanner
 
-The lexical scanner uses Python regular expressions. The text is split before being parsed by the grammar rules.
+The lexical scanner uses Python regular expressions.
+The text is split before being parsed by the grammar rules.
 
-Syntactic parser
-----------------
+### Syntactic parser
 
-TPG isn't based on predictive algorithms with tables like LL(k). The main idea was instead to try every possible choices and to accept the first choice that match the input. So when a choice point is reached - say `A|B|C` - the parser will first try to recognize `A`. If this fails it will try `B` and if necessary `C`. So contrary to LL(k) parsers the order of the branches of choice points is very important for TPG. In fact this method has been inspired from Prolog DGC parsers. But remember that when a choice has been done, even if their are more possible choices, it can't be undone (in Prolog it can). The text to be parsed has to be stored in a string in memory (backtracking is simpler this way). During the parsing, the current position is stored in internal TPG variables for all terminal and non-terminal symbols.
+TPG isn't based on predictive algorithms with tables like LL(k).
+The main idea was instead to try every possible choices and to accept the first choice that match the input.
+So when a choice point is reached - say `A|B|C` - the parser will first try to recognize `A`.
+If this fails it will try `B` and if necessary `C`.
+So contrary to LL(k) parsers the order of the branches of choice points is very important for TPG.
+In fact this method has been inspired from Prolog DGC parsers.
+But remember that when a choice has been done, even if their are more possible choices,
+it can't be undone (in Prolog it can).
+The text to be parsed has to be stored in a string in memory (backtracking is simpler this way).
+During the parsing, the current position is stored in internal TPG variables for all terminal and non-terminal symbols.
 
 So we can say that TPG uses a sort of very limited backtracking.
 
-This algorithm is easily implementable. Any rule is translated into a class method without having to compute a prediction table. The main drawbacks of this method is that you have to be careful when you write your grammar (as in Prolog).
+This algorithm is easily implementable.
+Any rule is translated into a class method without having to compute a prediction table.
+The main drawbacks of this method is that you have to be careful when you write your grammar (as in Prolog).
 
-Example
-=======
+## Example
 
 This page presents a well known example: a calculator.
 
@@ -154,52 +172,46 @@ while 1:
         break
 ```
 
-Documentation
-=============
+## Documentation
 
 The documentation is available online in [PDF](doc/tpg.pdf) format.
 
-Installation
-============
+## Installation
 
-Linux / Unix / Sources
-----------------------
+### Linux / Unix / Sources
 
 Extract and run `python setup.py install`.
 
-Windows
--------
+### Windows
 
-The Windows installer is not available anymore because of a virus infection. I will now only distribute source packages.
+The Windows installer is not available anymore because of a virus infection.
+I will now only distribute source packages.
 
-Projects using TPG
-==================
+## Projects using TPG
 
 [TPG](http://cdelord.fr/index.html)
-Toy Parser Generator (itself ;-)
+: Toy Parser Generator (itself ;-)
 
 [Tentakel](http://tentakel.biskalar.de/)
-distributed command execution
+: distributed command execution
 
 [Xoot](http://xoot.org/)
-shorthand to XSLT
+: shorthand to XSLT
 
 [EZgnupy](http://cyrille.boullier.free.fr/python/projects/ezgnupy/index.php)
-a front-end for gnuplot written in python
+: a front-end for gnuplot written in python
 
 [Ize](http://maxrepo.info/taxonomy/term/3,6/all)
-python module providing a set of function decorators
+: python module providing a set of function decorators
 
 [Rugg](http://rugg.sf.net/)
-Flexible file system and hard drive crash testing
+: Flexible file system and hard drive crash testing
 
 [Osh](http://geophile.com/osh/)
-An Open-Source Python-Based Object-Oriented Shell
+: An Open-Source Python-Based Object-Oriented Shell
 
-Links
-=====
+## Links
 
--   [Python](http://www.python.org/)
--   [Parser-SIG](http://www.python.org/sigs/parser-sig/)
--   See also [Simple Parser](http://codeberg.org/cdsoft/sp)
-
+- [Python](http://www.python.org/)
+- [LanguageParsing](https://wiki.python.org/moin/LanguageParsing)
+- See also [Simple Parser](http://codeberg.org/cdsoft/sp)
