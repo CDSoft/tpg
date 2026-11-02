@@ -29,12 +29,12 @@ TPG can be downloaded on Codeberg: <https://codeberg.org/cdsoft/tpg>.
 
 ## Contact
 
-The author can be contacted on Codeberg as well as at <http://cdelord.fr/tpg>.
+The author can be contacted on Codeberg as well as at <https://cdelord.fr/tpg>.
 
 ## Prerequisites
 
-[Python 2.2](http://www.python.org/) or newer is required.
-TPG works with both Python 2 and 3.
+[Python 3.12](https://www.python.org/) or newer is required.
+TPG works Python 3 (Python 2 support has been dropped but is still available in the `tpg-python2` branch).
 
 ## How it works
 
@@ -76,16 +76,12 @@ import operator
 import string
 import tpg
 
-if tpg.__python__ == 3:
-    operator.div = operator.truediv
-    raw_input = input
-
 def make_op(op):
     return {
         '+'   : operator.add,
         '-'   : operator.sub,
         '*'   : operator.mul,
-        '/'   : operator.div,
+        '/'   : operator.truediv,
         '%'   : operator.mod,
         '^'   : lambda x,y:x**y,
         '**'  : lambda x,y:x**y,
@@ -162,7 +158,7 @@ class Calc(tpg.Parser, dict):
 print("Calc (TPG example)")
 calc = Calc()
 while 1:
-    l = raw_input("\n:")
+    l = input("\n:")
     if l:
         try:
             print(calc(l))
@@ -178,40 +174,36 @@ The documentation is available online in [PDF](doc/tpg.pdf) format.
 
 ## Installation
 
-### Linux / Unix / Sources
-
-Extract and run `python setup.py install`.
-
-### Windows
-
-The Windows installer is not available anymore because of a virus infection.
-I will now only distribute source packages.
+Just copy [`tpg.py`](tpg.py) in your project.
 
 ## Projects using TPG
 
-[TPG](http://cdelord.fr/index.html)
+[TPG](https://cdelord.fr/index.html)
 : Toy Parser Generator (itself ;-)
 
-[Tentakel](http://tentakel.biskalar.de/)
+[Tentakel](http://tentakel.biskalar.de/) [no longer available]
 : distributed command execution
 
-[Xoot](http://xoot.org/)
+[Xoot](http://xoot.org/) [no longer available]
 : shorthand to XSLT
 
-[EZgnupy](http://cyrille.boullier.free.fr/python/projects/ezgnupy/index.php)
+[EZgnupy](http://cyrille.boullier.free.fr/python/projects/ezgnupy/index.php) [no longer available]
 : a front-end for gnuplot written in python
 
-[Ize](http://maxrepo.info/taxonomy/term/3,6/all)
+[Ize](http://maxrepo.info/taxonomy/term/3,6/all) [no longer available]
 : python module providing a set of function decorators
 
-[Rugg](http://rugg.sf.net/)
+[Rugg](https://rugg.sf.net/)
 : Flexible file system and hard drive crash testing
 
-[Osh](http://geophile.com/osh/)
+[Osh](https://geophile.com/osh/)
 : An Open-Source Python-Based Object-Oriented Shell
+
+[digtick](https://github.com/johndoe31415/digtick)
+: Digital logic design toolkit: simplify, minimize and transform Boolean expressions, draw KV-maps, etc.
 
 ## Links
 
-- [Python](http://www.python.org/)
+- [Python](https://www.python.org/)
 - [LanguageParsing](https://wiki.python.org/moin/LanguageParsing)
-- See also [Simple Parser](http://codeberg.org/cdsoft/sp)
+- See also [Simple Parser](https://codeberg.org/cdsoft/sp)

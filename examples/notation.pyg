@@ -4,9 +4,6 @@
 
 import tpg
 
-if tpg.__python__ == 3:
-    raw_input = input
-
 class Op:
     """ Binary operator """
     def __init__(self, op, a, b, prec):
@@ -125,7 +122,7 @@ class ExpressionParser(tpg.Parser):
 
 parser = ExpressionParser()
 while 1:
-    e = raw_input(":").rstrip()
+    e = input(":").rstrip()
     if e == "": break
     try:
         expr, t = parser(e+"\n")

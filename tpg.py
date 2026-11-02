@@ -18,7 +18,7 @@ trees while parsing.
 """
 
 # Toy Parser Generator: A Python parser generator
-# Copyright (C) 2001-2022 Christophe Delord
+# Copyright (C) 2001-2026 Christophe Delord
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -35,40 +35,22 @@ trees while parsing.
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # For further information about TPG you can visit
-# http://cdelord.fr/tpg
-
-# TODO:
-#   - indent and dedent preprocessor
-#
+# https://cdelord.fr/tpg
 
 __tpgname__ = 'TPG'
-__version__ = '3.2.4'
-__date__ = '2022-01-28'
+__version__ = '4.0.0'
+__date__ = '2026-10-02'
 __description__ = "A Python parser generator"
 __long_description__ = __doc__
 __license__ = 'LGPL'
 __author__ = 'Christophe Delord'
 __email__ = 'cdelord.fr'
-__url__ = 'http://cdelord.fr/tpg/'
+__url__ = 'https://cdelord.fr/tpg/'
 
 import re
-try:
-    sre_parse = re._parser
-except AttributeError:
-    import sre_parse
 import sys
 
-# Python 2/3 compatibility
-__python__ = sys.version_info[0]
-
-if __python__ == 3:
-    import collections
-    if callable is None:
-        callable = lambda value: isinstance(value, collections.Callable)
-    exc = lambda: sys.exc_info()[1]
-
-if __python__ == 2:
-    exc = lambda: sys.exc_value
+exc = lambda: sys.exc_info()[1]
 
 _id = lambda x: x
 tab = " "*4
@@ -875,10 +857,7 @@ class ParserMetaClass(type):
             for attribute, source, code in parser(grammar):
                 setattr(cls, attribute, code)
 
-if __python__ == 3:
-    exec("class _Parser(metaclass=ParserMetaClass): pass")
-else:
-    class _Parser: __metaclass__ = ParserMetaClass
+exec("class _Parser(metaclass=ParserMetaClass): pass")
 
 class Parser(_Parser):
     # Parser is the base class for parsers.
@@ -955,10 +934,7 @@ class Parser(_Parser):
         """
         try:
             self.lexer.start(input)
-            if __python__ == 2 and isinstance(input, unicode):
-                self.string_prefix = 'ur'
-            else:
-                self.string_prefix = 'r'
+            self.string_prefix = 'r'
             value = getattr(self, axiom)(*args, **kws)
             if not self.lexer.eof():
                 raise WrongToken
@@ -1730,8 +1706,8 @@ class TPGParser(tpg.Parser):
 
     def re_check(self, expr, tok):
         try:
-            sre_parse.parse(eval(self.string_prefix+expr))
-        except Exception:
+            re.compile(eval(self.string_prefix+expr))
+        except re.error:
             raise LexicalError((tok.line, tok.column), "Invalid regular expression: %s (%s)"%(expr, exc()))
 
     def code_check(self, code, tok):

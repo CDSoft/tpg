@@ -2,19 +2,14 @@
 
 import math
 import operator
-import string
 import tpg
-
-if tpg.__python__ == 3:
-    operator.div = operator.truediv
-    raw_input = input
 
 def make_op(op):
     return {
         '+'   : operator.add,
         '-'   : operator.sub,
         '*'   : operator.mul,
-        '/'   : operator.div,
+        '/'   : operator.truediv,
         '%'   : operator.mod,
         '^'   : lambda x,y:x**y,
         '**'  : lambda x,y:x**y,
@@ -91,7 +86,7 @@ class Calc(tpg.Parser, dict):
 print("Calc (TPG example)")
 calc = Calc()
 while 1:
-    l = raw_input("\n:")
+    l = input("\n:")
     if l:
         try:
             print(calc(l))

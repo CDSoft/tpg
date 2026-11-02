@@ -1,3 +1,10 @@
+2026-10-02  Christophe Delord <cdelord.fr>
+
+    * Version 4.0.0:
+        - Python 3.12 to 3.15 support
+        - Python 2 dropped
+        - distutils dropped (simply copy tpg.py)
+
 2022-01-28  Christophe Delord <cdelord.fr>
 
     * Version 3.2.4:
@@ -67,7 +74,7 @@
 
     * Bug fixes:
         - Fixed some more typos in the documentation (thanks
-        to Johannes Schöön).
+        to Johannes SchÃ¶Ã¶n).
         - Bug fix (wrong column number for the first token).
         - Row is deprecated and renamed as column.
 
@@ -317,7 +324,7 @@
 2002-07-07  Christophe Delord <cdsoft.fr>
 
     * Version 2.0.4
-    
+
     * tpg_grammar.g:
         Bug fix in NB rule
         Bug fix in object and arg list code generation

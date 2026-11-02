@@ -3,7 +3,7 @@
 """ Toy Parser Generator - A Python parser generator
 
 Toy Parser Generator: A Python parser generator
-Copyright (C) 2001-2013 Christophe Delord
+Copyright (C) 2001-2026 Christophe Delord
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 For further information about TPG you can visit
-http://cdelord.fr/tpg
+https://cdelord.fr/tpg
 """
 
 import re

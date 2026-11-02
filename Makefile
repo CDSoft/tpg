@@ -1,5 +1,5 @@
 # Toy Parser Generator: A Python parser generator
-# Copyright (C) 2001-2016 Christophe Delord
+# Copyright (C) 2001-2026 Christophe Delord
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,20 +16,19 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # For further information about TPG you can visit
-# http://cdelord.fr/tpg
+# https://cdelord.fr/tpg
 
-all: tpg.py README doc/tpg.pdf
+all: tpg.py doc/tpg.pdf
 
-tpg.py: setup.py tpg tpg.pyg
-	python3 setup.py sdist
-
-README: README.md
-	cp $< $@
+tpg.py: tpg tpg.pyg
+	./tpg tpg.pyg
 
 doc/tpg.pdf: $(wildcard doc/*.tex)
-	python3 setup.py sdist
+	cd doc && pdflatex tpg && pdflatex tpg && pdflatex tpg
 
 test:
-	#python2 tpg_tests_py2.py
-	#python2 tpg_tests.py
-	python3 tpg_tests.py
+	python3.12 tpg_tests.py
+	python3.13 tpg_tests.py
+	python3.14 tpg_tests.py
+	python3.15 tpg_tests.py
+	python3.16 tpg_tests.py # experimental

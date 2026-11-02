@@ -1,17 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
 import sys
 import unittest
 
 import tpg
-
-if tpg.__python__ == 3:
-    u = lambda s: s
-else:
-    u = lambda s: unicode(s, "unicode_escape")
-    ur = lambda s: unicode(s, "raw_unicode_escape")
 
 print("*"*70)
 print("*")
@@ -848,7 +841,7 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                     part ends with '::'.
 
                     Note the trailling spaces after '::'
-                    Here is the grammar::    
+                    Here is the grammar::
 
                         START/x -> '\w+'/x ;
                 """
@@ -857,31 +850,29 @@ for PARSER, VERBOSE in ( (tpg.Parser, None),
                 self.assertEqual(self.OK1()("OK"), "OK")
                 self.assertEqual(self.OK2()("OK"), "OK")
 
-        if tpg.__python__ == 3:
+        class UnicodeTestCase(unittest.TestCase):
 
-            class UnicodeTestCase(unittest.TestCase):
+            class Parser(PARSER):
+                __doc__ = r"""
+                    set lexer = %(LEXER)s
+                    set lexer_unicode = True
 
-                class Parser(PARSER):
-                    __doc__ = r"""
-                        set lexer = %(LEXER)s
-                        set lexer_unicode = True
+                    token single_quote '[‘’]' ;
+                    token double_quote '["“”]' ;
+                    token word '\w+' ;
 
-                        token single_quote '[‘’]' ;
-                        token double_quote '["“”]' ;
-                        token word '\w+' ;
+                    START/x -> double_quote word/x double_quote
+                                | single_quote word/x single_quote
+                                | '`' word/x '´'
+                                ;
+                """%tpg.Py()
 
-                        START/x -> double_quote word/x double_quote
-                                 | single_quote word/x single_quote
-                                 | '`' word/x '´'
-                                 ;
-                    """%tpg.Py()
-
-                def testExpr(self):
-                    p = self.Parser()
-                    self.assertEqual(p('"woah"'), "woah")
-                    self.assertEqual(p("“woah”"), "woah")
-                    self.assertEqual(p("‘woah’"), "woah")
-                    self.assertEqual(p("`woah´"), "woah")
+            def testExpr(self):
+                p = self.Parser()
+                self.assertEqual(p('"woah"'), "woah")
+                self.assertEqual(p("“woah”"), "woah")
+                self.assertEqual(p("‘woah’"), "woah")
+                self.assertEqual(p("`woah´"), "woah")
 
         try:
             unittest.main()
