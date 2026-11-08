@@ -1,3 +1,8 @@
+2026-10-08  Christophe Delord <cdelord.fr>
+
+    * Version 4.0.1:
+        - Python 3.9 to 3.15 support
+
 2026-10-02  Christophe Delord <cdelord.fr>
 
     * Version 4.0.0:

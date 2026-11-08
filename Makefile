@@ -27,8 +27,11 @@ doc/tpg.pdf: $(wildcard doc/*.tex)
 	cd doc && pdflatex tpg && pdflatex tpg && pdflatex tpg
 
 test:
-	python3.12 tpg_tests.py
-	python3.13 tpg_tests.py
-	python3.14 tpg_tests.py
-	python3.15 tpg_tests.py
 	python3.16 tpg_tests.py # experimental
+	python3.15 tpg_tests.py
+	python3.14 tpg_tests.py
+	python3.13 tpg_tests.py
+	python3.12 tpg_tests.py
+	python3.11 tpg_tests.py
+	python3.10 tpg_tests.py
+	python3.9 tpg_tests.py

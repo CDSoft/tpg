@@ -33,7 +33,7 @@ The author can be contacted on Codeberg as well as at <https://cdelord.fr/tpg>.
 
 ## Prerequisites
 
-[Python 3.12](https://www.python.org/) or newer is required.
+[Python 3.9](https://www.python.org/) or newer is required.
 TPG works Python 3 (Python 2 support has been dropped but is still available in the `tpg-python2` branch).
 
 ## How it works
